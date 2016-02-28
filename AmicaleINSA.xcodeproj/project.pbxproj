@@ -1,0 +1,524 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		9206F3BA1C838F8B00978CF5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9206F3B91C838F8B00978CF5 /* AppDelegate.swift */; };
+		9206F3BC1C838F8B00978CF5 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9206F3BB1C838F8B00978CF5 /* ViewController.swift */; };
+		9206F3BF1C838F8B00978CF5 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9206F3BD1C838F8B00978CF5 /* Main.storyboard */; };
+		9206F3C21C838F8B00978CF5 /* AmicaleINSA.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 9206F3C01C838F8B00978CF5 /* AmicaleINSA.xcdatamodeld */; };
+		9206F3C41C838F8B00978CF5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9206F3C31C838F8B00978CF5 /* Assets.xcassets */; };
+		9206F3C71C838F8B00978CF5 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9206F3C51C838F8B00978CF5 /* LaunchScreen.storyboard */; };
+		9206F3D21C838F8B00978CF5 /* AmicaleINSATests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9206F3D11C838F8B00978CF5 /* AmicaleINSATests.swift */; };
+		9206F3DD1C838F8B00978CF5 /* AmicaleINSAUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9206F3DC1C838F8B00978CF5 /* AmicaleINSAUITests.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		9206F3CE1C838F8B00978CF5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 9206F3AE1C838F8B00978CF5 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 9206F3B51C838F8B00978CF5;
+			remoteInfo = AmicaleINSA;
+		};
+		9206F3D91C838F8B00978CF5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 9206F3AE1C838F8B00978CF5 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 9206F3B51C838F8B00978CF5;
+			remoteInfo = AmicaleINSA;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		9206F3B61C838F8B00978CF5 /* AmicaleINSA.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AmicaleINSA.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		9206F3B91C838F8B00978CF5 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		9206F3BB1C838F8B00978CF5 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		9206F3BE1C838F8B00978CF5 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		9206F3C11C838F8B00978CF5 /* AmicaleINSA.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = AmicaleINSA.xcdatamodel; sourceTree = "<group>"; };
+		9206F3C31C838F8B00978CF5 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		9206F3C61C838F8B00978CF5 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		9206F3C81C838F8B00978CF5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		9206F3CD1C838F8B00978CF5 /* AmicaleINSATests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AmicaleINSATests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		9206F3D11C838F8B00978CF5 /* AmicaleINSATests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AmicaleINSATests.swift; sourceTree = "<group>"; };
+		9206F3D31C838F8B00978CF5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		9206F3D81C838F8B00978CF5 /* AmicaleINSAUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AmicaleINSAUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		9206F3DC1C838F8B00978CF5 /* AmicaleINSAUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AmicaleINSAUITests.swift; sourceTree = "<group>"; };
+		9206F3DE1C838F8B00978CF5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		9206F3B31C838F8B00978CF5 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		9206F3CA1C838F8B00978CF5 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		9206F3D51C838F8B00978CF5 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		9206F3AD1C838F8B00978CF5 = {
+			isa = PBXGroup;
+			children = (
+				9206F3B81C838F8B00978CF5 /* AmicaleINSA */,
+				9206F3D01C838F8B00978CF5 /* AmicaleINSATests */,
+				9206F3DB1C838F8B00978CF5 /* AmicaleINSAUITests */,
+				9206F3B71C838F8B00978CF5 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		9206F3B71C838F8B00978CF5 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				9206F3B61C838F8B00978CF5 /* AmicaleINSA.app */,
+				9206F3CD1C838F8B00978CF5 /* AmicaleINSATests.xctest */,
+				9206F3D81C838F8B00978CF5 /* AmicaleINSAUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		9206F3B81C838F8B00978CF5 /* AmicaleINSA */ = {
+			isa = PBXGroup;
+			children = (
+				9206F3B91C838F8B00978CF5 /* AppDelegate.swift */,
+				9206F3BB1C838F8B00978CF5 /* ViewController.swift */,
+				9206F3BD1C838F8B00978CF5 /* Main.storyboard */,
+				9206F3C31C838F8B00978CF5 /* Assets.xcassets */,
+				9206F3C51C838F8B00978CF5 /* LaunchScreen.storyboard */,
+				9206F3C81C838F8B00978CF5 /* Info.plist */,
+				9206F3C01C838F8B00978CF5 /* AmicaleINSA.xcdatamodeld */,
+			);
+			path = AmicaleINSA;
+			sourceTree = "<group>";
+		};
+		9206F3D01C838F8B00978CF5 /* AmicaleINSATests */ = {
+			isa = PBXGroup;
+			children = (
+				9206F3D11C838F8B00978CF5 /* AmicaleINSATests.swift */,
+				9206F3D31C838F8B00978CF5 /* Info.plist */,
+			);
+			path = AmicaleINSATests;
+			sourceTree = "<group>";
+		};
+		9206F3DB1C838F8B00978CF5 /* AmicaleINSAUITests */ = {
+			isa = PBXGroup;
+			children = (
+				9206F3DC1C838F8B00978CF5 /* AmicaleINSAUITests.swift */,
+				9206F3DE1C838F8B00978CF5 /* Info.plist */,
+			);
+			path = AmicaleINSAUITests;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		9206F3B51C838F8B00978CF5 /* AmicaleINSA */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 9206F3E11C838F8B00978CF5 /* Build configuration list for PBXNativeTarget "AmicaleINSA" */;
+			buildPhases = (
+				9206F3B21C838F8B00978CF5 /* Sources */,
+				9206F3B31C838F8B00978CF5 /* Frameworks */,
+				9206F3B41C838F8B00978CF5 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = AmicaleINSA;
+			productName = AmicaleINSA;
+			productReference = 9206F3B61C838F8B00978CF5 /* AmicaleINSA.app */;
+			productType = "com.apple.product-type.application";
+		};
+		9206F3CC1C838F8B00978CF5 /* AmicaleINSATests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 9206F3E41C838F8B00978CF5 /* Build configuration list for PBXNativeTarget "AmicaleINSATests" */;
+			buildPhases = (
+				9206F3C91C838F8B00978CF5 /* Sources */,
+				9206F3CA1C838F8B00978CF5 /* Frameworks */,
+				9206F3CB1C838F8B00978CF5 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				9206F3CF1C838F8B00978CF5 /* PBXTargetDependency */,
+			);
+			name = AmicaleINSATests;
+			productName = AmicaleINSATests;
+			productReference = 9206F3CD1C838F8B00978CF5 /* AmicaleINSATests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		9206F3D71C838F8B00978CF5 /* AmicaleINSAUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 9206F3E71C838F8B00978CF5 /* Build configuration list for PBXNativeTarget "AmicaleINSAUITests" */;
+			buildPhases = (
+				9206F3D41C838F8B00978CF5 /* Sources */,
+				9206F3D51C838F8B00978CF5 /* Frameworks */,
+				9206F3D61C838F8B00978CF5 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				9206F3DA1C838F8B00978CF5 /* PBXTargetDependency */,
+			);
+			name = AmicaleINSAUITests;
+			productName = AmicaleINSAUITests;
+			productReference = 9206F3D81C838F8B00978CF5 /* AmicaleINSAUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		9206F3AE1C838F8B00978CF5 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 0720;
+				LastUpgradeCheck = 0720;
+				ORGANIZATIONNAME = "Arthur Papailhau";
+				TargetAttributes = {
+					9206F3B51C838F8B00978CF5 = {
+						CreatedOnToolsVersion = 7.2.1;
+					};
+					9206F3CC1C838F8B00978CF5 = {
+						CreatedOnToolsVersion = 7.2.1;
+						TestTargetID = 9206F3B51C838F8B00978CF5;
+					};
+					9206F3D71C838F8B00978CF5 = {
+						CreatedOnToolsVersion = 7.2.1;
+						TestTargetID = 9206F3B51C838F8B00978CF5;
+					};
+				};
+			};
+			buildConfigurationList = 9206F3B11C838F8B00978CF5 /* Build configuration list for PBXProject "AmicaleINSA" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 9206F3AD1C838F8B00978CF5;
+			productRefGroup = 9206F3B71C838F8B00978CF5 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				9206F3B51C838F8B00978CF5 /* AmicaleINSA */,
+				9206F3CC1C838F8B00978CF5 /* AmicaleINSATests */,
+				9206F3D71C838F8B00978CF5 /* AmicaleINSAUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		9206F3B41C838F8B00978CF5 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9206F3C71C838F8B00978CF5 /* LaunchScreen.storyboard in Resources */,
+				9206F3C41C838F8B00978CF5 /* Assets.xcassets in Resources */,
+				9206F3BF1C838F8B00978CF5 /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		9206F3CB1C838F8B00978CF5 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		9206F3D61C838F8B00978CF5 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		9206F3B21C838F8B00978CF5 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9206F3C21C838F8B00978CF5 /* AmicaleINSA.xcdatamodeld in Sources */,
+				9206F3BC1C838F8B00978CF5 /* ViewController.swift in Sources */,
+				9206F3BA1C838F8B00978CF5 /* AppDelegate.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		9206F3C91C838F8B00978CF5 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9206F3D21C838F8B00978CF5 /* AmicaleINSATests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		9206F3D41C838F8B00978CF5 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9206F3DD1C838F8B00978CF5 /* AmicaleINSAUITests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		9206F3CF1C838F8B00978CF5 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 9206F3B51C838F8B00978CF5 /* AmicaleINSA */;
+			targetProxy = 9206F3CE1C838F8B00978CF5 /* PBXContainerItemProxy */;
+		};
+		9206F3DA1C838F8B00978CF5 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 9206F3B51C838F8B00978CF5 /* AmicaleINSA */;
+			targetProxy = 9206F3D91C838F8B00978CF5 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		9206F3BD1C838F8B00978CF5 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				9206F3BE1C838F8B00978CF5 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		9206F3C51C838F8B00978CF5 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				9206F3C61C838F8B00978CF5 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		9206F3DF1C838F8B00978CF5 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		9206F3E01C838F8B00978CF5 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		9206F3E21C838F8B00978CF5 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				INFOPLIST_FILE = AmicaleINSA/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = INSA.AmicaleINSA;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		9206F3E31C838F8B00978CF5 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				INFOPLIST_FILE = AmicaleINSA/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = INSA.AmicaleINSA;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		9206F3E51C838F8B00978CF5 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				INFOPLIST_FILE = AmicaleINSATests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = INSA.AmicaleINSATests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/AmicaleINSA.app/AmicaleINSA";
+			};
+			name = Debug;
+		};
+		9206F3E61C838F8B00978CF5 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				INFOPLIST_FILE = AmicaleINSATests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = INSA.AmicaleINSATests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/AmicaleINSA.app/AmicaleINSA";
+			};
+			name = Release;
+		};
+		9206F3E81C838F8B00978CF5 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INFOPLIST_FILE = AmicaleINSAUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = INSA.AmicaleINSAUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_TARGET_NAME = AmicaleINSA;
+				USES_XCTRUNNER = YES;
+			};
+			name = Debug;
+		};
+		9206F3E91C838F8B00978CF5 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INFOPLIST_FILE = AmicaleINSAUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = INSA.AmicaleINSAUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_TARGET_NAME = AmicaleINSA;
+				USES_XCTRUNNER = YES;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		9206F3B11C838F8B00978CF5 /* Build configuration list for PBXProject "AmicaleINSA" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9206F3DF1C838F8B00978CF5 /* Debug */,
+				9206F3E01C838F8B00978CF5 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		9206F3E11C838F8B00978CF5 /* Build configuration list for PBXNativeTarget "AmicaleINSA" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9206F3E21C838F8B00978CF5 /* Debug */,
+				9206F3E31C838F8B00978CF5 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		9206F3E41C838F8B00978CF5 /* Build configuration list for PBXNativeTarget "AmicaleINSATests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9206F3E51C838F8B00978CF5 /* Debug */,
+				9206F3E61C838F8B00978CF5 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		9206F3E71C838F8B00978CF5 /* Build configuration list for PBXNativeTarget "AmicaleINSAUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9206F3E81C838F8B00978CF5 /* Debug */,
+				9206F3E91C838F8B00978CF5 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		9206F3C01C838F8B00978CF5 /* AmicaleINSA.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				9206F3C11C838F8B00978CF5 /* AmicaleINSA.xcdatamodel */,
+			);
+			currentVersion = 9206F3C11C838F8B00978CF5 /* AmicaleINSA.xcdatamodel */;
+			path = AmicaleINSA.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
+	};
+	rootObject = 9206F3AE1C838F8B00978CF5 /* Project object */;
+}
