@@ -5,6 +5,12 @@
 
 target 'AmicaleINSA' do
     pod 'SWRevealViewController', :git => 'https://github.com/John-Lluch/SWRevealViewController.git'
+    pod 'Firebase'
+    pod 'JSQMessagesViewController'
+    pod 'CryptoSwift'
+    pod 'SVPullToRefresh', :git => 'https://github.com/gabro/SVPullToRefresh.git', :branch => 'top-infinitescrolling'
+    pod 'NYTPhotoViewer', '~> 1.1.0'
+    pod 'ALCameraViewController'
 end
 
 target 'AmicaleINSATests' do

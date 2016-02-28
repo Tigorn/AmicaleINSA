@@ -26,6 +26,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
+            <point key="canvasLocation" x="370" y="372"/>
         </scene>
         <!--View Controller-->
         <scene sceneID="HAr-Vv-Rz5">
@@ -90,7 +91,7 @@
                                                     <fontDescription key="fontDescription" name="AvenirNextCondensed-Medium" family="Avenir Next Condensed" pointSize="26"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Amicale" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="5" translatesAutoresizingMaskIntoConstraints="NO" id="y5W-ck-DO6">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Arthur" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="5" translatesAutoresizingMaskIntoConstraints="NO" id="y5W-ck-DO6">
                                                     <rect key="frame" x="95" y="73" width="129" height="21"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="21" id="BEc-PN-UqA"/>
@@ -100,7 +101,7 @@
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="INSA" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="5" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="XY3-Di-WtO">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Papay0" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="5" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="XY3-Di-WtO">
                                                     <rect key="frame" x="95" y="102" width="129" height="21"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="21" id="7ZT-q4-phs"/>
@@ -156,6 +157,9 @@
                                             </subviews>
                                         </tableViewCellContentView>
                                         <color key="backgroundColor" red="0.94085192679999996" green="0.94903725390000004" blue="0.95307987930000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <connections>
+                                            <segue destination="JJM-WE-JhS" kind="custom" identifier="GoToHome" customClass="SWRevealViewControllerSeguePushController" id="PtQ-GO-93v"/>
+                                        </connections>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="F28-l4-YiV">
                                         <rect key="frame" x="0.0" y="214" width="600" height="44"/>
@@ -164,8 +168,8 @@
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="INSATwitter" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="C5s-R7-p2W">
-                                                    <rect key="frame" x="61" y="6" width="91" height="31"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Chat" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="C5s-R7-p2W">
+                                                    <rect key="frame" x="61" y="6" width="37" height="31"/>
                                                     <fontDescription key="fontDescription" name="AvenirNextCondensed-Medium" family="Avenir Next Condensed" pointSize="22"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
@@ -176,6 +180,9 @@
                                             </subviews>
                                         </tableViewCellContentView>
                                         <color key="backgroundColor" red="0.94085192679999996" green="0.94903725390000004" blue="0.95307987930000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <connections>
+                                            <segue destination="fZJ-h3-wK5" kind="custom" identifier="GoToChat" customClass="SWRevealViewControllerSeguePushController" id="HLe-OK-QeJ"/>
+                                        </connections>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="LT5-MY-CKq">
                                         <rect key="frame" x="0.0" y="258" width="600" height="44"/>
@@ -258,6 +265,32 @@
             </objects>
             <point key="canvasLocation" x="1140" y="372"/>
         </scene>
+        <!--Chat View Controller-->
+        <scene sceneID="3dk-GC-KLK">
+            <objects>
+                <viewController id="1X5-lg-qvO" customClass="ChatViewController" customModule="AmicaleINSA" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="Mof-2t-mcV"/>
+                        <viewControllerLayoutGuide type="bottom" id="IH7-d7-HLI"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="DyX-Rc-ld9">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="WuZ-pL-TjL">
+                        <barButtonItem key="leftBarButtonItem" image="menu" id="GVc-MX-RLp">
+                            <color key="tintColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                        </barButtonItem>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="menuButton" destination="GVc-MX-RLp" id="NMp-dQ-DeL"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="SUw-OK-gOP" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2701" y="372"/>
+        </scene>
         <!--Navigation Controller-->
         <scene sceneID="cI4-S5-lGv">
             <objects>
@@ -276,6 +309,24 @@
             </objects>
             <point key="canvasLocation" x="1140" y="-468"/>
         </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="9yC-Tp-mp0">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="fZJ-h3-wK5" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="FKZ-ZA-bdj">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="1X5-lg-qvO" kind="relationship" relationship="rootViewController" id="YTy-AT-s0v"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="AOR-Vg-bCs" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1889" y="372"/>
+        </scene>
     </scenes>
     <resources>
         <image name="Home_button_512" width="512" height="512"/>
@@ -286,4 +337,7 @@
         <image name="defaultPic" width="1244" height="1244"/>
         <image name="menu" width="22" height="22"/>
     </resources>
+    <inferredMetricsTieBreakers>
+        <segue reference="PtQ-GO-93v"/>
+    </inferredMetricsTieBreakers>
 </document>

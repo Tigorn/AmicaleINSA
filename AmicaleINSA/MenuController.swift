@@ -7,15 +7,26 @@
 //
 
 import UIKit
+import Firebase
+
+protocol MenuControllerDelegate  { 
+    func dismissKeyboardFromMenu(_: MenuController)
+}
 
 class MenuController: UITableViewController {
     
     @IBOutlet weak var topViewMenu: UIView!
     @IBOutlet weak var profileImageView: UIImageView!
 
+    var delegate : MenuControllerDelegate?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         initUI()
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        delegate?.dismissKeyboardFromMenu(self)
     }
     
     private func initUI() {
@@ -29,13 +40,29 @@ class MenuController: UITableViewController {
         UIGraphicsEndImageContext()
         topViewMenu.backgroundColor = UIColor(patternImage: image)
     }
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject!)
+    {
+        if(segue.identifier == "GoToChat")
+        {
+            super.prepareForSegue(segue, sender: sender)
+            let navVc = segue.destinationViewController as! UINavigationController
+            let chatVc = navVc.viewControllers.first as! ChatViewController
+            let uuid = UIDevice.currentDevice().identifierForVendor!.UUIDString
+            let rand = Int(arc4random_uniform(UInt32(100)))
+            chatVc.senderId = "\(uuid.md5())\(rand)"
+            chatVc.senderDisplayName = "Julien \(rand)"
+            print(chatVc.senderDisplayName)
+            delegate = chatVc
+        }
+    }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
 
-    // MARK: - Table view data source
+    // MARK: - Table virew data source
 
     /* override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
@@ -90,6 +117,12 @@ class MenuController: UITableViewController {
     override func tableView(tableView: UITableView, canMoveRowAtIndexPath indexPath: NSIndexPath) -> Bool {
         // Return false if you do not want the item to be re-orderable.
         return true
+    }
+    */
+    
+    /*
+    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        print("Cell selected: \(indexPath.row)")
     }
     */
 

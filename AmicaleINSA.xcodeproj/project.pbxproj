@@ -16,6 +16,11 @@
 		9206F3D21C838F8B00978CF5 /* AmicaleINSATests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9206F3D11C838F8B00978CF5 /* AmicaleINSATests.swift */; };
 		9206F3DD1C838F8B00978CF5 /* AmicaleINSAUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9206F3DC1C838F8B00978CF5 /* AmicaleINSAUITests.swift */; };
 		9206F3ED1C83963D00978CF5 /* MenuController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9206F3EC1C83963D00978CF5 /* MenuController.swift */; };
+		9206F3EF1C8399F600978CF5 /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9206F3EE1C8399F600978CF5 /* ChatViewController.swift */; };
+		9206F3F11C839A2900978CF5 /* FirebaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9206F3F01C839A2900978CF5 /* FirebaseManager.swift */; };
+		9206F3F31C839A4200978CF5 /* Secret.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9206F3F21C839A4200978CF5 /* Secret.swift */; };
+		9206F3F51C839AE300978CF5 /* Photo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9206F3F41C839AE300978CF5 /* Photo.swift */; };
+		9206F3F81C83AC4900978CF5 /* Public.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9206F3F71C83AC4900978CF5 /* Public.swift */; };
 		DCEABC98C48CB22B6CC94938 /* Pods_AmicaleINSA.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E8396CEAADB9C97025A79BF /* Pods_AmicaleINSA.framework */; };
 /* End PBXBuildFile section */
 
@@ -54,6 +59,12 @@
 		9206F3DC1C838F8B00978CF5 /* AmicaleINSAUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AmicaleINSAUITests.swift; sourceTree = "<group>"; };
 		9206F3DE1C838F8B00978CF5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9206F3EC1C83963D00978CF5 /* MenuController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuController.swift; sourceTree = "<group>"; };
+		9206F3EE1C8399F600978CF5 /* ChatViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatViewController.swift; sourceTree = "<group>"; };
+		9206F3F01C839A2900978CF5 /* FirebaseManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FirebaseManager.swift; sourceTree = "<group>"; };
+		9206F3F21C839A4200978CF5 /* Secret.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Secret.swift; sourceTree = "<group>"; };
+		9206F3F41C839AE300978CF5 /* Photo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Photo.swift; sourceTree = "<group>"; };
+		9206F3F61C839F8900978CF5 /* AmicaleINSA-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "AmicaleINSA-Bridging-Header.h"; sourceTree = "<group>"; };
+		9206F3F71C83AC4900978CF5 /* Public.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Public.swift; sourceTree = "<group>"; };
 		935DF77FC9D0967ED183E2CC /* Pods-AmicaleINSA.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AmicaleINSA.release.xcconfig"; path = "Pods/Target Support Files/Pods-AmicaleINSA/Pods-AmicaleINSA.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -108,9 +119,15 @@
 		9206F3B81C838F8B00978CF5 /* AmicaleINSA */ = {
 			isa = PBXGroup;
 			children = (
+				9206F3F61C839F8900978CF5 /* AmicaleINSA-Bridging-Header.h */,
 				9206F3B91C838F8B00978CF5 /* AppDelegate.swift */,
 				9206F3BB1C838F8B00978CF5 /* ViewController.swift */,
 				9206F3EC1C83963D00978CF5 /* MenuController.swift */,
+				9206F3F21C839A4200978CF5 /* Secret.swift */,
+				9206F3F41C839AE300978CF5 /* Photo.swift */,
+				9206F3F71C83AC4900978CF5 /* Public.swift */,
+				9206F3F01C839A2900978CF5 /* FirebaseManager.swift */,
+				9206F3EE1C8399F600978CF5 /* ChatViewController.swift */,
 				9206F3BD1C838F8B00978CF5 /* Main.storyboard */,
 				9206F3C31C838F8B00978CF5 /* Assets.xcassets */,
 				9206F3C51C838F8B00978CF5 /* LaunchScreen.storyboard */,
@@ -337,9 +354,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9206F3F51C839AE300978CF5 /* Photo.swift in Sources */,
+				9206F3F11C839A2900978CF5 /* FirebaseManager.swift in Sources */,
+				9206F3F81C83AC4900978CF5 /* Public.swift in Sources */,
+				9206F3F31C839A4200978CF5 /* Secret.swift in Sources */,
 				9206F3ED1C83963D00978CF5 /* MenuController.swift in Sources */,
 				9206F3C21C838F8B00978CF5 /* AmicaleINSA.xcdatamodeld in Sources */,
 				9206F3BC1C838F8B00978CF5 /* ViewController.swift in Sources */,
+				9206F3EF1C8399F600978CF5 /* ChatViewController.swift in Sources */,
 				9206F3BA1C838F8B00978CF5 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
