@@ -5,6 +5,22 @@
    <BuildAction
       parallelizeBuildables = "YES"
       buildImplicitDependencies = "YES">
+      <BuildActionEntries>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "9206F3B51C838F8B00978CF5"
+               BuildableName = "AmicaleINSA.app"
+               BlueprintName = "AmicaleINSA"
+               ReferencedContainer = "container:AmicaleINSA.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+      </BuildActionEntries>
    </BuildAction>
    <TestAction
       buildConfiguration = "Debug"
@@ -12,7 +28,36 @@
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       shouldUseLaunchSchemeArgsEnv = "YES">
       <Testables>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "9206F3CC1C838F8B00978CF5"
+               BuildableName = "AmicaleINSATests.xctest"
+               BlueprintName = "AmicaleINSATests"
+               ReferencedContainer = "container:AmicaleINSA.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "9206F3D71C838F8B00978CF5"
+               BuildableName = "AmicaleINSAUITests.xctest"
+               BlueprintName = "AmicaleINSAUITests"
+               ReferencedContainer = "container:AmicaleINSA.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
+      <MacroExpansion>
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "9206F3B51C838F8B00978CF5"
+            BuildableName = "AmicaleINSA.app"
+            BlueprintName = "AmicaleINSA"
+            ReferencedContainer = "container:AmicaleINSA.xcodeproj">
+         </BuildableReference>
+      </MacroExpansion>
       <AdditionalOptions>
       </AdditionalOptions>
    </TestAction>
@@ -26,6 +71,16 @@
       debugDocumentVersioning = "YES"
       debugServiceExtension = "internal"
       allowLocationSimulation = "YES">
+      <BuildableProductRunnable
+         runnableDebuggingMode = "0">
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "9206F3B51C838F8B00978CF5"
+            BuildableName = "AmicaleINSA.app"
+            BlueprintName = "AmicaleINSA"
+            ReferencedContainer = "container:AmicaleINSA.xcodeproj">
+         </BuildableReference>
+      </BuildableProductRunnable>
       <AdditionalOptions>
       </AdditionalOptions>
    </LaunchAction>
@@ -35,6 +90,16 @@
       savedToolIdentifier = ""
       useCustomWorkingDirectory = "NO"
       debugDocumentVersioning = "YES">
+      <BuildableProductRunnable
+         runnableDebuggingMode = "0">
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "9206F3B51C838F8B00978CF5"
+            BuildableName = "AmicaleINSA.app"
+            BlueprintName = "AmicaleINSA"
+            ReferencedContainer = "container:AmicaleINSA.xcodeproj">
+         </BuildableReference>
+      </BuildableProductRunnable>
    </ProfileAction>
    <AnalyzeAction
       buildConfiguration = "Debug">
