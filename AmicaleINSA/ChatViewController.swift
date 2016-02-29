@@ -14,11 +14,14 @@ import MobileCoreServices
 import MediaPlayer
 import NYTPhotoViewer
 import ALCameraViewController
+import ImagePicker
 
 
-class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, MenuControllerDelegate {
+class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, MenuControllerDelegate, ImagePickerDelegate {
     
     @IBOutlet weak var menuButton: UIBarButtonItem!
+    
+    var myActivityIndicator: UIActivityIndicatorView!
     
     var messages = [JSQMessage]()
     var messagesHashValue = [String]()
@@ -68,6 +71,15 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
         }
     }
     
+    func initActivityIndicator() {
+        myActivityIndicator = UIActivityIndicatorView(frame: CGRectMake(0,0, 50, 50)) as UIActivityIndicatorView
+        //myActivityIndicator.center = self.view.center
+        myActivityIndicator.center = CGPoint(x: view.bounds.width/2, y: view.bounds.height/2)
+        myActivityIndicator.hidesWhenStopped = true
+        myActivityIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.Gray
+        view.addSubview(myActivityIndicator)
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -76,6 +88,7 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
             menuButton.action = "revealToggle:"
             self.view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
         }
+        //initActivityIndicator()
         
         title = "Chat"
         setupBubbles()
@@ -93,6 +106,7 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
         self.inputToolbar?.contentView?.leftBarButtonItem?.setImage(UIImage(named: "Camera"), forState: .Highlighted)
         self.inputToolbar?.contentView?.leftBarButtonItem?.imageView?.contentMode = UIViewContentMode.ScaleAspectFit
         
+        self.inputToolbar?.contentView?.leftBarButtonItemWidth = 30
     }
     
     func dismissKeyboardFromMenu(ViewController:MenuController) {
@@ -122,8 +136,10 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
     }
     
     private func observeMessages() {
+        //myActivityIndicator.startAnimating()
         let messagesQuery = messageRef.queryLimitedToLast(INITIAL_MESSAGE_LIMIT)
         messagesQuery.observeEventType(.ChildAdded) { (snapshot: FDataSnapshot!) in
+            //self.myActivityIndicator.stopAnimating()
             let id = snapshot.value["senderId"] as! String
             let text = snapshot.value["text"] as! String
             let senderDisplayName = snapshot.value["senderDisplayName"] as! String
@@ -397,36 +413,29 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
     }
     
     override func didPressAccessoryButton(sender: UIButton!) {
-        
-        let myAlert = UIAlertController(title: "Image to send", message: "Choisis l'image de ton choix...", preferredStyle: UIAlertControllerStyle.Alert)
-        let imagePicker = UIImagePickerController()
-        imagePicker.modalPresentationStyle = .CurrentContext
-        imagePicker.delegate = self
-        
-        myAlert.addAction(UIAlertAction(title: "Camera", style: .Default, handler: {
-            action in
-            imagePicker.sourceType = UIImagePickerControllerSourceType.Camera
-            imagePicker.allowsEditing = false
-            imagePicker.setEditing(true, animated: true)
-            imagePicker.showsCameraControls = true
-            self.presentViewController(imagePicker, animated: true, completion: nil)
-        }))
-        myAlert.addAction(UIAlertAction(title: "Photo Library", style: .Default, handler: {
-            action in
-            let croppingEnabled = false
-            let cameraViewController = ALCameraViewController(croppingEnabled: croppingEnabled) { image in
-                let pickedImage = image
-                let imageData = pickedImage?.mediumQualityJPEGNSData
-                let base64String: NSString!
-                base64String = imageData?.base64EncodedStringWithOptions(.Encoding64CharacterLineLength)
-                FirebaseManager().sendMessage("", senderId: self.senderId, senderDisplayName: self.senderDisplayName, date: NSDate(), image: base64String, isMedia: true)
-                self.finishSendingMessage()
-            }
-            
-            self.presentViewController(cameraViewController, animated: true, completion: nil)
-        }))
-        myAlert.addAction(UIAlertAction(title: "Cancel", style: .Cancel, handler: nil))
-        self.presentViewController(myAlert, animated: true, completion: nil)
+        let imagePickerController = ImagePickerController()
+        imagePickerController.imageLimit = 1
+        imagePickerController.delegate = self
+        self.presentViewController(imagePickerController, animated: true, completion: nil)
+    }
+    
+    func wrapperDidPress(images: [UIImage]) {
+        print("wrapperDidPress")
+    }
+    
+    func doneButtonDidPress(images: [UIImage]) {
+        print("done button did press")
+        let pickedImage = images[0]
+        let imageData = pickedImage.mediumQualityJPEGNSData
+        let base64String: NSString!
+        base64String = imageData.base64EncodedStringWithOptions(.Encoding64CharacterLineLength)
+        FirebaseManager().sendMessage("", senderId: self.senderId, senderDisplayName: self.senderDisplayName, date: NSDate(), image: base64String, isMedia: true)
+        self.finishSendingMessage()
+        dismissViewControllerAnimated(true, completion: nil)
+    }
+    
+    func cancelButtonDidPress() {
+        print("cancel button pressed")
     }
     
     override func collectionView(collectionView: JSQMessagesCollectionView!, didTapMessageBubbleAtIndexPath indexPath: NSIndexPath!) {

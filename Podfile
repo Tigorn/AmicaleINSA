@@ -11,6 +11,7 @@ target 'AmicaleINSA' do
     pod 'SVPullToRefresh', :git => 'https://github.com/gabro/SVPullToRefresh.git', :branch => 'top-infinitescrolling'
     pod 'NYTPhotoViewer', '~> 1.1.0'
     pod 'ALCameraViewController'
+    pod 'ImagePicker'
 end
 
 target 'AmicaleINSATests' do
