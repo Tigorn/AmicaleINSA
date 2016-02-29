@@ -110,7 +110,7 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
     }
     
     func dismissKeyboardFromMenu(ViewController:MenuController) {
-        view.endEditing(true)
+        inputToolbar?.contentView?.textView?.resignFirstResponder()
     }
     
     
