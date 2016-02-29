@@ -56,6 +56,7 @@ class MenuController: UITableViewController {
             delegate = chatVc
         }
     }
+    
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
