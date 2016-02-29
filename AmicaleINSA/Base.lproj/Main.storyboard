@@ -399,7 +399,7 @@
         <!--Navigation Controller-->
         <scene sceneID="TVz-lj-Ak0">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="EGM-OY-so4" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="planningViewController" automaticallyAdjustsScrollViewInsets="NO" useStoryboardIdentifierAsRestorationIdentifier="YES" id="EGM-OY-so4" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="4Pa-Dg-3QR">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>

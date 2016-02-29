@@ -8,6 +8,7 @@
 
 import UIKit
 import CoreData
+import SWRevealViewController
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -28,6 +29,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationDidEnterBackground(application: UIApplication) {
         // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
         // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
+        self.window?.rootViewController?.dismissViewControllerAnimated(false, completion: nil)
     }
 
     func applicationWillEnterForeground(application: UIApplication) {
@@ -106,6 +108,58 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             }
         }
     }
+    
+    // MARK: - 3DShortCut - Quick Actions
+    
+    func application(application: UIApplication, performActionForShortcutItem shortcutItem: UIApplicationShortcutItem, completionHandler: (Bool) -> Void) {
+        let handledShhortcutItem = self.handleShortcutItem(shortcutItem)
+        completionHandler(handledShhortcutItem)
+    }
 
+    enum ShortcutIdentifier: String
+    {
+        case First
+        case Second
+        case Third
+        
+        init?(fullType: String)
+        {
+            guard let last = fullType.componentsSeparatedByString(".").last else {return nil}
+            self.init(rawValue: last)
+        }
+        
+        var type: String
+            {
+                return NSBundle.mainBundle().bundleIdentifier! + ".\(self.rawValue)"
+        }
+        
+    }
+    
+    func handleShortcutItem(shortcutItem: UIApplicationShortcutItem) -> Bool
+    {
+        var handled = false
+        
+        guard ShortcutIdentifier(fullType: shortcutItem.type) != nil else { return false }
+        guard let shortcutType = shortcutItem.type as String? else { return false }
+        
+        switch (shortcutType)
+        {
+        case ShortcutIdentifier.First.type:
+            handled = true
+            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+            let frontNavigationController = storyboard.instantiateViewControllerWithIdentifier("planningViewController")
+            let rearNavifationController = storyboard.instantiateViewControllerWithIdentifier("menuViewController")
+            let mainRevealController : SWRevealViewController = SWRevealViewController(rearViewController: rearNavifationController, frontViewController: frontNavigationController)
+            self.window?.rootViewController? = mainRevealController
+            break
+        default:
+            break
+        }
+        
+        return handled
+        
+    }
+
+    
 }
 
