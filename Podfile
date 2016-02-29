@@ -12,6 +12,7 @@ target 'AmicaleINSA' do
     pod 'NYTPhotoViewer', '~> 1.1.0'
     pod 'ALCameraViewController'
     pod 'ImagePicker'
+    pod 'SwiftSpinner', :git => 'https://github.com/icanzilb/SwiftSpinner.git'
 end
 
 target 'AmicaleINSATests' do

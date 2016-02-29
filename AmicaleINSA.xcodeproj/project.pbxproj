@@ -21,6 +21,8 @@
 		9206F3F31C839A4200978CF5 /* Secret.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9206F3F21C839A4200978CF5 /* Secret.swift */; };
 		9206F3F51C839AE300978CF5 /* Photo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9206F3F41C839AE300978CF5 /* Photo.swift */; };
 		9206F3F81C83AC4900978CF5 /* Public.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9206F3F71C83AC4900978CF5 /* Public.swift */; };
+		92A7013D1C847B4C000E1E8F /* WebPlanningViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92A7013C1C847B4C000E1E8F /* WebPlanningViewController.swift */; };
+		92A7013F1C847EA0000E1E8F /* Device.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92A7013E1C847EA0000E1E8F /* Device.swift */; };
 		DCEABC98C48CB22B6CC94938 /* Pods_AmicaleINSA.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E8396CEAADB9C97025A79BF /* Pods_AmicaleINSA.framework */; };
 /* End PBXBuildFile section */
 
@@ -65,6 +67,8 @@
 		9206F3F41C839AE300978CF5 /* Photo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Photo.swift; sourceTree = "<group>"; };
 		9206F3F61C839F8900978CF5 /* AmicaleINSA-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "AmicaleINSA-Bridging-Header.h"; sourceTree = "<group>"; };
 		9206F3F71C83AC4900978CF5 /* Public.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Public.swift; sourceTree = "<group>"; };
+		92A7013C1C847B4C000E1E8F /* WebPlanningViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebPlanningViewController.swift; sourceTree = "<group>"; };
+		92A7013E1C847EA0000E1E8F /* Device.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Device.swift; sourceTree = "<group>"; };
 		935DF77FC9D0967ED183E2CC /* Pods-AmicaleINSA.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AmicaleINSA.release.xcconfig"; path = "Pods/Target Support Files/Pods-AmicaleINSA/Pods-AmicaleINSA.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -119,15 +123,15 @@
 		9206F3B81C838F8B00978CF5 /* AmicaleINSA */ = {
 			isa = PBXGroup;
 			children = (
-				9206F3F61C839F8900978CF5 /* AmicaleINSA-Bridging-Header.h */,
 				9206F3B91C838F8B00978CF5 /* AppDelegate.swift */,
+				92A701421C848309000E1E8F /* Constants */,
+				92A701411C8482F8000E1E8F /* WebPlanning */,
+				92A701401C8482ED000E1E8F /* Frameworks */,
+				92A7013B1C847A3C000E1E8F /* Firebase */,
+				92A7013A1C847A2A000E1E8F /* Chat */,
+				92A701391C847A1D000E1E8F /* Menu */,
+				92A701381C847A12000E1E8F /* Bridging Header */,
 				9206F3BB1C838F8B00978CF5 /* ViewController.swift */,
-				9206F3EC1C83963D00978CF5 /* MenuController.swift */,
-				9206F3F21C839A4200978CF5 /* Secret.swift */,
-				9206F3F41C839AE300978CF5 /* Photo.swift */,
-				9206F3F71C83AC4900978CF5 /* Public.swift */,
-				9206F3F01C839A2900978CF5 /* FirebaseManager.swift */,
-				9206F3EE1C8399F600978CF5 /* ChatViewController.swift */,
 				9206F3BD1C838F8B00978CF5 /* Main.storyboard */,
 				9206F3C31C838F8B00978CF5 /* Assets.xcassets */,
 				9206F3C51C838F8B00978CF5 /* LaunchScreen.storyboard */,
@@ -153,6 +157,64 @@
 				9206F3DE1C838F8B00978CF5 /* Info.plist */,
 			);
 			path = AmicaleINSAUITests;
+			sourceTree = "<group>";
+		};
+		92A701381C847A12000E1E8F /* Bridging Header */ = {
+			isa = PBXGroup;
+			children = (
+				9206F3F61C839F8900978CF5 /* AmicaleINSA-Bridging-Header.h */,
+			);
+			name = "Bridging Header";
+			sourceTree = "<group>";
+		};
+		92A701391C847A1D000E1E8F /* Menu */ = {
+			isa = PBXGroup;
+			children = (
+				9206F3EC1C83963D00978CF5 /* MenuController.swift */,
+			);
+			name = Menu;
+			sourceTree = "<group>";
+		};
+		92A7013A1C847A2A000E1E8F /* Chat */ = {
+			isa = PBXGroup;
+			children = (
+				9206F3F41C839AE300978CF5 /* Photo.swift */,
+				9206F3EE1C8399F600978CF5 /* ChatViewController.swift */,
+			);
+			name = Chat;
+			sourceTree = "<group>";
+		};
+		92A7013B1C847A3C000E1E8F /* Firebase */ = {
+			isa = PBXGroup;
+			children = (
+				9206F3F01C839A2900978CF5 /* FirebaseManager.swift */,
+			);
+			name = Firebase;
+			sourceTree = "<group>";
+		};
+		92A701401C8482ED000E1E8F /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				92A7013E1C847EA0000E1E8F /* Device.swift */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		92A701411C8482F8000E1E8F /* WebPlanning */ = {
+			isa = PBXGroup;
+			children = (
+				92A7013C1C847B4C000E1E8F /* WebPlanningViewController.swift */,
+			);
+			name = WebPlanning;
+			sourceTree = "<group>";
+		};
+		92A701421C848309000E1E8F /* Constants */ = {
+			isa = PBXGroup;
+			children = (
+				9206F3F21C839A4200978CF5 /* Secret.swift */,
+				9206F3F71C83AC4900978CF5 /* Public.swift */,
+			);
+			name = Constants;
 			sourceTree = "<group>";
 		};
 		9EE607008615919B4529BC79 /* Pods */ = {
@@ -354,6 +416,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				92A7013F1C847EA0000E1E8F /* Device.swift in Sources */,
+				92A7013D1C847B4C000E1E8F /* WebPlanningViewController.swift in Sources */,
 				9206F3F51C839AE300978CF5 /* Photo.swift in Sources */,
 				9206F3F11C839A2900978CF5 /* FirebaseManager.swift in Sources */,
 				9206F3F81C83AC4900978CF5 /* Public.swift in Sources */,

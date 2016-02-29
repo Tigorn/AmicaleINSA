@@ -203,6 +203,9 @@
                                             </subviews>
                                         </tableViewCellContentView>
                                         <color key="backgroundColor" red="0.94085192679999996" green="0.94903725390000004" blue="0.95307987930000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <connections>
+                                            <segue destination="EGM-OY-so4" kind="custom" identifier="GoToPlanning" customClass="SWRevealViewControllerSeguePushController" id="LxR-0e-Je6"/>
+                                        </connections>
                                     </tableViewCell>
                                 </cells>
                             </tableViewSection>
@@ -326,6 +329,90 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="AOR-Vg-bCs" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1889" y="372"/>
+        </scene>
+        <!--Planning-->
+        <scene sceneID="NXy-bi-LaX">
+            <objects>
+                <viewController id="QY2-MH-1Ce" customClass="WebPlanningViewController" customModule="AmicaleINSA" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="PEW-sb-xY1"/>
+                        <viewControllerLayoutGuide type="bottom" id="9it-U8-jQi"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="tWI-lV-ey8">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <webView contentMode="scaleToFill" scalesPageToFit="YES" translatesAutoresizingMaskIntoConstraints="NO" id="C3B-5g-ZB3">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="556"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </webView>
+                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qnF-nh-uUP">
+                                <rect key="frame" x="0.0" y="556" width="600" height="44"/>
+                                <items>
+                                    <barButtonItem systemItem="rewind" id="wwO-ig-6yG">
+                                        <connections>
+                                            <action selector="lastWeekButtonAction:" destination="QY2-MH-1Ce" id="70M-f1-xVW"/>
+                                        </connections>
+                                    </barButtonItem>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="N3e-5F-cmo"/>
+                                    <barButtonItem title="Actuelle" id="0fp-Fn-4Ee">
+                                        <connections>
+                                            <action selector="todayWeekButtonAction:" destination="QY2-MH-1Ce" id="jAd-eI-6eq"/>
+                                        </connections>
+                                    </barButtonItem>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="Ril-6L-bCz"/>
+                                    <barButtonItem systemItem="fastForward" id="ONs-3f-RJC">
+                                        <connections>
+                                            <action selector="nextWeekButtonAction:" destination="QY2-MH-1Ce" id="3SE-S4-Jds"/>
+                                        </connections>
+                                    </barButtonItem>
+                                </items>
+                            </toolbar>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="tintColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstItem="qnF-nh-uUP" firstAttribute="bottom" secondItem="9it-U8-jQi" secondAttribute="top" id="2JS-Q1-mZA"/>
+                            <constraint firstAttribute="trailing" secondItem="qnF-nh-uUP" secondAttribute="trailing" id="HVX-bf-EfC"/>
+                            <constraint firstItem="C3B-5g-ZB3" firstAttribute="top" secondItem="tWI-lV-ey8" secondAttribute="top" id="K4N-K0-eOG"/>
+                            <constraint firstItem="C3B-5g-ZB3" firstAttribute="leading" secondItem="tWI-lV-ey8" secondAttribute="leading" id="Xwt-ba-h7c"/>
+                            <constraint firstItem="C3B-5g-ZB3" firstAttribute="leading" secondItem="qnF-nh-uUP" secondAttribute="leading" id="bYt-Wj-k5c"/>
+                            <constraint firstItem="qnF-nh-uUP" firstAttribute="top" secondItem="C3B-5g-ZB3" secondAttribute="bottom" id="iis-gV-Gn8"/>
+                            <constraint firstItem="qnF-nh-uUP" firstAttribute="trailing" secondItem="C3B-5g-ZB3" secondAttribute="trailing" id="lga-OR-WIH"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" title="Planning" id="PGi-CF-S5v">
+                        <barButtonItem key="leftBarButtonItem" image="menu" id="En1-GD-6Tq">
+                            <color key="tintColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                        </barButtonItem>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="ActualBarButtonItem" destination="0fp-Fn-4Ee" id="qT9-Eo-WD8"/>
+                        <outlet property="menuButton" destination="En1-GD-6Tq" id="alE-cr-r09"/>
+                        <outlet property="webView" destination="C3B-5g-ZB3" id="dWG-K6-LCE"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="X7z-Uf-SEV" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2701" y="1176"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="TVz-lj-Ak0">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="EGM-OY-so4" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="4Pa-Dg-3QR">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="QY2-MH-1Ce" kind="relationship" relationship="rootViewController" id="hct-5a-3Dp"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Yfw-SV-wOk" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1889" y="1176"/>
         </scene>
     </scenes>
     <resources>
