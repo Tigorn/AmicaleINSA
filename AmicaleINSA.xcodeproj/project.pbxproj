@@ -24,6 +24,7 @@
 		92128FD51C8605B800AA96AD /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92128FD41C8605B800AA96AD /* SettingsViewController.swift */; };
 		92A7013D1C847B4C000E1E8F /* WebPlanningViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92A7013C1C847B4C000E1E8F /* WebPlanningViewController.swift */; };
 		92A7013F1C847EA0000E1E8F /* Device.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92A7013E1C847EA0000E1E8F /* Device.swift */; };
+		92CBC4E61C8642CB0074B9B2 /* Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92CBC4E51C8642CB0074B9B2 /* Extension.swift */; };
 		DCEABC98C48CB22B6CC94938 /* Pods_AmicaleINSA.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E8396CEAADB9C97025A79BF /* Pods_AmicaleINSA.framework */; };
 /* End PBXBuildFile section */
 
@@ -71,6 +72,7 @@
 		92128FD41C8605B800AA96AD /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		92A7013C1C847B4C000E1E8F /* WebPlanningViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebPlanningViewController.swift; sourceTree = "<group>"; };
 		92A7013E1C847EA0000E1E8F /* Device.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Device.swift; sourceTree = "<group>"; };
+		92CBC4E51C8642CB0074B9B2 /* Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extension.swift; sourceTree = "<group>"; };
 		935DF77FC9D0967ED183E2CC /* Pods-AmicaleINSA.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AmicaleINSA.release.xcconfig"; path = "Pods/Target Support Files/Pods-AmicaleINSA/Pods-AmicaleINSA.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -224,6 +226,7 @@
 			children = (
 				9206F3F21C839A4200978CF5 /* Secret.swift */,
 				9206F3F71C83AC4900978CF5 /* Public.swift */,
+				92CBC4E51C8642CB0074B9B2 /* Extension.swift */,
 			);
 			name = Constants;
 			sourceTree = "<group>";
@@ -436,6 +439,7 @@
 				9206F3ED1C83963D00978CF5 /* MenuController.swift in Sources */,
 				9206F3C21C838F8B00978CF5 /* AmicaleINSA.xcdatamodeld in Sources */,
 				9206F3BC1C838F8B00978CF5 /* ViewController.swift in Sources */,
+				92CBC4E61C8642CB0074B9B2 /* Extension.swift in Sources */,
 				9206F3EF1C8399F600978CF5 /* ChatViewController.swift in Sources */,
 				9206F3BA1C838F8B00978CF5 /* AppDelegate.swift in Sources */,
 				92128FD51C8605B800AA96AD /* SettingsViewController.swift in Sources */,

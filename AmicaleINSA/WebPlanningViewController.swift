@@ -71,14 +71,15 @@ class WebPlanningViewController: UIViewController, UIWebViewDelegate, UIScrollVi
     
     func getZoomValue() -> CGFloat {
         let currentLang = Device.CURRENT_LANGUAGE
+        let dayOfWeek = getDayOfWeek()
         if (currentLang == "en"){
-            if (getDayOfWeek() == "Saturday") || (getDayOfWeek() == "Sunday"){
+            if (dayOfWeek == "Saturday") || (dayOfWeek == "Sunday"){
                 return 0
             } else {
                 return 3
             }
         } else {
-            if (getDayOfWeek() == "samedi") || (getDayOfWeek() == "dimanche"){
+            if (dayOfWeek == "samedi") || (dayOfWeek == "dimanche"){
                 return 0
             } else {
                 return 3
@@ -228,11 +229,36 @@ class WebPlanningViewController: UIViewController, UIWebViewDelegate, UIScrollVi
     
     
     func getDayOfWeek() -> String{
-        let date = NSDate()
+        var date = NSDate()
+        if shouldGoTomorrow() {
+            date = date.addDays(1)
+        }
         let dateFormatter = NSDateFormatter()
         dateFormatter.dateFormat = "EEEE"
         let dayOfWeekString = dateFormatter.stringFromDate(date)
         return dayOfWeekString
+    }
+    
+    private func getHourString() -> String {
+        let date = NSDate();
+        let formatter = NSDateFormatter();
+        formatter.dateFormat = "HH:mm";
+        let defaultTimeZoneStr = formatter.stringFromDate(date);
+        return defaultTimeZoneStr
+    }
+    
+    private func shouldGoTomorrow() -> Bool {
+        let currentHourString = getHourString()
+        let hourStringToCompare = "19:00"
+        let formatter = NSDateFormatter();
+        formatter.dateFormat = "HH:mm";
+        let currentDate = formatter.dateFromString(currentHourString)
+        let dateToCompare = formatter.dateFromString(hourStringToCompare)
+        if currentDate!.isGreaterThanDate(dateToCompare!) {
+            return true
+        } else {
+            return false
+        }
     }
     
     
@@ -246,7 +272,8 @@ class WebPlanningViewController: UIViewController, UIWebViewDelegate, UIScrollVi
     func getWeekNumber() -> Int {
         let calender = NSCalendar.currentCalendar()
         let dateComponent = calender.component(NSCalendarUnit.WeekOfYear, fromDate: NSDate())
-        if (getDayOfWeek() == "Saturday" || getDayOfWeek() == "samedi" || getDayOfWeek() == "Sunday" || getDayOfWeek() == "dimanche"){
+        let dayOfWeek = getDayOfWeek()
+        if (dayOfWeek == "Saturday" || dayOfWeek == "samedi" || dayOfWeek == "Sunday" || dayOfWeek == "dimanche"){
             return dateComponent + 1
         } else {
             return dateComponent
