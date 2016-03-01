@@ -55,7 +55,7 @@ class SettingsViewController: UIViewController, UITextFieldDelegate, ImagePicker
     }
     
     func dismissKeyboard() {
-        saveUsernameChat(usernameChatTextField.text!)
+        setUsernameChat(usernameChatTextField.text!)
         view.endEditing(true)
     }
     
@@ -95,7 +95,7 @@ class SettingsViewController: UIViewController, UITextFieldDelegate, ImagePicker
     */
     
     func textFieldShouldReturn(textField: UITextField) -> Bool {
-        saveUsernameChat(usernameChatTextField.text!)
+        setUsernameChat(usernameChatTextField.text!)
         view.endEditing(true)
         return true
     }

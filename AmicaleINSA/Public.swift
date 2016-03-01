@@ -50,6 +50,10 @@ public struct Storyboard {
     
 }
 
+/*
+    Function called when app launched
+*/
+
 public func initApp() {
     if (NSUserDefaults.standardUserDefaults().boolForKey(Storyboard.usernameChatRegistred) ==  false) {
         let usernameChat = "invite\(Int(arc4random_uniform(UInt32(2500))))"
@@ -58,13 +62,22 @@ public func initApp() {
     }
 }
 
-public func saveUsernameChat(username: String) {
+/*
+    username getter/setter
+*/
+
+public func setUsernameChat(username: String) {
     NSUserDefaults.standardUserDefaults().setObject(username, forKey: Storyboard.usernameChat)
 }
 
 public func getUsernameChat() -> String {
     return NSUserDefaults.standardUserDefaults().stringForKey(Storyboard.usernameChat)!
 }
+
+
+/*
+    profile picture getter/setter
+*/
 
 public func setProfilPicture(image : UIImage){
     NSUserDefaults.standardUserDefaults().setObject(UIImagePNGRepresentation(image), forKey: Storyboard.profilePicture)
