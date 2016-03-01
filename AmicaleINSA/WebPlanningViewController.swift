@@ -238,7 +238,7 @@ class WebPlanningViewController: UIViewController, UIWebViewDelegate, UIScrollVi
     
     
     func getUrlPlanning(weekNumber: Int) -> String {
-        let IDWebPlanning = "1722&1723"
+        let IDWebPlanning = "1722+1723"
         print("https://www.etud.insa-toulouse.fr/planning/index.php?gid=\(IDWebPlanning)&wid=\(weekNumber)&platform=ios")
         return "https://www.etud.insa-toulouse.fr/planning/index.php?gid=\(IDWebPlanning)&wid=\(weekNumber)&platform=ios"
     }
