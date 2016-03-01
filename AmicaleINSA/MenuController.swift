@@ -51,7 +51,7 @@ class MenuController: UITableViewController {
             let uuid = UIDevice.currentDevice().identifierForVendor!.UUIDString
             let rand = Int(arc4random_uniform(UInt32(100)))
             chatVc.senderId = "\(uuid.md5())\(rand)"
-            chatVc.senderDisplayName = "Julien \(rand)"
+            chatVc.senderDisplayName = NSUserDefaults.standardUserDefaults().stringForKey(Storyboard.usernameChat)
             print(chatVc.senderDisplayName)
             delegate = chatVc
         }

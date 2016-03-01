@@ -9,6 +9,10 @@
 import Foundation
 
 public struct Storyboard {
+    
+    // Chat
+    static let usernameChat = "usernameChat"
+    static let usernameChatRegistred = "usernameChatRegistred"
 
     // Webview offset
     static let Monday_iPhone4 = 0
@@ -39,4 +43,16 @@ public struct Storyboard {
     static let Friday_iPhone6Plus = 860
     static let Weekend_iPhone6Plus = 0
     
+}
+
+public func initApp() {
+    if (NSUserDefaults.standardUserDefaults().boolForKey(Storyboard.usernameChatRegistred) ==  false) {
+        let usernameChat = "invite\(Int(arc4random_uniform(UInt32(2500))))"
+        NSUserDefaults.standardUserDefaults().setObject(usernameChat, forKey: Storyboard.usernameChat)
+        NSUserDefaults.standardUserDefaults().setBool(true, forKey: Storyboard.usernameChatRegistred)
+    }
+}
+
+public func saveUsernameChat(username: String) {
+    NSUserDefaults.standardUserDefaults().setObject(username, forKey: Storyboard.usernameChat)
 }
