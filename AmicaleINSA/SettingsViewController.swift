@@ -7,16 +7,21 @@
 //
 
 import UIKit
+import ImagePicker
 
-class SettingsViewController: UIViewController, UITextFieldDelegate {
+class SettingsViewController: UIViewController, UITextFieldDelegate, ImagePickerDelegate {
 
     @IBOutlet weak var menuButton: UIBarButtonItem!
     @IBOutlet weak var usernameChatTextField: UITextField!
+    @IBOutlet weak var profileImageView: UIImageView!
+    
     
     let LIMITE_USERNAME_LENGTH = 12
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        initUI()
         
         if self.revealViewController() != nil {
             menuButton.target = self.revealViewController()
@@ -24,8 +29,8 @@ class SettingsViewController: UIViewController, UITextFieldDelegate {
             self.view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
         }
         
-        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "dismissKeyboard")
-        view.addGestureRecognizer(tap)
+        let tapDismissKeyboard: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "dismissKeyboard")
+        view.addGestureRecognizer(tapDismissKeyboard)
         
         usernameChatTextField.delegate = self
         
@@ -38,6 +43,52 @@ class SettingsViewController: UIViewController, UITextFieldDelegate {
         
     }
     
+    override func viewDidAppear(animated: Bool) {
+        profileImageView.image = getProfilPicture()
+    }
+    
+    func profilePictureSelected() {
+        let imagePickerController = ImagePickerController()
+        imagePickerController.imageLimit = 1
+        imagePickerController.delegate = self
+        self.presentViewController(imagePickerController, animated: true, completion: nil)
+    }
+    
+    func dismissKeyboard() {
+        saveUsernameChat(usernameChatTextField.text!)
+        view.endEditing(true)
+    }
+    
+    private func initUI() {
+        let tapOnProfilePicture = UITapGestureRecognizer(target: self, action: Selector("profilePictureSelected"))
+        profileImageView.addGestureRecognizer(tapOnProfilePicture)
+        profileImageView.userInteractionEnabled = true
+        let colorForBorder = UIColor.blackColor()
+        profileImageView.layer.borderColor = colorForBorder.CGColor
+        profileImageView.layer.borderWidth = 0.5
+        profileImageView.layer.cornerRadius = self.profileImageView.frame.size.width / 2
+        self.profileImageView.clipsToBounds = true
+    }
+    
+    /*
+        Image Picker methodes delegate
+    */
+    
+    func wrapperDidPress(images: [UIImage]) {
+        print("wrapperDidPress")
+    }
+    
+    func doneButtonDidPress(images: [UIImage]) {
+        let pickedImage = images[0].imageRotatedByDegrees(90, flip: false)
+        profileImageView.image = pickedImage
+        setProfilPicture(pickedImage)
+        dismissViewControllerAnimated(true, completion: nil)
+    }
+    
+    func cancelButtonDidPress() {
+        print("cancel button pressed")
+    }
+
     
     /*
         TextField methodes delegate
@@ -55,17 +106,9 @@ class SettingsViewController: UIViewController, UITextFieldDelegate {
         let newLength = text.utf16.count + string.utf16.count - range.length
         return newLength <= LIMITE_USERNAME_LENGTH
     }
-
-    
-    func dismissKeyboard() {
-        saveUsernameChat(usernameChatTextField.text!)
-        view.endEditing(true)
-    }
-    
-    
     
     override func viewWillAppear(animated: Bool) {
-        usernameChatTextField.text = NSUserDefaults.standardUserDefaults().stringForKey(Storyboard.usernameChat)
+        usernameChatTextField.text = getUsernameChat()
     }
     
     
@@ -74,5 +117,7 @@ class SettingsViewController: UIViewController, UITextFieldDelegate {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    
+    
     
 }

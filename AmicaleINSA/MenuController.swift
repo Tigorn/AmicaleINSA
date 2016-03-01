@@ -17,6 +17,7 @@ class MenuController: UITableViewController {
     
     @IBOutlet weak var topViewMenu: UIView!
     @IBOutlet weak var profileImageView: UIImageView!
+    @IBOutlet weak var usernameChatLabel: UILabel!
 
     var delegate : MenuControllerDelegate?
     
@@ -26,7 +27,13 @@ class MenuController: UITableViewController {
     }
     
     override func viewWillAppear(animated: Bool) {
+        updateUI()
         delegate?.dismissKeyboardFromMenu(self)
+    }
+    
+    private func updateUI() {
+        usernameChatLabel.text = getUsernameChat()
+        profileImageView.image = getProfilPicture()
     }
     
     private func initUI() {
@@ -51,7 +58,7 @@ class MenuController: UITableViewController {
             let uuid = UIDevice.currentDevice().identifierForVendor!.UUIDString
             let rand = Int(arc4random_uniform(UInt32(100)))
             chatVc.senderId = "\(uuid.md5())\(rand)"
-            chatVc.senderDisplayName = NSUserDefaults.standardUserDefaults().stringForKey(Storyboard.usernameChat)
+            chatVc.senderDisplayName = getUsernameChat()
             print(chatVc.senderDisplayName)
             delegate = chatVc
         }

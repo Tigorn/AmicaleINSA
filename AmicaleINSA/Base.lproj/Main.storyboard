@@ -91,7 +91,7 @@
                                                     <fontDescription key="fontDescription" name="AvenirNextCondensed-Medium" family="Avenir Next Condensed" pointSize="26"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Arthur" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="5" translatesAutoresizingMaskIntoConstraints="NO" id="y5W-ck-DO6">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Amicale INSA" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="5" translatesAutoresizingMaskIntoConstraints="NO" id="y5W-ck-DO6">
                                                     <rect key="frame" x="95" y="73" width="129" height="21"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="21" id="BEc-PN-UqA"/>
@@ -101,7 +101,7 @@
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Papay0" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="5" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="XY3-Di-WtO">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="username" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="5" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="XY3-Di-WtO">
                                                     <rect key="frame" x="95" y="102" width="129" height="21"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="21" id="7ZT-q4-phs"/>
@@ -245,6 +245,7 @@
                     <connections>
                         <outlet property="profileImageView" destination="zKL-bI-L0J" id="Rng-Ik-RkL"/>
                         <outlet property="topViewMenu" destination="sZx-Kf-sKH" id="buU-l1-qZ7"/>
+                        <outlet property="usernameChatLabel" destination="XY3-Di-WtO" id="h6q-TU-t8u"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fJb-96-Gor" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -396,11 +397,20 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" returnKeyType="done" enablesReturnKeyAutomatically="YES"/>
                             </textField>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="defaultPic" translatesAutoresizingMaskIntoConstraints="NO" id="1MM-8k-9kd">
+                                <rect key="frame" x="237" y="110" width="127" height="135"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="127" id="985-VK-4bq"/>
+                                    <constraint firstAttribute="height" constant="135" id="MVq-0l-Qke"/>
+                                </constraints>
+                            </imageView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="b1d-X2-o4W" firstAttribute="leading" secondItem="nwU-Xu-8Di" secondAttribute="leadingMargin" id="CA6-UN-2fs"/>
+                            <constraint firstItem="1MM-8k-9kd" firstAttribute="centerX" secondItem="b1d-X2-o4W" secondAttribute="centerX" id="S9A-zH-5yS"/>
                             <constraint firstItem="b1d-X2-o4W" firstAttribute="trailing" secondItem="nwU-Xu-8Di" secondAttribute="trailingMargin" id="Tb7-rC-iCv"/>
+                            <constraint firstItem="1MM-8k-9kd" firstAttribute="top" secondItem="b1d-X2-o4W" secondAttribute="bottom" constant="8" symbolic="YES" id="lUK-V4-EV2"/>
                             <constraint firstItem="b1d-X2-o4W" firstAttribute="top" secondItem="39J-YS-854" secondAttribute="bottom" constant="8" symbolic="YES" id="ynH-cR-Rxa"/>
                         </constraints>
                     </view>
@@ -411,6 +421,7 @@
                     </navigationItem>
                     <connections>
                         <outlet property="menuButton" destination="nq7-Pa-rmZ" id="D2N-8B-jvA"/>
+                        <outlet property="profileImageView" destination="1MM-8k-9kd" id="MN7-ac-59j"/>
                         <outlet property="usernameChatTextField" destination="b1d-X2-o4W" id="Hon-IR-W1U"/>
                     </connections>
                 </viewController>
