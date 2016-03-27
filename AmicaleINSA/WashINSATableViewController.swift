@@ -58,27 +58,15 @@ class WashINSATableViewController: UITableViewController {
         
         machines = [machine1, machine2, machine3, machine3, machine4, machine5, machine6, machine7, machine8, machine9, machine10, machine11, machine12]
         
-    
-//        self.refreshControl?.attributedTitle = NSAttributedString(string: "Pull to refresh")
-//        self.refreshControl?.addTarget(self, action: #selector(WashINSATableViewController.refresh(_:)), forControlEvents: UIControlEvents.ValueChanged)
         
-        //initUI()
-        //loadInfoInMachinesDB()
+        initUI()
+        loadInfoInMachinesDB()
         
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
         
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem()
-    }
-    
-    override func viewDidAppear(animated: Bool) {
-        loadInfoInMachinesDB()
-    }
-    
-    func refresh(sender:AnyObject) {
-        print("I refresh")
-        self.refreshControl?.endRefreshing()
     }
     
     
@@ -95,7 +83,8 @@ class WashINSATableViewController: UITableViewController {
     }
     
     func initUI(){
-        initActivityIndicator()
+        //initActivityIndicator()
+        //tableView.allowsSelection = false
     }
     
     func loadInfoInMachinesDB(){
@@ -241,6 +230,7 @@ class WashINSATableViewController: UITableViewController {
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
         let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) as! WashINSATableViewCell
+        cell.selectionStyle = UITableViewCellSelectionStyle.None
         
         if dataLoaded == true {
             var indexInArray = indexPath.row
@@ -361,14 +351,23 @@ class WashINSATableViewController: UITableViewController {
      }
      */
     
-    /*
+    
      // MARK: - Navigation
      
      // In a storyboard-based application, you will often want to do a little preparation before navigation
      override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-     // Get the new view controller using segue.destinationViewController.
-     // Pass the selected object to the new view controller.
+        let detailVC = segue.destinationViewController as! WashINSADetailsViewController
+        
+        if let indexPath = self.tableView.indexPathForSelectedRow {
+            var indexInArray = 0
+            let row = Int(indexPath.row)
+            if indexPath.section == 1 {
+                indexInArray += 3
+            }
+            detailVC.machineInfo.type = "\(machines[row].numberMachine) \(machines[row].type)"
+        }
+
      }
-     */
+     
     
 }
