@@ -572,6 +572,11 @@
                         <barButtonItem key="leftBarButtonItem" image="menu" id="IeA-rl-VR5">
                             <color key="tintColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" systemItem="refresh" id="ljV-Hp-cbM">
+                            <connections>
+                                <action selector="refreshButtonItemAction:" destination="cze-lo-qZH" id="8tB-ua-R73"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>

@@ -8,12 +8,32 @@
 
 import UIKit
 import Fuzi
+import SwiftSpinner
 
 class WashINSATableViewController: UITableViewController {
     
     @IBOutlet weak var menuButton: UIBarButtonItem!
+    var myActivityIndicator: UIActivityIndicatorView!
+    
+    
     
     var machines = [machine]()
+    
+    var machine1 = machine(type: "Chargement en cours ...", available: "", remainingTime: "", avancement: "", startTime: "", endTime: "", numberMachine: "", typeTextile: "")
+    var machine2 = machine(type: "", available: "", remainingTime: "", avancement: "", startTime: "", endTime: "", numberMachine: "", typeTextile: "")
+    var machine3 = machine(type: "", available: "", remainingTime: "", avancement: "", startTime: "", endTime: "", numberMachine: "", typeTextile: "")
+    var machine4 = machine(type: "", available: "", remainingTime: "", avancement: "", startTime: "", endTime: "", numberMachine: "", typeTextile: "")
+    var machine5 = machine(type: "", available: "", remainingTime: "", avancement: "", startTime: "", endTime: "", numberMachine: "", typeTextile: "")
+    var machine6 = machine(type: "", available: "", remainingTime: "", avancement: "", startTime: "", endTime: "", numberMachine: "", typeTextile: "")
+    var machine7 = machine(type: "", available: "", remainingTime: "", avancement: "", startTime: "", endTime: "", numberMachine: "", typeTextile: "")
+    var machine8 = machine(type: "", available: "", remainingTime: "", avancement: "", startTime: "", endTime: "", numberMachine: "", typeTextile: "")
+    var machine9 = machine(type: "", available: "", remainingTime: "", avancement: "", startTime: "", endTime: "", numberMachine: "", typeTextile: "")
+    var machine10 = machine(type: "", available: "", remainingTime: "", avancement: "", startTime: "", endTime: "", numberMachine: "", typeTextile: "")
+    var machine11 = machine(type: "", available: "", remainingTime: "", avancement: "", startTime: "", endTime: "", numberMachine: "", typeTextile: "")
+    var machine12 = machine(type: "", available: "", remainingTime: "", avancement: "", startTime: "", endTime: "", numberMachine: "", typeTextile: "")
+    
+    
+    var dataLoaded = false
     
     struct machine {
         var type = ""
@@ -36,7 +56,14 @@ class WashINSATableViewController: UITableViewController {
             self.view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
         }
         
-        loadInfoInMachinesDB()
+        machines = [machine1, machine2, machine3, machine3, machine4, machine5, machine6, machine7, machine8, machine9, machine10, machine11, machine12]
+        
+    
+//        self.refreshControl?.attributedTitle = NSAttributedString(string: "Pull to refresh")
+//        self.refreshControl?.addTarget(self, action: #selector(WashINSATableViewController.refresh(_:)), forControlEvents: UIControlEvents.ValueChanged)
+        
+        //initUI()
+        //loadInfoInMachinesDB()
         
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
@@ -45,20 +72,53 @@ class WashINSATableViewController: UITableViewController {
         // self.navigationItem.rightBarButtonItem = self.editButtonItem()
     }
     
+    override func viewDidAppear(animated: Bool) {
+        loadInfoInMachinesDB()
+    }
+    
+    func refresh(sender:AnyObject) {
+        print("I refresh")
+        self.refreshControl?.endRefreshing()
+    }
+    
+    
+    @IBAction func refreshButtonItemAction(sender: AnyObject) {
+        loadInfoInMachinesDB()
+    }
+    
+    func initActivityIndicator() {
+        myActivityIndicator = UIActivityIndicatorView(frame: CGRectMake(0,0, 50, 50)) as UIActivityIndicatorView
+        myActivityIndicator.center = CGPoint(x: UIScreen.mainScreen().bounds.width/2, y: UIScreen.mainScreen().bounds.height/2)
+        myActivityIndicator.hidesWhenStopped = true
+        myActivityIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.Gray
+        view.addSubview(myActivityIndicator)
+    }
+    
+    func initUI(){
+        initActivityIndicator()
+    }
+    
     func loadInfoInMachinesDB(){
-        
+        let qos = Int(QOS_CLASS_USER_INITIATED.rawValue) // qos = quality of service (if it's slow, important...)
+        SwiftSpinner.show("Connexion \nen cours...").addTapHandler({
+            SwiftSpinner.hide()
+        })
+        //myActivityIndicator.startAnimating()
         let myURLString = Storyboard.urlProxyWash
         guard let myURL = NSURL(string: myURLString) else {
             print("Error: \(myURLString) doesn't seem to be a valid URL")
             return
         }
-        
+        dispatch_async(dispatch_get_global_queue(qos, 0)) { () -> Void in
         do {
             /*
              1: Type de machine
              2: DISPONIBLE ou pas, dans <font>
              */
+            
+            print(">>> DEBUG 1")
             let myHTMLString = try String(contentsOfURL: myURL, encoding: NSUTF8StringEncoding)
+            print(">>> DEBUG 2")
             do {
                 var type = ""
                 var available = ""
@@ -73,6 +133,8 @@ class WashINSATableViewController: UITableViewController {
                 
                 var indexMachine = -1
                 
+                self.machines = []
+                
                 let doc = try HTMLDocument(string: myHTMLString, encoding: NSUTF8StringEncoding)
                 
                 for listeMachines in doc.xpath("//td[@style=\"height:10;vertical-align:middle\"]") {
@@ -80,57 +142,57 @@ class WashINSATableViewController: UITableViewController {
                     if let infoMachineTypeOrNumero = listeMachines.firstChild(xpath: "text()") {
                         infoMachineTypeOrNumeroString = infoMachineTypeOrNumero.description
                         
-                        let matchesTime = matchesForRegexInText("[0-9][0-9]?:[0-9][0-9]", text: infoMachineTypeOrNumeroString)
+                        let matchesTime = self.matchesForRegexInText("[0-9][0-9]?:[0-9][0-9]", text: infoMachineTypeOrNumeroString)
                         
                         if infoMachineTypeOrNumeroString.containsString("SECHE") || infoMachineTypeOrNumeroString.containsString("LAVE") {
                             type = infoMachineTypeOrNumeroString
                             print("type = \(type)")
                             indexMachine += 1
-                            machines.append(machine())
-                            machines[indexMachine].type = type
-                        } else if infoMachineTypeOrNumeroString.containsString("No") && matchesForRegexInText("No\\s+[0-9]+", text: infoMachineTypeOrNumeroString).count != 0  {
+                            self.machines.append(machine())
+                            self.machines[indexMachine].type = type
+                        } else if infoMachineTypeOrNumeroString.containsString("No") && self.matchesForRegexInText("No\\s+[0-9]+", text: infoMachineTypeOrNumeroString).count != 0  {
                             numberMachine = infoMachineTypeOrNumeroString
                             print("numero machine = \(numberMachine)")
-                            machines[indexMachine].numberMachine = numberMachine
+                            self.machines[indexMachine].numberMachine = numberMachine
                         } else if (matchesTime.count != 0){
                             if state == 0 {
                                 state = 1
                                 startTime = matchesTime[0]
                                 print("debut = \(startTime)")
-                                machines[indexMachine].startTime = startTime
+                                self.machines[indexMachine].startTime = startTime
                             } else if state == 1 {
                                 state = 0
                                 endTime = matchesTime[0]
                                 print("fin = \(endTime)")
-                                machines[indexMachine].endTime = endTime
+                                self.machines[indexMachine].endTime = endTime
                             }
                         }
                         else {
                             typeTextile = infoMachineTypeOrNumeroString
                             print("type textile = \(typeTextile)")
-                            machines[indexMachine].typeTextile = typeTextile
+                            self.machines[indexMachine].typeTextile = typeTextile
                         }
                     }
                     
                     if let availableMachine = listeMachines.firstChild(xpath: "font/text()") {
                         available = availableMachine.description
                         print("available = \(available)")
-                        machines[indexMachine].available = available
+                        self.machines[indexMachine].available = available
                     }
                     
                     if let avancementMachine = listeMachines.firstChild(xpath: "table//td")?.attr("width") {
                         avancement = avancementMachine
                         print("avancement en % : \(avancement)")
-                        machines[indexMachine].avancement = avancement
+                        self.machines[indexMachine].avancement = avancement
                     }
                     
                     // temps restant
                     if let remainingTimeMachine = listeMachines.firstChild(xpath: "table")?.attr("title") {
                         remainingTime = remainingTimeMachine
-                        let matchesRemainingTime = matchesForRegexInText("[0-9][0-9]?", text: remainingTime)
+                        let matchesRemainingTime = self.matchesForRegexInText("[0-9][0-9]?", text: remainingTime)
                         remainingTime = matchesRemainingTime[0]
                         print("remaning time = \(remainingTime) min")
-                        machines[indexMachine].remainingTime = remainingTime
+                        self.machines[indexMachine].remainingTime = remainingTime
                     }
                 }
                 
@@ -141,9 +203,14 @@ class WashINSATableViewController: UITableViewController {
         } catch let error as NSError {
             print("Error: \(error)")
         }
-        print(machines.description)
+        //print(machines.description)
+        dispatch_async(dispatch_get_main_queue(), {
+        self.dataLoaded = true
+        self.tableView.reloadData()
+        SwiftSpinner.hide()
+            })
+        }
         
-
     }
     
     override func didReceiveMemoryWarning() {
@@ -172,42 +239,50 @@ class WashINSATableViewController: UITableViewController {
     
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        
         let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) as! WashINSATableViewCell
         
-        // Configure the cell...
-        
-        var indexInArray = indexPath.row
-        
-        if indexPath.section == 1 {
-            //cell.numberMachineLabel.backgroundColor = UIColor.redColor()
-            indexInArray += 3
-        }
-        //        } else if indexPath.section == 0 {
-        //            //cell.numberMachineLabel.backgroundColor = UIColor.blueColor()
-        //        }
-        cell.numberMachineLabel.layer.cornerRadius = cell.numberMachineLabel.frame.size.width/2
-        cell.numberMachineLabel.layer.borderWidth = 0.5
-        cell.numberMachineLabel.clipsToBounds = true
-        
-        cell.numberMachineLabel.text = machines[indexInArray].numberMachine
-        cell.typeMachineLabel.text = machines[indexInArray].type
-        
-        if machines[indexInArray].available.containsString("DISPONIBLE") {
-            cell.availabilityMachineLabel.text = "DISPONIBLE"
+        if dataLoaded == true {
+            var indexInArray = indexPath.row
+            
+            if indexPath.section == 1 {
+                //cell.numberMachineLabel.backgroundColor = UIColor.redColor()
+                indexInArray += 3
+            }
+            //        } else if indexPath.section == 0 {
+            //            //cell.numberMachineLabel.backgroundColor = UIColor.blueColor()
+            //        }
+            cell.numberMachineLabel.layer.cornerRadius = cell.numberMachineLabel.frame.size.width/2
+            cell.numberMachineLabel.layer.borderWidth = 0.5
+            cell.numberMachineLabel.clipsToBounds = true
+            
+            cell.numberMachineLabel.text = machines[indexInArray].numberMachine
+            cell.typeMachineLabel.text = machines[indexInArray].type
+            
+            if machines[indexInArray].available.containsString("DISPONIBLE") {
+                cell.availabilityMachineLabel.text = "DISPONIBLE"
+                cell.availableInTimeMachineLabel.text = ""
+                cell.numberMachineLabel.backgroundColor = UIColor.greenColor()
+            } else if machines[indexInArray].available.containsString("TERMINE") {
+                cell.availabilityMachineLabel.text = "TERMINE"
+                cell.numberMachineLabel.backgroundColor = UIColor.yellowColor()
+                cell.availableInTimeMachineLabel.text = "Quelqu'un vous attend ..."
+            }
+            else {
+                cell.availabilityMachineLabel.text = "En cours d'utilisation"
+                cell.availableInTimeMachineLabel.text = "Disponible dans \(machines[indexInArray].remainingTime) min"
+                cell.numberMachineLabel.backgroundColor = UIColor.redColor()
+            }
+        } else {
+            cell.numberMachineLabel.text = ""
+            cell.typeMachineLabel.text = ""
             cell.availableInTimeMachineLabel.text = ""
-            cell.numberMachineLabel.backgroundColor = UIColor.greenColor()
-        } else if machines[indexInArray].available.containsString("TERMINE") {
-            cell.availabilityMachineLabel.text = "TERMINE"
-            cell.numberMachineLabel.backgroundColor = UIColor.yellowColor()
-            cell.availableInTimeMachineLabel.text = "Quelqu'un vous attend ..."
+            cell.availabilityMachineLabel.text = ""
+            cell.numberMachineLabel.layer.cornerRadius = cell.numberMachineLabel.frame.size.width/2
+            cell.numberMachineLabel.layer.borderWidth = 0.5
+            cell.numberMachineLabel.clipsToBounds = true
+            cell.numberMachineLabel.backgroundColor = UIColor.whiteColor()
         }
-        else {
-            cell.availabilityMachineLabel.text = "En cours d'utilisation"
-            cell.availableInTimeMachineLabel.text = "Disponible dans \(machines[indexInArray].remainingTime) min"
-            cell.numberMachineLabel.backgroundColor = UIColor.redColor()
-        }
-        
-        
         return cell
     }
     
@@ -236,21 +311,21 @@ class WashINSATableViewController: UITableViewController {
         }
     }
     
-//    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-//        let detailVC = segue.destinationViewController as! ProxyWashDetailsViewController
-//        
-//        // Pass the selected object to the destination view controller.
-//        if let indexPath = self.tableView.indexPathForSelectedRow {
-//            var indexInArray = 0
-//            let row = Int(indexPath.row)
-//            if indexPath.section == 1 {
-//                //cell.numberMachineLabel.backgroundColor = UIColor.redColor()
-//                indexInArray += 3
-//            }
-//            detailVC.machineInfo.type = machines[row].type
-//            //detailScene.currentObject = (objects?[row] as! PFObject)
-//        }
-//    }
+    //    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    //        let detailVC = segue.destinationViewController as! ProxyWashDetailsViewController
+    //
+    //        // Pass the selected object to the destination view controller.
+    //        if let indexPath = self.tableView.indexPathForSelectedRow {
+    //            var indexInArray = 0
+    //            let row = Int(indexPath.row)
+    //            if indexPath.section == 1 {
+    //                //cell.numberMachineLabel.backgroundColor = UIColor.redColor()
+    //                indexInArray += 3
+    //            }
+    //            detailVC.machineInfo.type = machines[row].type
+    //            //detailScene.currentObject = (objects?[row] as! PFObject)
+    //        }
+    //    }
     
     // Override to support conditional editing of the table view.
     override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
