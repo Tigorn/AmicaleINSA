@@ -170,7 +170,8 @@ class WashINSATableViewController: UITableViewController {
                     }
                     
                     if let avancementMachine = listeMachines.firstChild(xpath: "table//td")?.attr("width") {
-                        avancement = avancementMachine
+                        print(self.matchesForRegexInText("[0-9]+(\\.[0-9][0-9]?)?", text: avancementMachine))
+                        avancement = self.matchesForRegexInText("[0-9]+(\\.[0-9][0-9]?)?", text: avancementMachine)[0]
                         print("avancement en % : \(avancement)")
                         self.machines[indexMachine].avancement = avancement
                     }
@@ -359,12 +360,16 @@ class WashINSATableViewController: UITableViewController {
         let detailVC = segue.destinationViewController as! WashINSADetailsViewController
         
         if let indexPath = self.tableView.indexPathForSelectedRow {
-            var indexInArray = 0
             let row = Int(indexPath.row)
+            var indexInArray = row
             if indexPath.section == 1 {
                 indexInArray += 3
             }
-            detailVC.machineInfo.type = "\(machines[row].numberMachine) \(machines[row].type)"
+            detailVC.machineInfo.type = "\(machines[indexInArray].numberMachine) \(machines[indexInArray].type)"
+            detailVC.machineInfo.avancement = machines[indexInArray].avancement
+            detailVC.machineInfo.startTime = machines[indexInArray].startTime
+            detailVC.machineInfo.endTime = machines[indexInArray].endTime
+            print("avancement[row] = \(machines[indexInArray].avancement)")
         }
 
      }

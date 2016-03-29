@@ -12,6 +12,9 @@ import MBCircularProgressBar
 class WashINSADetailsViewController: UIViewController {
 
     @IBOutlet weak var typeMachineLabel: UILabel!
+    @IBOutlet weak var remainingTimeLabel: UILabel!
+    @IBOutlet weak var startLabel: UILabel!
+    @IBOutlet weak var endLabel: UILabel!
     
     @IBOutlet weak var circularProgressBar: MBCircularProgressBarView!
     
@@ -30,7 +33,27 @@ class WashINSADetailsViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        //typeMachineLabel.text = machineInfo.type
+        initUI()
+    }
+    
+    func initUI() {
+        remainingTimeLabel.text = machineInfo.remainingTime
+        startLabel.text = machineInfo.startTime
+        endLabel.text = machineInfo.endTime
+    }
+    
+    func initCircularProgressBar(){
+        if machineInfo.avancement != "" {
+            if let avancementFloat = Float(machineInfo.avancement) {
+                circularProgressBar.setValue(CGFloat(avancementFloat), animateWithDuration: 1)
+            } else {
+                circularProgressBar.setValue(0, animateWithDuration: 1)
+            }
+        } else {
+            circularProgressBar.setValue(100, animateWithDuration: 1)
+        }
+        print("Avancement = \(machineInfo.avancement)")
+
     }
 
     override func didReceiveMemoryWarning() {
@@ -39,7 +62,8 @@ class WashINSADetailsViewController: UIViewController {
     }
     
     override func viewDidAppear(animated: Bool) {
-        circularProgressBar.setValue(76, animateWithDuration: 1)
+        //circularProgressBar.setValue(76, animateWithDuration: 1)
+        initCircularProgressBar()
     }
     
     /*

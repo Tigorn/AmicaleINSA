@@ -668,6 +668,9 @@
                     </view>
                     <connections>
                         <outlet property="circularProgressBar" destination="vAF-vd-KcN" id="ole-c5-3eb"/>
+                        <outlet property="endLabel" destination="QO0-cw-laZ" id="QtA-HE-EjX"/>
+                        <outlet property="remainingTimeLabel" destination="l2w-P6-SBR" id="qTn-vE-XdG"/>
+                        <outlet property="startLabel" destination="fxr-Vd-uBC" id="zAw-09-wcR"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x2h-lE-jJs" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -696,6 +699,10 @@
         <scene sceneID="Lbx-uC-bhv">
             <objects>
                 <viewController id="I61-fX-hwU" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="HMD-eM-MuC"/>
+                        <viewControllerLayoutGuide type="bottom" id="phS-oJ-aLD"/>
+                    </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="zOB-Xu-eYT">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
