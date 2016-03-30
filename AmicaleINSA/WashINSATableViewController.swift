@@ -60,14 +60,14 @@ class WashINSATableViewController: UITableViewController {
         
         machines = [machine1, machine2, machine3, machine3, machine4, machine5, machine6, machine7, machine8, machine9, machine10, machine11, machine12]
         
-        
         initUI()
+        
+        self.refreshControl?.addTarget(self, action: #selector(WashINSATableViewController.refresh(_:)), forControlEvents: UIControlEvents.ValueChanged)
+        
         loadInfoInMachinesDB()
         
-        self.refreshControl = UIRefreshControl()
-        self.refreshControl!.attributedTitle = NSAttributedString(string: "Pull to refresh")
-        self.refreshControl!.addTarget(self, action: #selector(WashINSATableViewController.refresh(_:)), forControlEvents: UIControlEvents.ValueChanged)
-        self.tableView.addSubview(self.refreshControl!)
+        
+        
         
 //        refreshView = BreakOutToRefreshView(scrollView: tableView)
 //        refreshView.delegate = self
