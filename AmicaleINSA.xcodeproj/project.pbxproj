@@ -22,6 +22,7 @@
 		9206F3F51C839AE300978CF5 /* Photo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9206F3F41C839AE300978CF5 /* Photo.swift */; };
 		9206F3F81C83AC4900978CF5 /* Public.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9206F3F71C83AC4900978CF5 /* Public.swift */; };
 		92128FD51C8605B800AA96AD /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92128FD41C8605B800AA96AD /* SettingsViewController.swift */; };
+		923677FB1CAC28A100FA7084 /* BreakOutToRefreshView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 923677FA1CAC28A100FA7084 /* BreakOutToRefreshView.swift */; };
 		9265E2671CA8348A000BE187 /* WashINSATableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9265E2661CA8348A000BE187 /* WashINSATableViewController.swift */; };
 		9265E26B1CA8355B000BE187 /* WashINSATableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9265E26A1CA8355B000BE187 /* WashINSATableViewCell.swift */; };
 		92A7013D1C847B4C000E1E8F /* WebPlanningViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92A7013C1C847B4C000E1E8F /* WebPlanningViewController.swift */; };
@@ -73,6 +74,7 @@
 		9206F3F61C839F8900978CF5 /* AmicaleINSA-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "AmicaleINSA-Bridging-Header.h"; sourceTree = "<group>"; };
 		9206F3F71C83AC4900978CF5 /* Public.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Public.swift; sourceTree = "<group>"; };
 		92128FD41C8605B800AA96AD /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
+		923677FA1CAC28A100FA7084 /* BreakOutToRefreshView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BreakOutToRefreshView.swift; sourceTree = "<group>"; };
 		9265E2661CA8348A000BE187 /* WashINSATableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WashINSATableViewController.swift; sourceTree = "<group>"; };
 		9265E26A1CA8355B000BE187 /* WashINSATableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WashINSATableViewCell.swift; sourceTree = "<group>"; };
 		92A7013C1C847B4C000E1E8F /* WebPlanningViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebPlanningViewController.swift; sourceTree = "<group>"; };
@@ -133,6 +135,7 @@
 		9206F3B81C838F8B00978CF5 /* AmicaleINSA */ = {
 			isa = PBXGroup;
 			children = (
+				923677F71CAC287E00FA7084 /* UI */,
 				9206F3B91C838F8B00978CF5 /* AppDelegate.swift */,
 				9265E2651CA8346F000BE187 /* Washinsa */,
 				92128FD61C86064000AA96AD /* Settings */,
@@ -177,6 +180,14 @@
 				92128FD41C8605B800AA96AD /* SettingsViewController.swift */,
 			);
 			name = Settings;
+			sourceTree = "<group>";
+		};
+		923677F71CAC287E00FA7084 /* UI */ = {
+			isa = PBXGroup;
+			children = (
+				923677FA1CAC28A100FA7084 /* BreakOutToRefreshView.swift */,
+			);
+			name = UI;
 			sourceTree = "<group>";
 		};
 		9265E2651CA8346F000BE187 /* Washinsa */ = {
@@ -462,6 +473,7 @@
 				92CBC4E61C8642CB0074B9B2 /* Extension.swift in Sources */,
 				9206F3EF1C8399F600978CF5 /* ChatViewController.swift in Sources */,
 				9206F3BA1C838F8B00978CF5 /* AppDelegate.swift in Sources */,
+				923677FB1CAC28A100FA7084 /* BreakOutToRefreshView.swift in Sources */,
 				92128FD51C8605B800AA96AD /* SettingsViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

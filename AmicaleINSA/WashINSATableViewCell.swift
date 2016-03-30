@@ -9,22 +9,23 @@
 import UIKit
 
 class WashINSATableViewCell: UITableViewCell {
+    
+    @IBOutlet weak var numberMachineLabel: UILabel!
+    @IBOutlet weak var typeMachineLabel: UILabel!
+    @IBOutlet weak var availabilityMachineLabel: UILabel!
+    @IBOutlet weak var availableInTimeMachineLabel: UILabel!
+    @IBOutlet weak var startEndTimeLabel: UILabel!
+    
+    
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        // Initialization code
+    }
+    
+    override func setSelected(selected: Bool, animated: Bool) {
+        super.setSelected(selected, animated: animated)
         
-        @IBOutlet weak var numberMachineLabel: UILabel!
-        @IBOutlet weak var typeMachineLabel: UILabel!
-        @IBOutlet weak var availabilityMachineLabel: UILabel!
-        @IBOutlet weak var availableInTimeMachineLabel: UILabel!
-        
-        
-        override func awakeFromNib() {
-            super.awakeFromNib()
-            // Initialization code
-        }
-        
-        override func setSelected(selected: Bool, animated: Bool) {
-            super.setSelected(selected, animated: animated)
-            
-            // Configure the view for the selected state
-        }
-        
+        // Configure the view for the selected state
+    }
+    
 }

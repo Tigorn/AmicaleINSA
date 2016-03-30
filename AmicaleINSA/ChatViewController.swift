@@ -15,6 +15,7 @@ import MediaPlayer
 import NYTPhotoViewer
 import ALCameraViewController
 import ImagePicker
+import SWRevealViewController
 
 
 class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, MenuControllerDelegate, ImagePickerDelegate {
@@ -84,7 +85,7 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
         
         if self.revealViewController() != nil {
             menuButton.target = self.revealViewController()
-            menuButton.action = "revealToggle:"
+            menuButton.action = #selector(SWRevealViewController.revealToggle(_:))
             self.view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
         }
         initActivityIndicator()
@@ -244,7 +245,7 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
                 self.lastTimestamp = dateTimestampInterval
             }
             let date = NSDate(timeIntervalSince1970: dateTimestampInterval)
-            index++
+            index += 1
             if index < self.LOAD_MORE_MESSAGE_LIMIT {
                 if isMedia {
                     let base64EncodedString = snapshot.value["image"] as! String

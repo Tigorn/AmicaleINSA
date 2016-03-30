@@ -8,6 +8,7 @@
 
 import UIKit
 import SwiftSpinner
+import SWRevealViewController
 
 class WebPlanningViewController: UIViewController, UIWebViewDelegate, UIScrollViewDelegate {
     
@@ -23,7 +24,7 @@ class WebPlanningViewController: UIViewController, UIWebViewDelegate, UIScrollVi
         
         if self.revealViewController() != nil {
             menuButton.target = self.revealViewController()
-            menuButton.action = "revealToggle:"
+            menuButton.action = #selector(SWRevealViewController.revealToggle(_:))
             self.view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
             self.view.addGestureRecognizer(self.revealViewController().tapGestureRecognizer())
         }
@@ -293,14 +294,14 @@ class WebPlanningViewController: UIViewController, UIWebViewDelegate, UIScrollVi
     // MARK: Network
     
     @IBAction func nextWeekButtonAction(sender: AnyObject) {
-        weekNumberToday++
+        weekNumberToday += 1
         let url = NSURL(string: getUrlPlanning(weekNumberToday))
         let request = NSURLRequest(URL: url!)
         webView.loadRequest(request)
     }
     
     @IBAction func lastWeekButtonAction(sender: AnyObject) {
-        weekNumberToday--
+        weekNumberToday -= 1
         let url = NSURL(string: getUrlPlanning(weekNumberToday))
         let request = NSURLRequest(URL: url!)
         webView.loadRequest(request)

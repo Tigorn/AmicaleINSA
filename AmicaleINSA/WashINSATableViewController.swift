@@ -9,12 +9,13 @@
 import UIKit
 import Fuzi
 import SwiftSpinner
+import SWRevealViewController
 
 class WashINSATableViewController: UITableViewController {
     
     @IBOutlet weak var menuButton: UIBarButtonItem!
     var myActivityIndicator: UIActivityIndicatorView!
-    
+
     
     
     var machines = [machine]()
@@ -46,13 +47,14 @@ class WashINSATableViewController: UITableViewController {
         var typeTextile = ""
     }
     
+    private let tableController = UITableViewController()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         if self.revealViewController() != nil {
             menuButton.target = self.revealViewController()
-            menuButton.action = "revealToggle:"
+            menuButton.action = #selector(SWRevealViewController.revealToggle(_:))
             self.view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
         }
         
@@ -62,6 +64,15 @@ class WashINSATableViewController: UITableViewController {
         initUI()
         loadInfoInMachinesDB()
         
+        self.refreshControl = UIRefreshControl()
+        self.refreshControl!.attributedTitle = NSAttributedString(string: "Pull to refresh")
+        self.refreshControl!.addTarget(self, action: #selector(WashINSATableViewController.refresh(_:)), forControlEvents: UIControlEvents.ValueChanged)
+        self.tableView.addSubview(self.refreshControl!)
+        
+//        refreshView = BreakOutToRefreshView(scrollView: tableView)
+//        refreshView.delegate = self
+//        tableView.addSubview(refreshView)
+        
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
         
@@ -69,6 +80,10 @@ class WashINSATableViewController: UITableViewController {
         // self.navigationItem.rightBarButtonItem = self.editButtonItem()
     }
     
+    func refresh(sender:AnyObject)
+    {
+        loadInfoInMachinesDB()
+    }
     
     @IBAction func refreshButtonItemAction(sender: AnyObject) {
         loadInfoInMachinesDB()
@@ -92,7 +107,6 @@ class WashINSATableViewController: UITableViewController {
         SwiftSpinner.show("Connexion \nen cours...").addTapHandler({
             SwiftSpinner.hide()
         })
-        //myActivityIndicator.startAnimating()
         let myURLString = Storyboard.urlProxyWash
         guard let myURL = NSURL(string: myURLString) else {
             print("Error: \(myURLString) doesn't seem to be a valid URL")
@@ -198,6 +212,7 @@ class WashINSATableViewController: UITableViewController {
         self.dataLoaded = true
         self.tableView.reloadData()
         SwiftSpinner.hide()
+        self.refreshControl!.endRefreshing()
             })
         }
         
@@ -237,12 +252,8 @@ class WashINSATableViewController: UITableViewController {
             var indexInArray = indexPath.row
             
             if indexPath.section == 1 {
-                //cell.numberMachineLabel.backgroundColor = UIColor.redColor()
                 indexInArray += 3
             }
-            //        } else if indexPath.section == 0 {
-            //            //cell.numberMachineLabel.backgroundColor = UIColor.blueColor()
-            //        }
             cell.numberMachineLabel.layer.cornerRadius = cell.numberMachineLabel.frame.size.width/2
             cell.numberMachineLabel.layer.borderWidth = 0.5
             cell.numberMachineLabel.clipsToBounds = true
@@ -253,9 +264,11 @@ class WashINSATableViewController: UITableViewController {
             if machines[indexInArray].available.containsString("DISPONIBLE") {
                 cell.availabilityMachineLabel.text = "DISPONIBLE"
                 cell.availableInTimeMachineLabel.text = ""
+                cell.startEndTimeLabel.text = ""
                 cell.numberMachineLabel.backgroundColor = UIColor.greenColor()
             } else if machines[indexInArray].available.containsString("TERMINE") {
                 cell.availabilityMachineLabel.text = "TERMINE"
+                cell.startEndTimeLabel.text = ""
                 cell.numberMachineLabel.backgroundColor = UIColor.yellowColor()
                 cell.availableInTimeMachineLabel.text = "Quelqu'un vous attend ..."
             }
@@ -263,6 +276,7 @@ class WashINSATableViewController: UITableViewController {
                 cell.availabilityMachineLabel.text = "En cours d'utilisation"
                 cell.availableInTimeMachineLabel.text = "Disponible dans \(machines[indexInArray].remainingTime) min"
                 cell.numberMachineLabel.backgroundColor = UIColor.redColor()
+                cell.startEndTimeLabel.text = "\(machines[indexInArray].startTime) - \(machines[indexInArray].endTime)"
             }
         } else {
             cell.numberMachineLabel.text = ""
@@ -356,23 +370,21 @@ class WashINSATableViewController: UITableViewController {
      // MARK: - Navigation
      
      // In a storyboard-based application, you will often want to do a little preparation before navigation
-     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        let detailVC = segue.destinationViewController as! WashINSADetailsViewController
-        
-        if let indexPath = self.tableView.indexPathForSelectedRow {
-            let row = Int(indexPath.row)
-            var indexInArray = row
-            if indexPath.section == 1 {
-                indexInArray += 3
-            }
-            detailVC.machineInfo.type = "\(machines[indexInArray].numberMachine) \(machines[indexInArray].type)"
-            detailVC.machineInfo.avancement = machines[indexInArray].avancement
-            detailVC.machineInfo.startTime = machines[indexInArray].startTime
-            detailVC.machineInfo.endTime = machines[indexInArray].endTime
-            print("avancement[row] = \(machines[indexInArray].avancement)")
-        }
-
-     }
-     
-    
+//     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+//        let detailVC = segue.destinationViewController as! WashINSADetailsViewController
+//        
+//        if let indexPath = self.tableView.indexPathForSelectedRow {
+//            let row = Int(indexPath.row)
+//            var indexInArray = row
+//            if indexPath.section == 1 {
+//                indexInArray += 3
+//            }
+//            detailVC.machineInfo.type = "\(machines[indexInArray].numberMachine) \(machines[indexInArray].type)"
+//            detailVC.machineInfo.avancement = machines[indexInArray].avancement
+//            detailVC.machineInfo.startTime = machines[indexInArray].startTime
+//            detailVC.machineInfo.endTime = machines[indexInArray].endTime
+//            print("avancement[row] = \(machines[indexInArray].avancement)")
+//        }
+//
+//     }
 }
