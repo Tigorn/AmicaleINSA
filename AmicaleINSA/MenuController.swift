@@ -18,6 +18,7 @@ class MenuController: UITableViewController {
     @IBOutlet weak var topViewMenu: UIView!
     @IBOutlet weak var profileImageView: UIImageView!
     @IBOutlet weak var usernameChatLabel: UILabel!
+    @IBOutlet weak var temperatureLabel: UILabel!
 
     var delegate : MenuControllerDelegate?
     
@@ -34,6 +35,7 @@ class MenuController: UITableViewController {
     private func updateUI() {
         usernameChatLabel.text = getUsernameChat()
         profileImageView.image = getProfilPicture()
+        temperatureLabel.text = getTemperature()
     }
     
     private func initUI() {

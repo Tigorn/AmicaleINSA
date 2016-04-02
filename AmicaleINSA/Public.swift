@@ -8,6 +8,7 @@
 
 import Foundation
 import UIKit
+import SwiftyJSON
 
 public struct Storyboard {
     
@@ -49,15 +50,19 @@ public struct Storyboard {
     static let Weekend_iPhone6Plus = 0
     
     static let urlProxyWash = "http://www.proxiwash.com/weblaverie/ma-laverie-2?s=cf4f39&16d33a57b3fb9a05d4da88969c71de74=1"
+    static let urlWeatherToulouse = "https://api.forecast.io/forecast/5877c3394948db03ae04471da46fde3c/43.5722715,1.4687831"
     
     static let idPlanningExpress = "idPlanningExpress"
     static let rowPickerViewSettings = "rowPickerViewSettings"
     
+    // Weather
+    static let temperatureNSUserDefaults = "temperatureWeather"
+    
 }
 
 /*
-    Function called when app launched
-*/
+ Function called when app launched
+ */
 
 public func initApp() {
     if (NSUserDefaults.standardUserDefaults().boolForKey(Storyboard.usernameChatRegistred) ==  false) {
@@ -65,11 +70,12 @@ public func initApp() {
         NSUserDefaults.standardUserDefaults().setObject(usernameChat, forKey: Storyboard.usernameChat)
         NSUserDefaults.standardUserDefaults().setBool(true, forKey: Storyboard.usernameChatRegistred)
     }
+    setTemperature()
 }
 
 /*
-    username getter/setter
-*/
+ username getter/setter
+ */
 
 public func setUsernameChat(username: String) {
     NSUserDefaults.standardUserDefaults().setObject(username, forKey: Storyboard.usernameChat)
@@ -79,10 +85,9 @@ public func getUsernameChat() -> String {
     return NSUserDefaults.standardUserDefaults().stringForKey(Storyboard.usernameChat)!
 }
 
-
 /*
     profile picture getter/setter
-*/
+ */
 
 public func setProfilPicture(image : UIImage){
     NSUserDefaults.standardUserDefaults().setObject(UIImagePNGRepresentation(image), forKey: Storyboard.profilePicture)
@@ -100,5 +105,38 @@ public func getProfilPicture() -> UIImage {
             return  UIImage(named: "defaultPic")! }
     } else {
         return UIImage(named: "defaultPic")!
+    }
+}
+
+/*
+    Weather
+ */
+
+public func getTemperature() -> String {
+    if let temperature = NSUserDefaults.standardUserDefaults().stringForKey(Storyboard.temperatureNSUserDefaults) {
+        return "\(temperature) °C"
+    } else {
+        return ""
+    }
+}
+
+private func setTemperature(){
+    let url = Storyboard.urlWeatherToulouse
+    let urlNSUrl = NSURL(string: url)
+    let qos = Int(QOS_CLASS_USER_INITIATED.rawValue) // qos = quality of service (if it's slow, important...)
+    dispatch_async(dispatch_get_global_queue(qos, 0)) { () -> Void in
+        if  let data = NSData(contentsOfURL: urlNSUrl!) {
+            dispatch_async(dispatch_get_main_queue(), {
+                let json = JSON(data: data)
+                if let temperature = json["currently"]["temperature"].float{
+                    let temperatureCelsius = (temperature-32)/1.8
+                    let temperatureCelsiusString = String(format: "%.1f", temperatureCelsius)
+                    // println("Temperature actuelle =  \(temperatureCelsiusString)")
+                    NSUserDefaults.standardUserDefaults().setObject(temperatureCelsiusString, forKey: Storyboard.temperatureNSUserDefaults)
+                }
+                NSUserDefaults.standardUserDefaults().synchronize()
+                }
+            )
+        }
     }
 }

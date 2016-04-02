@@ -92,20 +92,10 @@
                                                     <fontDescription key="fontDescription" name="AvenirNextCondensed-Medium" family="Avenir Next Condensed" pointSize="26"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Amicale INSA" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="5" translatesAutoresizingMaskIntoConstraints="NO" id="y5W-ck-DO6">
-                                                    <rect key="frame" x="95" y="73" width="129" height="21"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="height" constant="21" id="BEc-PN-UqA"/>
-                                                        <constraint firstAttribute="width" constant="129" id="j64-cq-Mby"/>
-                                                    </constraints>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="username" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="5" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="XY3-Di-WtO">
-                                                    <rect key="frame" x="95" y="102" width="129" height="21"/>
+                                                    <rect key="frame" x="92" y="79" width="129" height="21"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="height" constant="21" id="7ZT-q4-phs"/>
+                                                        <constraint firstAttribute="width" constant="129" id="tqy-6a-8I2"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
@@ -117,20 +107,25 @@
                                                         <constraint firstAttribute="height" constant="76" id="3XZ-sh-lWY"/>
                                                     </constraints>
                                                 </imageView>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="°C" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5EA-0d-jQG">
+                                                    <rect key="frame" x="92" y="107" width="129" height="21"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstItem="XY3-Di-WtO" firstAttribute="leading" secondItem="zKL-bI-L0J" secondAttribute="trailing" constant="11" id="2r2-0f-Ajj"/>
+                                                <constraint firstItem="XY3-Di-WtO" firstAttribute="leading" secondItem="sZx-Kf-sKH" secondAttribute="leading" constant="92" id="0Rx-Hi-NbI"/>
+                                                <constraint firstItem="XY3-Di-WtO" firstAttribute="centerY" secondItem="zKL-bI-L0J" secondAttribute="centerY" id="6Ac-7Y-3yB"/>
                                                 <constraint firstItem="zKL-bI-L0J" firstAttribute="top" secondItem="aoT-5Z-xOO" secondAttribute="bottom" constant="8" symbolic="YES" id="CjR-Tp-K8E"/>
                                                 <constraint firstItem="aoT-5Z-xOO" firstAttribute="leading" secondItem="sZx-Kf-sKH" secondAttribute="leadingMargin" constant="-7" id="GFX-sj-5NX"/>
-                                                <constraint firstItem="y5W-ck-DO6" firstAttribute="leading" secondItem="sZx-Kf-sKH" secondAttribute="leading" constant="95" id="HyT-a4-nB7"/>
                                                 <constraint firstItem="zKL-bI-L0J" firstAttribute="leading" secondItem="sZx-Kf-sKH" secondAttribute="leadingMargin" id="MWg-l7-dwV"/>
-                                                <constraint firstItem="XY3-Di-WtO" firstAttribute="top" secondItem="y5W-ck-DO6" secondAttribute="bottom" constant="8" symbolic="YES" id="UQt-nc-9p5"/>
-                                                <constraint firstItem="y5W-ck-DO6" firstAttribute="trailing" secondItem="XY3-Di-WtO" secondAttribute="trailing" id="WvQ-oJ-gV4"/>
-                                                <constraint firstItem="XY3-Di-WtO" firstAttribute="leading" secondItem="sZx-Kf-sKH" secondAttribute="leading" constant="95" id="aIQ-9i-9TV"/>
-                                                <constraint firstItem="XY3-Di-WtO" firstAttribute="trailing" secondItem="aoT-5Z-xOO" secondAttribute="trailing" id="aem-6j-m7G"/>
+                                                <constraint firstItem="5EA-0d-jQG" firstAttribute="bottom" secondItem="zKL-bI-L0J" secondAttribute="bottom" id="SbI-kP-eze"/>
+                                                <constraint firstItem="5EA-0d-jQG" firstAttribute="leading" secondItem="XY3-Di-WtO" secondAttribute="leading" id="UId-Kb-ymK"/>
                                                 <constraint firstItem="aoT-5Z-xOO" firstAttribute="top" secondItem="sZx-Kf-sKH" secondAttribute="topMargin" id="fxH-qB-RM1"/>
-                                                <constraint firstAttribute="bottomMargin" secondItem="XY3-Di-WtO" secondAttribute="bottom" constant="17" id="ieZ-Tz-ZT6"/>
-                                                <constraint firstItem="y5W-ck-DO6" firstAttribute="leading" secondItem="XY3-Di-WtO" secondAttribute="leading" id="uuR-wb-y3j"/>
+                                                <constraint firstItem="5EA-0d-jQG" firstAttribute="top" secondItem="XY3-Di-WtO" secondAttribute="bottom" constant="7" id="mYP-Cd-6Ef"/>
+                                                <constraint firstItem="5EA-0d-jQG" firstAttribute="trailing" secondItem="XY3-Di-WtO" secondAttribute="trailing" id="rX5-zU-17Y"/>
+                                                <constraint firstItem="XY3-Di-WtO" firstAttribute="leading" secondItem="zKL-bI-L0J" secondAttribute="trailing" constant="8" symbolic="YES" id="uTY-l8-Im1"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <color key="backgroundColor" red="0.94085192679999996" green="0.94903725390000004" blue="0.95307987930000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -175,7 +170,7 @@
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="Twitter_Logo_Silhouette_512" translatesAutoresizingMaskIntoConstraints="NO" id="Iay-d9-D6m">
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="Chat" translatesAutoresizingMaskIntoConstraints="NO" id="Iay-d9-D6m">
                                                     <rect key="frame" x="8" y="10" width="24" height="24"/>
                                                 </imageView>
                                             </subviews>
@@ -221,7 +216,7 @@
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="Time_planning_512" translatesAutoresizingMaskIntoConstraints="NO" id="SzK-Yu-iJY">
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="Washing" translatesAutoresizingMaskIntoConstraints="NO" id="SzK-Yu-iJY">
                                                     <rect key="frame" x="8" y="10" width="23" height="24"/>
                                                 </imageView>
                                             </subviews>
@@ -268,6 +263,7 @@
                     </tableView>
                     <connections>
                         <outlet property="profileImageView" destination="zKL-bI-L0J" id="Rng-Ik-RkL"/>
+                        <outlet property="temperatureLabel" destination="5EA-0d-jQG" id="bmQ-ex-95d"/>
                         <outlet property="topViewMenu" destination="sZx-Kf-sKH" id="buU-l1-qZ7"/>
                         <outlet property="usernameChatLabel" destination="XY3-Di-WtO" id="h6q-TU-t8u"/>
                     </connections>
@@ -689,10 +685,11 @@
         </scene>
     </scenes>
     <resources>
+        <image name="Chat" width="512" height="512"/>
         <image name="Home_button_512" width="512" height="512"/>
         <image name="Settings_gears_512" width="512" height="512"/>
         <image name="Time_planning_512" width="512" height="512"/>
-        <image name="Twitter_Logo_Silhouette_512" width="512" height="512"/>
+        <image name="Washing" width="512" height="512"/>
         <image name="defaultPic" width="1244" height="1244"/>
         <image name="menu" width="22" height="22"/>
     </resources>
