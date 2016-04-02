@@ -50,6 +50,9 @@ public struct Storyboard {
     
     static let urlProxyWash = "http://www.proxiwash.com/weblaverie/ma-laverie-2?s=cf4f39&16d33a57b3fb9a05d4da88969c71de74=1"
     
+    static let idPlanningExpress = "idPlanningExpress"
+    static let rowPickerViewSettings = "rowPickerViewSettings"
+    
 }
 
 /*

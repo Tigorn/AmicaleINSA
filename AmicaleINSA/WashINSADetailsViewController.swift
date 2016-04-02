@@ -37,9 +37,6 @@ class WashINSADetailsViewController: UIViewController {
     }
     
     func initUI() {
-        remainingTimeLabel.text = machineInfo.remainingTime
-        startLabel.text = machineInfo.startTime
-        endLabel.text = machineInfo.endTime
     }
     
     func initCircularProgressBar(){
@@ -63,7 +60,7 @@ class WashINSADetailsViewController: UIViewController {
     
     override func viewDidAppear(animated: Bool) {
         //circularProgressBar.setValue(76, animateWithDuration: 1)
-        initCircularProgressBar()
+        //initCircularProgressBar()
     }
     
     /*

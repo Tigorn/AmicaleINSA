@@ -16,6 +16,7 @@ target 'AmicaleINSA' do
     pod 'Fuzi', '~> 0.3.0'
     pod 'Charts/Realm'
     pod "MBCircularProgressBar"
+    pod 'MBProgressHUD', '~> 0.9.2'
 end
 
 target 'AmicaleINSATests' do

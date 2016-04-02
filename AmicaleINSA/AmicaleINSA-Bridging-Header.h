@@ -12,5 +12,6 @@
 #import <SVPullToRefresh/SVPullToRefresh.h>
 #import <NYTPhotoViewer/NYTPhoto.h>
 #import <NYTPhotoViewer/NYTPhotosViewController.h>
+#import "MBProgressHUD.h"
 
 #endif /* AmicaleINSA_Bridging_Header_h */

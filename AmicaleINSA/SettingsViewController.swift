@@ -9,13 +9,36 @@
 import UIKit
 import ImagePicker
 import SWRevealViewController
+import MBProgressHUD
 
-class SettingsViewController: UIViewController, UITextFieldDelegate, ImagePickerDelegate {
+class SettingsViewController: UIViewController, UITextFieldDelegate, ImagePickerDelegate, UIPickerViewDataSource, UIPickerViewDelegate {
 
     @IBOutlet weak var menuButton: UIBarButtonItem!
     @IBOutlet weak var usernameChatTextField: UITextField!
     @IBOutlet weak var profileImageView: UIImageView!
     
+    @IBOutlet weak var pickerViewYearsINSA: UIPickerView!
+    
+    var savedMBProgressHUD = MBProgressHUD()
+    
+    var yearsINSA = [("1A - A", "667"),
+                     ("1A - B", "668"),
+                     ("1A - C", "668"),
+                     ("1A - D", "668"),
+                     ("1A - E", "668"),
+                     ("1A - F", "668"),
+                     ("1A - G", "668"),
+                     ("1A - H", "668"),
+                     ("1A - I", "668"),
+                     ("1A - J", "668"),
+                     ("1A - K", "668"),
+                     ("1A - L", "668"),
+                     ("1A - M", "668"),
+                     ("1A - N", "668"),
+                     ("1A - Z", "668"),
+                     ("2A-MIC - A", "668"),
+                     ("2A-MIC - B", "668"),
+                     ("2A-MIC - C", "668")]
     
     let LIMITE_USERNAME_LENGTH = 12
     
@@ -30,10 +53,12 @@ class SettingsViewController: UIViewController, UITextFieldDelegate, ImagePicker
             self.view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
         }
         
+        
         let tapDismissKeyboard: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(SettingsViewController.dismissKeyboard))
         view.addGestureRecognizer(tapDismissKeyboard)
         
         usernameChatTextField.delegate = self
+        pickerViewYearsINSA.delegate = self
         
         usernameChatTextField.layer.cornerRadius = 8.0
         usernameChatTextField.layer.masksToBounds = true
@@ -42,6 +67,9 @@ class SettingsViewController: UIViewController, UITextFieldDelegate, ImagePicker
         
         usernameChatTextField.attributedPlaceholder = NSAttributedString(string: Storyboard.usernameChat, attributes: [NSForegroundColorAttributeName: UIColor(red: 100, green: 0, blue: 0, alpha: 0.4)])
         
+        // pickerView set default row
+        let defautlRowPickerView = NSUserDefaults.standardUserDefaults().integerForKey(Storyboard.rowPickerViewSettings)
+        pickerViewYearsINSA.selectRow(defautlRowPickerView, inComponent: 0, animated: true)
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -54,6 +82,37 @@ class SettingsViewController: UIViewController, UITextFieldDelegate, ImagePicker
         imagePickerController.delegate = self
         self.presentViewController(imagePickerController, animated: true, completion: nil)
     }
+    
+    func numberOfComponentsInPickerView(pickerView: UIPickerView) -> Int {
+        return 1
+    }
+    
+    
+    /*
+        PickerView delegate
+    */
+    
+    func pickerView(pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        return yearsINSA.count
+    }
+    
+    func pickerView(pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        return yearsINSA[row].0
+    }
+    
+    func pickerView(pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        let idPlanningExpress = yearsINSA[row].1
+        NSUserDefaults.standardUserDefaults().setInteger(row, forKey: Storyboard.rowPickerViewSettings)
+        NSUserDefaults.standardUserDefaults().setObject(idPlanningExpress, forKey: Storyboard.idPlanningExpress)
+        savedMBProgressHUD = MBProgressHUD.showHUDAddedTo(self.view, animated: true)
+        savedMBProgressHUD.customView = UIImageView(image: UIImage(named: "37x-Checkmark.png"))
+        savedMBProgressHUD.mode = MBProgressHUDMode.CustomView
+        savedMBProgressHUD.labelText = "Saved!"
+        savedMBProgressHUD.userInteractionEnabled = false
+        savedMBProgressHUD.hide(true, afterDelay: 2)
+    }
+    
+    
     
     func dismissKeyboard() {
         setUsernameChat(usernameChatTextField.text!)

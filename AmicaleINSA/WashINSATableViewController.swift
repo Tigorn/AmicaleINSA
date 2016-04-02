@@ -271,6 +271,11 @@ class WashINSATableViewController: UITableViewController {
                 cell.startEndTimeLabel.text = ""
                 cell.numberMachineLabel.backgroundColor = UIColor.yellowColor()
                 cell.availableInTimeMachineLabel.text = "Quelqu'un vous attend ..."
+            } else if machines[indexInArray].available.containsString("HORS SERVICE") {
+                cell.availabilityMachineLabel.text = "HORS SERVICE"
+                cell.availableInTimeMachineLabel.text = "Disponible je sais pas quand ..."
+                cell.numberMachineLabel.backgroundColor = UIColor.redColor()
+                cell.startEndTimeLabel.text = ""
             }
             else {
                 cell.availabilityMachineLabel.text = "En cours d'utilisation"
@@ -290,6 +295,8 @@ class WashINSATableViewController: UITableViewController {
         }
         return cell
     }
+    
+    
     
     override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         switch section {
