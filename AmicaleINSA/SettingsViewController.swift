@@ -16,29 +16,51 @@ class SettingsViewController: UIViewController, UITextFieldDelegate, ImagePicker
     @IBOutlet weak var menuButton: UIBarButtonItem!
     @IBOutlet weak var usernameChatTextField: UITextField!
     @IBOutlet weak var profileImageView: UIImageView!
+    @IBOutlet weak var yearSpeGroupLabel: UILabel!
+    
     
     @IBOutlet weak var pickerViewYearsINSA: UIPickerView!
     
     var savedMBProgressHUD = MBProgressHUD()
     
-    var yearsINSA = [("1A - A", "667"),
-                     ("1A - B", "668"),
-                     ("1A - C", "668"),
-                     ("1A - D", "668"),
-                     ("1A - E", "668"),
-                     ("1A - F", "668"),
-                     ("1A - G", "668"),
-                     ("1A - H", "668"),
-                     ("1A - I", "668"),
-                     ("1A - J", "668"),
-                     ("1A - K", "668"),
-                     ("1A - L", "668"),
-                     ("1A - M", "668"),
-                     ("1A - N", "668"),
-                     ("1A - Z", "668"),
-                     ("2A-MIC - A", "668"),
-                     ("2A-MIC - B", "668"),
-                     ("2A-MIC - C", "668")]
+    var yearsINSA = [("1A - A", "394"),
+                     ("1A - B", "396"),
+                     ("1A - C", "357"),
+                     ("1A - D", "41"),
+                     ("1A - E", "356"),
+                     ("1A - F", "223"),
+                     ("1A - FAS", "218"),
+                     ("1A - G", "43"),
+                     ("1A - H", "360"),
+                     ("1A - J", "353"),
+                     ("1A - K", "1536"),
+                     ("1A - M", "359"),
+                     ("1A - N", "363"),
+                     ("1A - Z", "45+362"),
+                     ("1A - IBERINSA", "365+681"),
+                     ("2-IC - A", "224"),
+                     ("2-IC - B", "270"),
+                     ("2-IC - C", "435"),
+                     ("2-IC - D", "225"),
+                     ("2-IC - E", "56"),
+                     ("2-IC - FAS", "1489"),
+                     ("2-ICBE - A", "211+213"),
+                     ("2-ICBE - B", "214+219"),
+                     ("2-ICBE - C", "243+249"),
+                     ("2-IMACS - A", "1024+1549"),
+                     ("2-IMACS - B", "1025+1550"),
+                     ("2-IMACS - C", "1022+1551"),
+                     ("2-IMACS - D", "534+535"),
+                     ("3-IC - A", "1321+1322"),
+                     ("3-IC - B", "1324+1325+1037"),
+                     ("3-IC - C", "1327+1328"),
+                     ("3-IC - D", "1330+1331"),
+                     ("3-IC - E", "1335+1336"),
+                     ("3-IC - F", "1339+1340"),
+                     ("3-IC - G", "1459+1457"),
+                     ("3-AGC", "9"),
+                     ("3-IC - A", "1027")
+                     ]
     
     let LIMITE_USERNAME_LENGTH = 12
     
@@ -70,6 +92,13 @@ class SettingsViewController: UIViewController, UITextFieldDelegate, ImagePicker
         // pickerView set default row
         let defautlRowPickerView = NSUserDefaults.standardUserDefaults().integerForKey(Storyboard.rowPickerViewSettings)
         pickerViewYearsINSA.selectRow(defautlRowPickerView, inComponent: 0, animated: true)
+        
+        // Year spe group
+        yearSpeGroupLabel.text = yearsINSA[defautlRowPickerView].0
+        yearSpeGroupLabel.layer.cornerRadius = 8.0
+        yearSpeGroupLabel.layer.masksToBounds = true
+        yearSpeGroupLabel.layer.borderColor = UIColor.redColor().CGColor
+        yearSpeGroupLabel.layer.borderWidth = 2.0
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -102,8 +131,17 @@ class SettingsViewController: UIViewController, UITextFieldDelegate, ImagePicker
     
     func pickerView(pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         let idPlanningExpress = yearsINSA[row].1
+        yearSpeGroupLabel.text = yearsINSA[row].0
         NSUserDefaults.standardUserDefaults().setInteger(row, forKey: Storyboard.rowPickerViewSettings)
         NSUserDefaults.standardUserDefaults().setObject(idPlanningExpress, forKey: Storyboard.idPlanningExpress)
+        savedMBProgressHUDAction()
+    }
+    
+    /*
+        MBProgressHUD
+    */
+    
+    func savedMBProgressHUDAction(){
         savedMBProgressHUD = MBProgressHUD.showHUDAddedTo(self.view, animated: true)
         savedMBProgressHUD.customView = UIImageView(image: UIImage(named: "37x-Checkmark.png"))
         savedMBProgressHUD.mode = MBProgressHUDMode.CustomView
@@ -113,11 +151,15 @@ class SettingsViewController: UIViewController, UITextFieldDelegate, ImagePicker
     }
     
     
+    /*
+        Keyboard delegate
+    */
     
     func dismissKeyboard() {
         setUsernameChat(usernameChatTextField.text!)
         view.endEditing(true)
     }
+
     
     private func initUI() {
         let tapOnProfilePicture = UITapGestureRecognizer(target: self, action: #selector(SettingsViewController.profilePictureSelected))
@@ -156,6 +198,7 @@ class SettingsViewController: UIViewController, UITextFieldDelegate, ImagePicker
     
     func textFieldShouldReturn(textField: UITextField) -> Bool {
         setUsernameChat(usernameChatTextField.text!)
+        savedMBProgressHUDAction()
         view.endEditing(true)
         return true
     }

@@ -417,31 +417,55 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="username" borderStyle="roundedRect" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="b1d-X2-o4W">
-                                <rect key="frame" x="20" y="72" width="560" height="30"/>
+                                <rect key="frame" x="95" y="72" width="485" height="30"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" returnKeyType="done" enablesReturnKeyAutomatically="YES"/>
                             </textField>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="defaultPic" translatesAutoresizingMaskIntoConstraints="NO" id="1MM-8k-9kd">
                                 <rect key="frame" x="237" y="110" width="127" height="135"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="127" id="985-VK-4bq"/>
-                                    <constraint firstAttribute="height" constant="135" id="MVq-0l-Qke"/>
+                                    <constraint firstAttribute="height" constant="135" id="Bq4-8o-C7o"/>
+                                    <constraint firstAttribute="width" constant="127" id="RnY-7I-eF9"/>
                                 </constraints>
                             </imageView>
                             <pickerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="QPo-Pn-EYJ">
                                 <rect key="frame" x="0.0" y="384" width="600" height="216"/>
                             </pickerView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2VF-r0-Xnd">
+                                <rect key="frame" x="20" y="253" width="560" height="28"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="28" id="gEK-Jb-3id"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Pseudo" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="p3m-e3-f5L">
+                                <rect key="frame" x="20" y="72" width="67" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="67" id="pdg-xx-tp8"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="QPo-Pn-EYJ" firstAttribute="centerX" secondItem="1MM-8k-9kd" secondAttribute="centerX" id="1j5-XV-ffC"/>
-                            <constraint firstItem="b1d-X2-o4W" firstAttribute="leading" secondItem="nwU-Xu-8Di" secondAttribute="leadingMargin" id="CA6-UN-2fs"/>
+                            <constraint firstItem="p3m-e3-f5L" firstAttribute="leading" secondItem="nwU-Xu-8Di" secondAttribute="leadingMargin" id="5vS-oN-uNY"/>
+                            <constraint firstItem="p3m-e3-f5L" firstAttribute="leading" secondItem="2VF-r0-Xnd" secondAttribute="leading" id="B8L-25-Exy"/>
+                            <constraint firstItem="b1d-X2-o4W" firstAttribute="top" secondItem="p3m-e3-f5L" secondAttribute="top" id="Cyr-RN-Mny"/>
+                            <constraint firstItem="b1d-X2-o4W" firstAttribute="trailing" secondItem="2VF-r0-Xnd" secondAttribute="trailing" id="Ewy-ht-STo"/>
+                            <constraint firstItem="1MM-8k-9kd" firstAttribute="centerX" secondItem="QPo-Pn-EYJ" secondAttribute="centerX" id="K5q-5T-tFN"/>
                             <constraint firstItem="QPo-Pn-EYJ" firstAttribute="bottom" secondItem="qih-N9-lj8" secondAttribute="top" id="KSn-ha-1J0"/>
-                            <constraint firstItem="1MM-8k-9kd" firstAttribute="centerX" secondItem="b1d-X2-o4W" secondAttribute="centerX" id="S9A-zH-5yS"/>
-                            <constraint firstItem="b1d-X2-o4W" firstAttribute="trailing" secondItem="nwU-Xu-8Di" secondAttribute="trailingMargin" id="Tb7-rC-iCv"/>
+                            <constraint firstItem="b1d-X2-o4W" firstAttribute="leading" secondItem="p3m-e3-f5L" secondAttribute="trailing" constant="8" symbolic="YES" id="PNW-Hh-Pdg"/>
+                            <constraint firstItem="p3m-e3-f5L" firstAttribute="top" secondItem="39J-YS-854" secondAttribute="bottom" constant="8" symbolic="YES" id="Pvn-UA-Guw"/>
+                            <constraint firstItem="2VF-r0-Xnd" firstAttribute="top" secondItem="1MM-8k-9kd" secondAttribute="bottom" constant="8" symbolic="YES" id="QZg-yo-cX1"/>
+                            <constraint firstItem="b1d-X2-o4W" firstAttribute="bottom" secondItem="p3m-e3-f5L" secondAttribute="bottom" id="eup-b6-I5c"/>
+                            <constraint firstItem="1MM-8k-9kd" firstAttribute="centerX" secondItem="2VF-r0-Xnd" secondAttribute="centerX" id="ivs-VB-wbA"/>
                             <constraint firstItem="QPo-Pn-EYJ" firstAttribute="leading" secondItem="nwU-Xu-8Di" secondAttribute="leading" id="kt5-ae-ZrM"/>
-                            <constraint firstItem="1MM-8k-9kd" firstAttribute="top" secondItem="b1d-X2-o4W" secondAttribute="bottom" constant="8" symbolic="YES" id="lUK-V4-EV2"/>
-                            <constraint firstItem="b1d-X2-o4W" firstAttribute="top" secondItem="39J-YS-854" secondAttribute="bottom" constant="8" symbolic="YES" id="ynH-cR-Rxa"/>
+                            <constraint firstItem="b1d-X2-o4W" firstAttribute="trailing" secondItem="nwU-Xu-8Di" secondAttribute="trailingMargin" id="py3-h3-xAS"/>
+                            <constraint firstItem="1MM-8k-9kd" firstAttribute="top" secondItem="b1d-X2-o4W" secondAttribute="bottom" constant="8" symbolic="YES" id="ycJ-YL-bFE"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="iqe-QW-NIT">
@@ -454,6 +478,7 @@
                         <outlet property="pickerViewYearsINSA" destination="QPo-Pn-EYJ" id="Nrl-Ig-cdY"/>
                         <outlet property="profileImageView" destination="1MM-8k-9kd" id="MN7-ac-59j"/>
                         <outlet property="usernameChatTextField" destination="b1d-X2-o4W" id="Hon-IR-W1U"/>
+                        <outlet property="yearSpeGroupLabel" destination="2VF-r0-Xnd" id="PtM-rz-fyc"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ZQ7-Ba-JP4" userLabel="First Responder" sceneMemberID="firstResponder"/>
