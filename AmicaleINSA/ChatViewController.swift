@@ -96,7 +96,10 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
         collectionView!.collectionViewLayout.outgoingAvatarViewSize = CGSizeZero
         
         messageRef = FirebaseManager.firebaseManager.createMessageRef()
+        // #Test: before: automaticallyScrollsToMostRecentMessage = false, and no scrollToBottomAnimated
+        //automaticallyScrollsToMostRecentMessage = true
         automaticallyScrollsToMostRecentMessage = false
+        //self.scrollToBottomAnimated(true)
         
         collectionView!.addInfiniteScrollingWithActionHandler( { () -> Void in
             self.loadMoreMessages()
@@ -108,6 +111,7 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
         
         self.inputToolbar?.contentView?.leftBarButtonItemWidth = 30
     }
+    
     
     func dismissKeyboardFromMenu(ViewController:MenuController) {
         inputToolbar?.contentView?.textView?.resignFirstResponder()

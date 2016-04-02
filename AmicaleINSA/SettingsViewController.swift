@@ -137,10 +137,12 @@ class SettingsViewController: UIViewController, UITextFieldDelegate, ImagePicker
     
     func pickerView(pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         let idPlanningExpress = yearsINSA[row].1
-        yearSpeGroupLabel.text = yearsINSA[row].0
+        let yearSpeGroupString = yearsINSA[row].0
+        yearSpeGroupLabel.text = yearSpeGroupString
         NSUserDefaults.standardUserDefaults().setInteger(row, forKey: Storyboard.rowPickerViewSettings)
         savedMBProgressHUDAction()
         setIDPlanningExpress(idPlanningExpress)
+        setYearSpeGroupPlanningExpress(yearSpeGroupString)
     }
     
     /*
