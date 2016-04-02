@@ -35,11 +35,16 @@ class WebPlanningViewController: UIViewController, UIWebViewDelegate, UIScrollVi
         self.webView.delegate = self
         self.webView.scrollView.delegate = self
         
-        ActualBarButtonItem.title = "4-Info-TD-B"
         weekNumberToday = getWeekNumber()
         let url = NSURL(string: getUrlPlanning(weekNumberToday))
         let request = NSURLRequest(URL: url!)
         webView.loadRequest(request)
+        
+        initUI()
+    }
+    
+    func initUI(){
+        ActualBarButtonItem.title = getYearSpeGroupPlanningExpress()
     }
     
     
@@ -263,11 +268,14 @@ class WebPlanningViewController: UIViewController, UIWebViewDelegate, UIScrollVi
     }
     
     
-    
     func getUrlPlanning(weekNumber: Int) -> String {
-        let IDWebPlanning = "1722+1723"
-        print("https://www.etud.insa-toulouse.fr/planning/index.php?gid=\(IDWebPlanning)&wid=\(weekNumber)&platform=ios")
-        return "https://www.etud.insa-toulouse.fr/planning/index.php?gid=\(IDWebPlanning)&wid=\(weekNumber)&platform=ios"
+        let IDWebPlanning = getIDPlanningExpress()
+        if IDWebPlanning == "" {
+            return "http://apple.com/"
+        } else {
+            print("https://www.etud.insa-toulouse.fr/planning/index.php?gid=\(IDWebPlanning)&wid=\(weekNumber)&platform=ios")
+            return "https://www.etud.insa-toulouse.fr/planning/index.php?gid=\(IDWebPlanning)&wid=\(weekNumber)&platform=ios"
+        }
     }
     
     func getWeekNumber() -> Int {

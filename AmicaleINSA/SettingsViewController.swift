@@ -51,6 +51,10 @@ class SettingsViewController: UIViewController, UITextFieldDelegate, ImagePicker
                      ("2-IMACS - B", "1025+1550"),
                      ("2-IMACS - C", "1022+1551"),
                      ("2-IMACS - D", "534+535"),
+                     ("2-MIC - A", "1027"),
+                     ("2-MIC - B", "1030"),
+                     ("2-MIC - C", "1031"),
+                     ("2-MIC - D", "1028"),
                      ("3-IC - A", "1321+1322"),
                      ("3-IC - B", "1324+1325+1037"),
                      ("3-IC - C", "1327+1328"),
@@ -59,7 +63,9 @@ class SettingsViewController: UIViewController, UITextFieldDelegate, ImagePicker
                      ("3-IC - F", "1339+1340"),
                      ("3-IC - G", "1459+1457"),
                      ("3-AGC", "9"),
-                     ("3-IC - A", "1027")
+                     ("4-IR-I - A", "1720+1721"),
+                     ("4-IR-I - B", "1720+1721"),
+                     ("4-IR-RT - A", "1724+1725")
                      ]
     
     let LIMITE_USERNAME_LENGTH = 12
@@ -133,8 +139,8 @@ class SettingsViewController: UIViewController, UITextFieldDelegate, ImagePicker
         let idPlanningExpress = yearsINSA[row].1
         yearSpeGroupLabel.text = yearsINSA[row].0
         NSUserDefaults.standardUserDefaults().setInteger(row, forKey: Storyboard.rowPickerViewSettings)
-        NSUserDefaults.standardUserDefaults().setObject(idPlanningExpress, forKey: Storyboard.idPlanningExpress)
         savedMBProgressHUDAction()
+        setIDPlanningExpress(idPlanningExpress)
     }
     
     /*

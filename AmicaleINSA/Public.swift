@@ -52,7 +52,9 @@ public struct Storyboard {
     static let urlProxyWash = "http://www.proxiwash.com/weblaverie/ma-laverie-2?s=cf4f39&16d33a57b3fb9a05d4da88969c71de74=1"
     static let urlWeatherToulouse = "https://api.forecast.io/forecast/5877c3394948db03ae04471da46fde3c/43.5722715,1.4687831"
     
+    // Planning Express
     static let idPlanningExpress = "idPlanningExpress"
+    static let yearSpeGroupPlanningExpress = "yearSpeGroupPlanningExpress"
     static let rowPickerViewSettings = "rowPickerViewSettings"
     
     // Weather
@@ -83,6 +85,42 @@ public func setUsernameChat(username: String) {
 
 public func getUsernameChat() -> String {
     return NSUserDefaults.standardUserDefaults().stringForKey(Storyboard.usernameChat)!
+}
+
+/*
+    Planning Express
+ */
+
+private func _returnDefaultIDPlanningExpress() -> String {
+    return "394"
+}
+
+private func _returnDefaultYearSpeGroupPlanningExpress() -> String {
+    return "1A - A"
+}
+
+public func getIDPlanningExpress() -> String {
+    if let idPlanningExpress = NSUserDefaults.standardUserDefaults().stringForKey(Storyboard.idPlanningExpress) {
+        return idPlanningExpress
+    } else {
+        return _returnDefaultIDPlanningExpress()
+    }
+}
+
+public func setIDPlanningExpress(id: String) {
+    NSUserDefaults.standardUserDefaults().setObject(id, forKey: Storyboard.idPlanningExpress)
+}
+
+public func getYearSpeGroupPlanningExpress() -> String {
+    if let yearSpeGroup = NSUserDefaults.standardUserDefaults().stringForKey(Storyboard.yearSpeGroupPlanningExpress) {
+        return yearSpeGroup
+    } else {
+        return _returnDefaultYearSpeGroupPlanningExpress()
+    }
+}
+
+public func setYearSpeGroupPlanningExpress(yearSpeGroup:String){
+    NSUserDefaults.standardUserDefaults().setObject(yearSpeGroup, forKey: Storyboard.yearSpeGroupPlanningExpress)
 }
 
 /*
