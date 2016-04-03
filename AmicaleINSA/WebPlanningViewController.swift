@@ -233,15 +233,23 @@ class WebPlanningViewController: UIViewController, UIWebViewDelegate, UIScrollVi
         return CGFloat(dayValueOffset)
     }
     
+    func getDayOfWeekSimple() -> String {
+        let date = NSDate()
+        let dateFormatter = NSDateFormatter()
+        dateFormatter.dateFormat = "EEEE"
+        let dayOfWeekString = dateFormatter.stringFromDate(date)
+        return dayOfWeekString
+    }
     
     func getDayOfWeek() -> String{
         var date = NSDate()
-        if shouldGoTomorrow() {
+        if shouldGoTomorrow() && getDayOfWeekSimple() != "Sunday" && getDayOfWeekSimple() != "dimanche" {
             date = date.addDays(1)
         }
         let dateFormatter = NSDateFormatter()
         dateFormatter.dateFormat = "EEEE"
         let dayOfWeekString = dateFormatter.stringFromDate(date)
+        
         return dayOfWeekString
     }
     
@@ -282,6 +290,7 @@ class WebPlanningViewController: UIViewController, UIWebViewDelegate, UIScrollVi
         let calender = NSCalendar.currentCalendar()
         let dateComponent = calender.component(NSCalendarUnit.WeekOfYear, fromDate: NSDate())
         let dayOfWeek = getDayOfWeek()
+        print("dayOfWeek = \(dayOfWeek)")
         if (dayOfWeek == "Saturday" || dayOfWeek == "samedi" || dayOfWeek == "Sunday" || dayOfWeek == "dimanche"){
             return dateComponent + 1
         } else {

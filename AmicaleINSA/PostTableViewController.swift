@@ -165,7 +165,7 @@ class PostTableViewController: UITableViewController {
             let colorForBorder = UIColor.blackColor()
             cell.postImageView.image = posts[section].image
             cell.postImageView.contentMode = .ScaleAspectFill
-            cell.postImageView.tag = indexPath.row
+            cell.postImageView.tag = section
             cell.textPostLabel.text = posts[section].description
             cell.selectionStyle = UITableViewCellSelectionStyle.None
             cell.titlePostLabel.text = posts[section].title
@@ -190,9 +190,12 @@ class PostTableViewController: UITableViewController {
     
     func imageTapped(img: AnyObject)
     {
-        let tag = posts.count-(img.view?.tag)!-1
-        print("image clicked, tag = \(img.view?.tag)")
-        let image = posts[tag].image
+        // verifier la logique de ça, peut être simplement mettre directement tag !
+        //let tag = posts.count-(img.view?.tag)!-1
+        let tag = img.view?.tag
+        print("image clicked, tag = \(tag)")
+        let image = posts[tag!].image
+        print("ici c'est ok ")
         let photo = Photo(photo: image!)
         let viewer = NYTPhotosViewController(photos: [photo])
         presentViewController(viewer, animated: true, completion: nil)
