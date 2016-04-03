@@ -58,8 +58,10 @@ class MenuController: UITableViewController {
             let navVc = segue.destinationViewController as! UINavigationController
             let chatVc = navVc.viewControllers.first as! ChatViewController
             let uuid = UIDevice.currentDevice().identifierForVendor!.UUIDString
-            let rand = Int(arc4random_uniform(UInt32(100)))
-            chatVc.senderId = "\(uuid.md5())\(rand)"
+            //let rand = Int(arc4random_uniform(UInt32(100)))
+            //chatVc.senderId = "\(uuid.md5())\(rand)"
+            //chatVc.senderId = getUsernameChat()
+            chatVc.senderId = "\(uuid.md5())"
             chatVc.senderDisplayName = getUsernameChat()
             print(chatVc.senderDisplayName)
             delegate = chatVc

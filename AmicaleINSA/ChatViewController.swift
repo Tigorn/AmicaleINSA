@@ -101,6 +101,8 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
         automaticallyScrollsToMostRecentMessage = false
         //self.scrollToBottomAnimated(true)
         
+        Configuration.doneButtonTitle = "Send"
+        
         collectionView!.addInfiniteScrollingWithActionHandler( { () -> Void in
             self.loadMoreMessages()
             }, direction: UInt(SVInfiniteScrollingDirectionTop) )
@@ -159,7 +161,7 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
                 if isMedia {
                     let base64EncodedString = snapshot.value["image"] as! String
                     let imageData = NSData(base64EncodedString: base64EncodedString,
-                        options: NSDataBase64DecodingOptions.IgnoreUnknownCharacters)
+                                           options: NSDataBase64DecodingOptions.IgnoreUnknownCharacters)
                     let mediaMessageData: JSQPhotoMediaItem = JSQPhotoMediaItem(image: UIImage(data: imageData!))
                     print("Length")
                     print(imageData?.length)
@@ -180,10 +182,10 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
     }
     
     override func didPressSendButton(button: UIButton!, withMessageText text: String!, senderId: String!,
-        senderDisplayName: String!, date: NSDate!) {
-            FirebaseManager.firebaseManager.sendMessage(text, senderId: senderId, senderDisplayName: senderDisplayName, date: date, image: "", isMedia: false)
-            finishSendingMessage()
-            isTyping = false
+                                     senderDisplayName: String!, date: NSDate!) {
+        FirebaseManager.firebaseManager.sendMessage(text, senderId: senderId, senderDisplayName: senderDisplayName, date: date, image: "", isMedia: false)
+        finishSendingMessage()
+        isTyping = false
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -254,7 +256,7 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
                 if isMedia {
                     let base64EncodedString = snapshot.value["image"] as! String
                     let imageData = NSData(base64EncodedString: base64EncodedString,
-                        options: NSDataBase64DecodingOptions.IgnoreUnknownCharacters)
+                                           options: NSDataBase64DecodingOptions.IgnoreUnknownCharacters)
                     let mediaMessageData: JSQPhotoMediaItem = JSQPhotoMediaItem(image: UIImage(data: imageData!))
                     self.addMessage(id, media: mediaMessageData, senderDisplayName: senderDisplayName, date: date)
                 } else {
@@ -306,37 +308,42 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
     }
     
     override func collectionView(collectionView: JSQMessagesCollectionView!,
-        messageBubbleImageDataForItemAtIndexPath indexPath: NSIndexPath!) -> JSQMessageBubbleImageDataSource! {
-            let message = messages[indexPath.item] // 1
-            if message.senderId == senderId { // 2
-                return outgoingBubbleImageView
-            } else { // 3
-                return incomingBubbleImageView
-            }
+                                 messageBubbleImageDataForItemAtIndexPath indexPath: NSIndexPath!) -> JSQMessageBubbleImageDataSource! {
+        let message = messages[indexPath.item]
+        //        if message.senderDisplayName == senderDisplayName {
+        //            return outgoingBubbleImageView
+        //        } else {
+        //            return incomingBubbleImageView
+        //        }
+        if message.senderId == senderId {
+            return outgoingBubbleImageView
+        } else {
+            return incomingBubbleImageView
+        }
     }
     
     
     
     override func collectionView(collectionView: UICollectionView,
-        cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-            let cell = super.collectionView(collectionView, cellForItemAtIndexPath: indexPath)
-                as! JSQMessagesCollectionViewCell
-            let message = messages[indexPath.item]
-            if message.isMediaMessage == false {
-                if message.senderId == senderId {
-                    cell.textView!.textColor = UIColor.whiteColor()
-                } else {
-                    cell.textView!.textColor = UIColor.blackColor()
-                }
+                                 cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
+        let cell = super.collectionView(collectionView, cellForItemAtIndexPath: indexPath)
+            as! JSQMessagesCollectionViewCell
+        let message = messages[indexPath.item]
+        if message.isMediaMessage == false {
+            if message.senderId == senderId {
+                cell.textView!.textColor = UIColor.whiteColor()
             } else {
-                //cell.mediaView?.contentMode = .ScaleAspectFill
+                cell.textView!.textColor = UIColor.blackColor()
             }
-            return cell
+        } else {
+            //cell.mediaView?.contentMode = .ScaleAspectFill
+        }
+        return cell
     }
     
     override func collectionView(collectionView: JSQMessagesCollectionView!,
-        avatarImageDataForItemAtIndexPath indexPath: NSIndexPath!) -> JSQMessageAvatarImageDataSource! {
-            return nil
+                                 avatarImageDataForItemAtIndexPath indexPath: NSIndexPath!) -> JSQMessageAvatarImageDataSource! {
+        return nil
     }
     
     override func collectionView(collectionView: JSQMessagesCollectionView!, attributedTextForMessageBubbleTopLabelAtIndexPath indexPath: NSIndexPath!) -> NSAttributedString!
@@ -366,13 +373,13 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
     }
     
     override func collectionView(collectionView: JSQMessagesCollectionView!,
-        messageDataForItemAtIndexPath indexPath: NSIndexPath!) -> JSQMessageData! {
-            return messages[indexPath.item]
+                                 messageDataForItemAtIndexPath indexPath: NSIndexPath!) -> JSQMessageData! {
+        return messages[indexPath.item]
     }
     
     override func collectionView(collectionView: UICollectionView,
-        numberOfItemsInSection section: Int) -> Int {
-            return messages.count
+                                 numberOfItemsInSection section: Int) -> Int {
+        return messages.count
     }
     
     private func setupBubbles() {
