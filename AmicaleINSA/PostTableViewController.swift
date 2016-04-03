@@ -64,17 +64,17 @@ class PostTableViewController: UITableViewController {
     override func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return 15
     }
-
-//    override func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-//        let headerView = UIView()
-//        if section == 0 {
-//            return headerView
-//        } else {
-//            headerView.backgroundColor = UIColor.lightGrayColor()
-//            headerView.alpha = 0.75
-//            return headerView
-//        }
-//    }
+    
+    //    override func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+    //        let headerView = UIView()
+    //        if section == 0 {
+    //            return headerView
+    //        } else {
+    //            headerView.backgroundColor = UIColor.lightGrayColor()
+    //            headerView.alpha = 0.75
+    //            return headerView
+    //        }
+    //    }
     
     override func tableView(tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
         
@@ -95,26 +95,33 @@ class PostTableViewController: UITableViewController {
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
-        let cell = tableView.dequeueReusableCellWithIdentifier("cell_image", forIndexPath: indexPath) as! PostWithImageTableViewCell
-        //let image = UIImage(named: "Amicalifornie")
-        let image = UIImage(named: arrayImage[indexPath.row%2])
-        let colorForBorder = UIColor.blackColor()
-        cell.postImageView.image = image
-        cell.postImageView.contentMode = .ScaleAspectFill
-        cell.postImageView.tag = indexPath.row
-        cell.textPostLabel.text = text1
-        cell.selectionStyle = UITableViewCellSelectionStyle.None
-        cell.titlePostLabel.text = text2
-        
-        cell.postImageView.layer.cornerRadius = 10.0;
-        cell.postImageView.layer.borderWidth = 0.5
-        cell.postImageView.clipsToBounds = true
-        cell.postImageView.layer.borderColor = colorForBorder.CGColor
-        
-        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action:#selector(PostTableViewController.imageTapped(_:)))
-        cell.postImageView.userInteractionEnabled = true
-        cell.postImageView.addGestureRecognizer(tapGestureRecognizer)
-        return cell
+        let section = indexPath.section
+        if section == 0 || section == 2 {
+            let cell = tableView.dequeueReusableCellWithIdentifier("cell_image", forIndexPath: indexPath) as! PostWithImageTableViewCell
+            let image = UIImage(named: arrayImage[indexPath.row%2])
+            let colorForBorder = UIColor.blackColor()
+            cell.postImageView.image = image
+            cell.postImageView.contentMode = .ScaleAspectFill
+            cell.postImageView.tag = indexPath.row
+            cell.textPostLabel.text = text1
+            cell.selectionStyle = UITableViewCellSelectionStyle.None
+            cell.titlePostLabel.text = text2
+            
+            cell.postImageView.layer.cornerRadius = 10.0;
+            cell.postImageView.layer.borderWidth = 0.5
+            cell.postImageView.clipsToBounds = true
+            cell.postImageView.layer.borderColor = colorForBorder.CGColor
+            
+            let tapGestureRecognizer = UITapGestureRecognizer(target: self, action:#selector(PostTableViewController.imageTapped(_:)))
+            cell.postImageView.userInteractionEnabled = true
+            cell.postImageView.addGestureRecognizer(tapGestureRecognizer)
+            return cell
+        } else {
+            let cell = tableView.dequeueReusableCellWithIdentifier("cell_no_image", forIndexPath: indexPath) as! PostWithoutImageTableViewCell
+            cell.textPostLabel.text = text2
+            cell.selectionStyle = UITableViewCellSelectionStyle.None
+            return cell
+        }
     }
     
     func imageTapped(img: AnyObject)
