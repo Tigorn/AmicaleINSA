@@ -25,6 +25,10 @@ class FirebaseManager {
         return BASE_REF.childByAppendingPath("messages")
     }
     
+    func createPostRef() -> Firebase {
+        return BASE_REF.childByAppendingPath("posts")
+    }
+    
     func sendMessage(text: String, senderId: String, senderDisplayName: String,
         date: NSDate, image: NSString, isMedia: Bool) {
             let dateTimestamp = date.timeIntervalSince1970

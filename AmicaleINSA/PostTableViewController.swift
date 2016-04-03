@@ -9,6 +9,7 @@
 import UIKit
 import NYTPhotoViewer
 import SWRevealViewController
+import Firebase
 
 class PostTableViewController: UITableViewController {
     
@@ -18,7 +19,21 @@ class PostTableViewController: UITableViewController {
     
     let arrayImage = ["image2", "image3"]
     
+    struct post {
+        var title: String
+        var description : String
+        var date: String
+        var author: String
+        var imagePresents: Bool
+        var image: UIImage?
+    }
+    
+    var posts = [post]()
+    
+    var postRef: Firebase!
+    
     @IBOutlet weak var menuButton: UIBarButtonItem!
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -29,8 +44,14 @@ class PostTableViewController: UITableViewController {
             self.view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
         }
         
+        initApp()
+        
+        postRef = FirebaseManager.firebaseManager.createPostRef()
+        
         tableView.estimatedRowHeight = 405
         tableView.rowHeight = UITableViewAutomaticDimension
+        
+        obversePosts()
         
         
         // Uncomment the following line to preserve selection between presentations
@@ -39,6 +60,42 @@ class PostTableViewController: UITableViewController {
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem()
     }
+    
+    func obversePosts(){
+        
+        postRef.observeEventType(.ChildAdded, withBlock: { snapshot in
+            let title = snapshot.value.objectForKey("title") as! String
+            let description = snapshot.value.objectForKey("description") as! String
+            let author = snapshot.value.objectForKey("author") as! String
+            let date = snapshot.value.objectForKey("date") as! String
+            let imagePresents = snapshot.value.objectForKey("imagePresents") as! Bool
+            let imageData = snapshot.value.objectForKey("imageData") as! String
+            
+            if imagePresents {
+                print("image present")
+                let base64EncodedString = imageData
+                let imageData = NSData(base64EncodedString: base64EncodedString,
+                    options: NSDataBase64DecodingOptions.IgnoreUnknownCharacters)
+                let image = UIImage(data: imageData!)
+                self.posts.insert(post(title: title, description: description, date: date, author: author, imagePresents: true, image: image!), atIndex:0)
+            } else {
+                self.posts.insert(post(title: title, description: description, date: date, author: author, imagePresents: false, image: nil), atIndex:0)
+                print("image no present")
+            }
+            print(snapshot.value.objectForKey("author")!)
+            print(snapshot.value.objectForKey("title")!)
+            print(snapshot.value.objectForKey("description")!)
+            print(snapshot.value.objectForKey("imagePresents")!)
+            /*
+             let base64EncodedString = snapshot.value["image"] as! String
+             let imageData = NSData(base64EncodedString: base64EncodedString,
+             options: NSDataBase64DecodingOptions.IgnoreUnknownCharacters)
+             */
+            
+            self.tableView.reloadData()
+        })
+    }
+
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -53,7 +110,8 @@ class PostTableViewController: UITableViewController {
     
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
-        return 4
+        print("posts.count = \(posts.count)")
+        return posts.count
     }
     
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -62,7 +120,7 @@ class PostTableViewController: UITableViewController {
     }
     
     override func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 15
+        return 16
     }
     
     //    override func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
@@ -86,26 +144,31 @@ class PostTableViewController: UITableViewController {
     }
     
     override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        if section == 0 {
-            return "01/01/2016"
-        } else {
-            return "02/01/2016"
-        }
+//        if section == 0 {
+//            return "01/01/2016"
+//        } else {
+//            return "02/01/2016"
+//        }
+        return posts[section].date
     }
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
         let section = indexPath.section
-        if section == 0 || section == 2 {
+        //let row = indexPath.row
+        let imagePresents = posts[section].imagePresents
+        
+        if imagePresents {
             let cell = tableView.dequeueReusableCellWithIdentifier("cell_image", forIndexPath: indexPath) as! PostWithImageTableViewCell
-            let image = UIImage(named: arrayImage[indexPath.row%2])
+            //let image = UIImage(named: arrayImage[indexPath.row%2])
+            
             let colorForBorder = UIColor.blackColor()
-            cell.postImageView.image = image
+            cell.postImageView.image = posts[section].image
             cell.postImageView.contentMode = .ScaleAspectFill
             cell.postImageView.tag = indexPath.row
-            cell.textPostLabel.text = text1
+            cell.textPostLabel.text = posts[section].description
             cell.selectionStyle = UITableViewCellSelectionStyle.None
-            cell.titlePostLabel.text = text2
+            cell.titlePostLabel.text = posts[section].title
             
             cell.postImageView.layer.cornerRadius = 10.0;
             cell.postImageView.layer.borderWidth = 0.5
@@ -118,7 +181,8 @@ class PostTableViewController: UITableViewController {
             return cell
         } else {
             let cell = tableView.dequeueReusableCellWithIdentifier("cell_no_image", forIndexPath: indexPath) as! PostWithoutImageTableViewCell
-            cell.textPostLabel.text = text2
+            cell.titlePostLabel.text = posts[section].title
+            cell.textPostLabel.text = posts[section].description
             cell.selectionStyle = UITableViewCellSelectionStyle.None
             return cell
         }
@@ -126,17 +190,12 @@ class PostTableViewController: UITableViewController {
     
     func imageTapped(img: AnyObject)
     {
+        let tag = posts.count-(img.view?.tag)!-1
         print("image clicked, tag = \(img.view?.tag)")
-        let photo = Photo(photo: UIImage(named:arrayImage[(img.view?.tag)!%2])!)
+        let image = posts[tag].image
+        let photo = Photo(photo: image!)
         let viewer = NYTPhotosViewController(photos: [photo])
         presentViewController(viewer, animated: true, completion: nil)
-        //        if let image = img as? UIImageView {
-        //            let photo = Photo(photo: image.image!)
-        //            let viewer = NYTPhotosViewController(photos: [photo])
-        //            presentViewController(viewer, animated: true, completion: nil)
-        //        } else {
-        //            print("this is not an UIImageView")
-        //        }
     }
     
     
