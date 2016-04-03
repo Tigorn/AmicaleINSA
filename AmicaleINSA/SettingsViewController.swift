@@ -189,7 +189,8 @@ class SettingsViewController: UIViewController, UITextFieldDelegate, ImagePicker
     }
     
     func doneButtonDidPress(images: [UIImage]) {
-        let pickedImage = images[0].imageRotatedByDegrees(90, flip: false)
+        //let pickedImage = images[0].imageRotatedByDegrees(90, flip: false)
+        let pickedImage = images[0]
         profileImageView.image = pickedImage
         setProfilPicture(pickedImage)
         dismissViewControllerAnimated(true, completion: nil)
