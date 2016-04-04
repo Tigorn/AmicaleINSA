@@ -64,7 +64,7 @@ class SettingsViewController: UIViewController, UITextFieldDelegate, ImagePicker
                      ("3-IC - G", "1459+1457"),
                      ("3-AGC", "9"),
                      ("4-IR-I - A", "1720+1721"),
-                     ("4-IR-I - B", "1720+1721"),
+                     ("4-IR-I - B", "1722+1723"),
                      ("4-IR-RT - A", "1724+1725")
                      ]
     
