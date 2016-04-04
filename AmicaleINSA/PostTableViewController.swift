@@ -71,7 +71,8 @@ class PostTableViewController: UITableViewController {
         postRef.observeEventType(.ChildAdded, withBlock: { snapshot in
             if !SwiftSpinnerAlreadyHidden {
                 SwiftSpinnerAlreadyHidden = true
-                MBProgressHUD.hideAllHUDsForView(self.appDelegate.window, animated: true)
+                //MBProgressHUD.hideAllHUDsForView(self.appDelegate.window, animated: true)
+                MBProgressHUD.hideAllHUDsForView(self.navigationController?.view, animated: true)
             }
             var titleString = ""
             var descriptionString = ""
@@ -227,9 +228,15 @@ class PostTableViewController: UITableViewController {
     }
     
     func initActivityIndicator() {
-        let myActivityIndicatorHUD = MBProgressHUD.showHUDAddedTo(appDelegate.window, animated: true)
+        let myActivityIndicatorHUD = MBProgressHUD.showHUDAddedTo(self.navigationController?.view, animated: true)
         myActivityIndicatorHUD.mode = MBProgressHUDMode.Indeterminate
         myActivityIndicatorHUD.labelText = "Loading..."
+        myActivityIndicatorHUD.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(PostTableViewController.tapToCancel)))
+    }
+    
+    func tapToCancel(){
+        print("cancel tap")
+        MBProgressHUD.hideAllHUDsForView(self.navigationController?.view, animated: true)
     }
     
     func imageTapped(img: AnyObject)
