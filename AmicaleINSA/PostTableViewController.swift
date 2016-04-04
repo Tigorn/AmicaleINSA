@@ -10,6 +10,7 @@ import UIKit
 import NYTPhotoViewer
 import SWRevealViewController
 import Firebase
+import SwiftSpinner
 
 class PostTableViewController: UITableViewController {
     
@@ -62,8 +63,15 @@ class PostTableViewController: UITableViewController {
     }
     
     func obversePosts(){
-        
+        SwiftSpinner.show("Connexion \nen cours...").addTapHandler({
+            SwiftSpinner.hide()
+        })
+        var SwiftSpinnerAlreadyHidden = false
         postRef.observeEventType(.ChildAdded, withBlock: { snapshot in
+            if !SwiftSpinnerAlreadyHidden {
+                SwiftSpinnerAlreadyHidden = true
+                SwiftSpinner.hide()
+            }
             let title = snapshot.value.objectForKey("title") as! String
             let description = snapshot.value.objectForKey("description") as! String
             let author = snapshot.value.objectForKey("author") as! String
