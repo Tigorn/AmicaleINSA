@@ -72,22 +72,50 @@ class PostTableViewController: UITableViewController {
                 SwiftSpinnerAlreadyHidden = true
                 SwiftSpinner.hide()
             }
-            let title = snapshot.value.objectForKey("title") as! String
-            let description = snapshot.value.objectForKey("description") as! String
-            let author = snapshot.value.objectForKey("author") as! String
-            let date = snapshot.value.objectForKey("date") as! String
-            let imagePresents = snapshot.value.objectForKey("imagePresents") as! Bool
-            let imageData = snapshot.value.objectForKey("imageData") as! String
+            var titleString = ""
+            var descriptionString = ""
+            var authorString = ""
+            var dateString = ""
+            var imagePresentsBool = false
+            var imageDataString = ""
+            //let title = snapshot.value.objectForKey("title") as! String
+            if let title = snapshot.value.objectForKey("title") as? String {
+                titleString = title
+            }
+            //let description = snapshot.value.objectForKey("description") as! String
+            if let description = snapshot.value.objectForKey("description") as? String {
+                descriptionString = description
+            }
+            //let author = snapshot.value.objectForKey("author") as! String
+            if let author = snapshot.value.objectForKey("author") as? String {
+                authorString = author
+            }
+            //let date = snapshot.value.objectForKey("date") as! String
+            if let date = snapshot.value.objectForKey("date") as? String {
+                dateString = date
+            }
+            //let imagePresents = snapshot.value.objectForKey("imagePresents") as! Bool
+            if let imagePresents = snapshot.value.objectForKey("imagePresents") as? Bool {
+                imagePresentsBool = imagePresents
+            }
+            //let imageData = snapshot.value.objectForKey("imageData") as! String
+            if let imageData = snapshot.value.objectForKey("imageData") as? String {
+                imageDataString = imageData
+            }
             
-            if imagePresents {
+            if imagePresentsBool {
                 print("image present")
-                let base64EncodedString = imageData
-                let imageData = NSData(base64EncodedString: base64EncodedString,
-                    options: NSDataBase64DecodingOptions.IgnoreUnknownCharacters)
-                let image = UIImage(data: imageData!)
-                self.posts.insert(post(title: title, description: description, date: date, author: author, imagePresents: true, image: image!), atIndex:0)
+                let base64EncodedString = imageDataString
+                if let imageData = NSData(base64EncodedString: base64EncodedString,
+                    options: NSDataBase64DecodingOptions.IgnoreUnknownCharacters) {
+                    let image = UIImage(data: imageData)
+                    self.posts.insert(post(title: titleString, description: descriptionString, date: dateString, author: authorString, imagePresents: true, image: image!), atIndex:0)
+                } else {
+                    self.posts.insert(post(title: titleString, description: descriptionString, date: dateString, author: authorString, imagePresents: false, image: nil), atIndex:0)
+                    print("image no present, imageData bug!")
+                }
             } else {
-                self.posts.insert(post(title: title, description: description, date: date, author: author, imagePresents: false, image: nil), atIndex:0)
+                self.posts.insert(post(title: titleString, description: descriptionString, date: dateString, author: authorString, imagePresents: false, image: nil), atIndex:0)
                 print("image no present")
             }
             print(snapshot.value.objectForKey("author")!)
@@ -103,7 +131,7 @@ class PostTableViewController: UITableViewController {
             self.tableView.reloadData()
         })
     }
-
+    
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -152,11 +180,11 @@ class PostTableViewController: UITableViewController {
     }
     
     override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-//        if section == 0 {
-//            return "01/01/2016"
-//        } else {
-//            return "02/01/2016"
-//        }
+        //        if section == 0 {
+        //            return "01/01/2016"
+        //        } else {
+        //            return "02/01/2016"
+        //        }
         return posts[section].date
     }
     
@@ -198,15 +226,16 @@ class PostTableViewController: UITableViewController {
     
     func imageTapped(img: AnyObject)
     {
-        // verifier la logique de ça, peut être simplement mettre directement tag !
-        //let tag = posts.count-(img.view?.tag)!-1
-        let tag = img.view?.tag
-        print("image clicked, tag = \(tag)")
-        let image = posts[tag!].image
-        print("ici c'est ok ")
-        let photo = Photo(photo: image!)
-        let viewer = NYTPhotosViewController(photos: [photo])
-        presentViewController(viewer, animated: true, completion: nil)
+        if let tag = img.view?.tag {
+            print("image clicked, tag = \(tag)")
+            let image = posts[tag].image
+            print("ici c'est ok ")
+            let photo = Photo(photo: image!)
+            let viewer = NYTPhotosViewController(photos: [photo])
+            presentViewController(viewer, animated: true, completion: nil)
+        } else {
+            print("Problem with the tag when I click on an image")
+        }
     }
     
     
