@@ -29,9 +29,11 @@ class PostTableViewController: UITableViewController {
         var image: UIImage?
     }
     
+    
     var posts = [post]()
     
     var postRef: Firebase!
+    
     
     @IBOutlet weak var menuButton: UIBarButtonItem!
     
@@ -111,12 +113,14 @@ class PostTableViewController: UITableViewController {
                 if let imageData = NSData(base64EncodedString: base64EncodedString,
                     options: NSDataBase64DecodingOptions.IgnoreUnknownCharacters) {
                     let image = UIImage(data: imageData)
+                    //self.photos.insert(Photo(photo: image!), atIndex: 0)
                     self.posts.insert(post(title: titleString, description: descriptionString, date: dateString, author: authorString, imagePresents: true, image: image!), atIndex:0)
                 } else {
                     self.posts.insert(post(title: titleString, description: descriptionString, date: dateString, author: authorString, imagePresents: false, image: nil), atIndex:0)
                     print("image no present, imageData bug!")
                 }
             } else {
+                //self.photos.insert(nil, atIndex: 0)
                 self.posts.insert(post(title: titleString, description: descriptionString, date: dateString, author: authorString, imagePresents: false, image: nil), atIndex:0)
                 print("image no present")
             }
@@ -239,15 +243,38 @@ class PostTableViewController: UITableViewController {
         MBProgressHUD.hideAllHUDsForView(self.navigationController?.view, animated: true)
     }
     
+    func createPhotoArray(image: UIImage) -> ([Photo], Int) {
+        var arrayPhoto = [Photo]()
+        var index = 0
+        var tag = -1
+        for post in posts {
+            
+            if post.imagePresents {
+                arrayPhoto.append(Photo(photo: post.image!))
+                if post.image! == image {
+                    tag = index
+                }
+                index += 1
+            }
+        }
+        return (arrayPhoto, tag)
+    }
+    
     func imageTapped(img: AnyObject)
     {
         if let tag = img.view?.tag {
-            print("image clicked, tag = \(tag)")
             let image = posts[tag].image
-            print("ici c'est ok ")
             let photo = Photo(photo: image!)
-            let viewer = NYTPhotosViewController(photos: [photo])
-            presentViewController(viewer, animated: true, completion: nil)
+            let photos = createPhotoArray(image!)
+            let tagIndexPhotoInArray = photos.1
+            if tagIndexPhotoInArray != -1 {
+                print("Tag calc = \(tagIndexPhotoInArray)")
+                let viewer = NYTPhotosViewController(photos: photos.0, initialPhoto: photos.0[tagIndexPhotoInArray])
+                presentViewController(viewer, animated: true, completion: nil)
+            } else {
+                let viewer = NYTPhotosViewController(photos: [photo])
+                presentViewController(viewer, animated: true, completion: nil)
+            }
         } else {
             print("Problem with the tag when I click on an image")
         }

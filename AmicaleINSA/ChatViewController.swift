@@ -153,10 +153,10 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
     }
     
     private func observeMessages() {
-        //myActivityIndicator.startAnimating()
+        myActivityIndicator.startAnimating()
         let messagesQuery = messageRef.queryLimitedToLast(INITIAL_MESSAGE_LIMIT)
         messagesQuery.observeEventType(.ChildAdded) { (snapshot: FDataSnapshot!) in
-            //self.myActivityIndicator.stopAnimating()
+            self.myActivityIndicator.stopAnimating()
             let id = snapshot.value["senderId"] as! String
             let text = snapshot.value["text"] as! String
             let senderDisplayName = snapshot.value["senderDisplayName"] as! String
