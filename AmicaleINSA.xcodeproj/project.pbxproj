@@ -141,9 +141,9 @@
 		9206F3B81C838F8B00978CF5 /* AmicaleINSA */ = {
 			isa = PBXGroup;
 			children = (
+				9206F3B91C838F8B00978CF5 /* AppDelegate.swift */,
 				9247CD771CB12CCA008F51E2 /* Post */,
 				923677F71CAC287E00FA7084 /* UI */,
-				9206F3B91C838F8B00978CF5 /* AppDelegate.swift */,
 				9265E2651CA8346F000BE187 /* Washinsa */,
 				92128FD61C86064000AA96AD /* Settings */,
 				92A701421C848309000E1E8F /* Constants */,

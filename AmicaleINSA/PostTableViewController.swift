@@ -10,7 +10,7 @@ import UIKit
 import NYTPhotoViewer
 import SWRevealViewController
 import Firebase
-import SwiftSpinner
+import MBProgressHUD
 
 class PostTableViewController: UITableViewController {
     
@@ -34,6 +34,10 @@ class PostTableViewController: UITableViewController {
     var postRef: Firebase!
     
     @IBOutlet weak var menuButton: UIBarButtonItem!
+    
+    var myActivityIndicator: UIActivityIndicatorView!
+    var myActivityIndicatorHUD = MBProgressHUD()
+    let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
     
     
     override func viewDidLoad() {
@@ -63,14 +67,11 @@ class PostTableViewController: UITableViewController {
     }
     
     func obversePosts(){
-        SwiftSpinner.show("Connexion \nen cours...").addTapHandler({
-            SwiftSpinner.hide()
-        })
         var SwiftSpinnerAlreadyHidden = false
         postRef.observeEventType(.ChildAdded, withBlock: { snapshot in
             if !SwiftSpinnerAlreadyHidden {
                 SwiftSpinnerAlreadyHidden = true
-                SwiftSpinner.hide()
+                MBProgressHUD.hideAllHUDsForView(self.appDelegate.window, animated: true)
             }
             var titleString = ""
             var descriptionString = ""
@@ -140,6 +141,7 @@ class PostTableViewController: UITableViewController {
     
     override func viewDidAppear(animated: Bool) {
         tableView.reloadData()
+        initActivityIndicator()
     }
     
     // MARK: - Table view data source
@@ -222,6 +224,12 @@ class PostTableViewController: UITableViewController {
             cell.selectionStyle = UITableViewCellSelectionStyle.None
             return cell
         }
+    }
+    
+    func initActivityIndicator() {
+        let myActivityIndicatorHUD = MBProgressHUD.showHUDAddedTo(appDelegate.window, animated: true)
+        myActivityIndicatorHUD.mode = MBProgressHUDMode.Indeterminate
+        myActivityIndicatorHUD.labelText = "Loading..."
     }
     
     func imageTapped(img: AnyObject)

@@ -121,6 +121,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         case First
         case Second
         case Third
+        //case Fourth
         
         init?(fullType: String)
         {
@@ -147,7 +148,31 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         case ShortcutIdentifier.First.type:
             handled = true
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
+            let frontNavigationController = storyboard.instantiateViewControllerWithIdentifier("PostViewController")
+            let rearNavifationController = storyboard.instantiateViewControllerWithIdentifier("menuViewController")
+            let mainRevealController : SWRevealViewController = SWRevealViewController(rearViewController: rearNavifationController, frontViewController: frontNavigationController)
+            self.window?.rootViewController? = mainRevealController
+            break
+//        case ShortcutIdentifier.Second.type:
+//            handled = true
+//            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+//            let frontNavigationController = storyboard.instantiateViewControllerWithIdentifier("ChatViewController")
+//            let rearNavifationController = storyboard.instantiateViewControllerWithIdentifier("menuViewController")
+//            let mainRevealController : SWRevealViewController = SWRevealViewController(rearViewController: rearNavifationController, frontViewController: frontNavigationController)
+//            self.window?.rootViewController? = mainRevealController
+//            break
+        case ShortcutIdentifier.Second.type:
+            handled = true
+            let storyboard = UIStoryboard(name: "Main", bundle: nil)
             let frontNavigationController = storyboard.instantiateViewControllerWithIdentifier("planningViewController")
+            let rearNavifationController = storyboard.instantiateViewControllerWithIdentifier("menuViewController")
+            let mainRevealController : SWRevealViewController = SWRevealViewController(rearViewController: rearNavifationController, frontViewController: frontNavigationController)
+            self.window?.rootViewController? = mainRevealController
+            break
+        case ShortcutIdentifier.Third.type:
+            handled = true
+            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+            let frontNavigationController = storyboard.instantiateViewControllerWithIdentifier("WashViewController")
             let rearNavifationController = storyboard.instantiateViewControllerWithIdentifier("menuViewController")
             let mainRevealController : SWRevealViewController = SWRevealViewController(rearViewController: rearNavifationController, frontViewController: frontNavigationController)
             self.window?.rootViewController? = mainRevealController

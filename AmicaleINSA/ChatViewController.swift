@@ -87,6 +87,9 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
             menuButton.target = self.revealViewController()
             menuButton.action = #selector(SWRevealViewController.revealToggle(_:))
             self.view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
+            //let pan = self.revealViewController().panGestureRecognizer()
+            //pan.addTarget(self, action: #selector(ChatViewController.dismissKeyboard))
+            //self.view.addGestureRecognizer(pan)
         }
         initActivityIndicator()
         
@@ -112,6 +115,14 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
         self.inputToolbar?.contentView?.leftBarButtonItem?.imageView?.contentMode = UIViewContentMode.ScaleAspectFit
         
         self.inputToolbar?.contentView?.leftBarButtonItemWidth = 30
+    }
+    
+    func testSelector(){
+        print("testSelector")
+    }
+    
+    func dismissKeyboard(){
+        inputToolbar?.contentView?.textView?.resignFirstResponder()
     }
     
     
@@ -142,10 +153,10 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
     }
     
     private func observeMessages() {
-        myActivityIndicator.startAnimating()
+        //myActivityIndicator.startAnimating()
         let messagesQuery = messageRef.queryLimitedToLast(INITIAL_MESSAGE_LIMIT)
         messagesQuery.observeEventType(.ChildAdded) { (snapshot: FDataSnapshot!) in
-            self.myActivityIndicator.stopAnimating()
+            //self.myActivityIndicator.stopAnimating()
             let id = snapshot.value["senderId"] as! String
             let text = snapshot.value["text"] as! String
             let senderDisplayName = snapshot.value["senderDisplayName"] as! String

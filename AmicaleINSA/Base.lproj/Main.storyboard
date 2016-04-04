@@ -416,7 +416,7 @@
         <!--Navigation Controller-->
         <scene sceneID="9yC-Tp-mp0">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="fZJ-h3-wK5" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="ChatViewController" automaticallyAdjustsScrollViewInsets="NO" id="fZJ-h3-wK5" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="FKZ-ZA-bdj">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
@@ -730,7 +730,7 @@
         <!--Navigation Controller-->
         <scene sceneID="7Cq-az-ooP">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="M6c-1B-Zqk" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="WashViewController" automaticallyAdjustsScrollViewInsets="NO" id="M6c-1B-Zqk" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="vk9-N5-pnJ">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
@@ -748,7 +748,7 @@
         <!--Navigation Controller-->
         <scene sceneID="DNf-gZ-qcg">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="SQm-Tp-11b" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="PostViewController" automaticallyAdjustsScrollViewInsets="NO" id="SQm-Tp-11b" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="qCY-2k-WH1">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
