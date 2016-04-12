@@ -18,6 +18,7 @@ target 'AmicaleINSA' do
     pod "MBCircularProgressBar"
     pod 'MBProgressHUD', '~> 0.9.2'
     pod 'SwiftyJSON', :git => 'https://github.com/SwiftyJSON/SwiftyJSON.git'
+    pod 'UIScrollView-InfiniteScroll'
 end
 
 target 'AmicaleINSATests' do

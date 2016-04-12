@@ -13,5 +13,6 @@
 #import <NYTPhotoViewer/NYTPhoto.h>
 #import <NYTPhotoViewer/NYTPhotosViewController.h>
 #import "MBProgressHUD.h"
+#import <UIScrollView_InfiniteScroll/UIScrollView+InfiniteScroll.h>
 
 #endif /* AmicaleINSA_Bridging_Header_h */

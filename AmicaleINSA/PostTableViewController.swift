@@ -11,6 +11,7 @@ import NYTPhotoViewer
 import SWRevealViewController
 import Firebase
 import MBProgressHUD
+import UIScrollView_InfiniteScroll
 
 class PostTableViewController: UITableViewController {
     
@@ -18,7 +19,8 @@ class PostTableViewController: UITableViewController {
     
     let text2 = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
     
-    let arrayImage = ["image2", "image3"]
+    let INITIAL_POST_LIMIT = UInt(2)
+    let LOAD_MORE_POST_LIMIT  = UInt(4)
     
     struct post {
         var title: String
@@ -27,12 +29,18 @@ class PostTableViewController: UITableViewController {
         var author: String
         var imagePresents: Bool
         var image: UIImage?
+        var timestamp: NSTimeInterval
     }
     
     
     var posts = [post]()
     
     var postRef: Firebase!
+    
+    var lastTimestamp: NSTimeInterval!
+    var lastTimestampReverse: NSTimeInterval!
+    
+    var timer = NSTimer()
     
     
     @IBOutlet weak var menuButton: UIBarButtonItem!
@@ -52,6 +60,7 @@ class PostTableViewController: UITableViewController {
         }
         
         initApp()
+        initUI()
         
         postRef = FirebaseManager.firebaseManager.createPostRef()
         
@@ -60,6 +69,9 @@ class PostTableViewController: UITableViewController {
         
         obversePosts()
         
+        lastTimestampReverse = 0
+        
+        //loadMorePosts()
         
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
@@ -68,9 +80,33 @@ class PostTableViewController: UITableViewController {
         // self.navigationItem.rightBarButtonItem = self.editButtonItem()
     }
     
+    func initUI() {
+        tableView.infiniteScrollIndicatorView = CustomInfiniteIndicator(frame: CGRectMake(0, 0, 24, 24))
+        tableView.addInfiniteScrollWithHandler { (scrollView) -> Void in
+            //let tableView = scrollView as! UITableView
+            
+            //
+            // fetch your data here, can be async operation,
+            // just make sure to call finishInfiniteScroll in the end
+            //
+            self.loadMorePosts()
+            
+//            // make sure you reload tableView before calling -finishInfiniteScroll
+//            tableView.reloadData()
+//            
+//            // finish infinite scroll animation
+//            tableView.finishInfiniteScroll()
+        }
+    }
+    
     func obversePosts(){
+        
         var SwiftSpinnerAlreadyHidden = false
-        postRef.observeEventType(.ChildAdded, withBlock: { snapshot in
+        
+        let postQuery = postRef.queryLimitedToLast(INITIAL_POST_LIMIT)
+        postQuery.observeEventType(.ChildAdded) { (snapshot: FDataSnapshot!) in
+        
+        //postRef.observeEventType(.ChildAdded, withBlock: { snapshot in
             if !SwiftSpinnerAlreadyHidden {
                 SwiftSpinnerAlreadyHidden = true
                 //MBProgressHUD.hideAllHUDsForView(self.appDelegate.window, animated: true)
@@ -82,6 +118,7 @@ class PostTableViewController: UITableViewController {
             var dateString = ""
             var imagePresentsBool = false
             var imageDataString = ""
+            //var timestamp: NSTimeInterval
             //let title = snapshot.value.objectForKey("title") as! String
             if let title = snapshot.value.objectForKey("title") as? String {
                 titleString = title
@@ -107,6 +144,19 @@ class PostTableViewController: UITableViewController {
                 imageDataString = imageData
             }
             
+            if let timestamp = snapshot.value.objectForKey("timestamp") as? String {
+                imageDataString = timestamp
+            }
+            
+            let dateTimestampInterval = snapshot.value["timestamp"] as! NSTimeInterval
+            if (self.shouldUpdateLastTimestamp(dateTimestampInterval)){
+                self.lastTimestamp = dateTimestampInterval
+            }
+            
+            //let dateTimestampInverseInterval = snapshot.value["timestampInverse"] as! NSTimeInterval
+            let dateTimestampInverseInterval = snapshot.value["timestampInverse"] as! NSTimeInterval
+            self.lastTimestampReverse = dateTimestampInverseInterval
+            
             if imagePresentsBool {
                 print("image present")
                 let base64EncodedString = imageDataString
@@ -114,14 +164,17 @@ class PostTableViewController: UITableViewController {
                     options: NSDataBase64DecodingOptions.IgnoreUnknownCharacters) {
                     let image = UIImage(data: imageData)
                     //self.photos.insert(Photo(photo: image!), atIndex: 0)
-                    self.posts.insert(post(title: titleString, description: descriptionString, date: dateString, author: authorString, imagePresents: true, image: image!), atIndex:0)
+                    //self.posts.insert(post(title: titleString, description: descriptionString, date: dateString, author: authorString, imagePresents: true, image: image!, timestamp: self.lastTimestamp), atIndex:0)
+                    self.addPostBeginning(titleString, description: descriptionString, date: dateString, author: authorString, imagePresents: true, image: image!, timestamp: dateTimestampInterval)
                 } else {
-                    self.posts.insert(post(title: titleString, description: descriptionString, date: dateString, author: authorString, imagePresents: false, image: nil), atIndex:0)
+                    //self.posts.insert(post(title: titleString, description: descriptionString, date: dateString, author: authorString, imagePresents: false, image: nil, timestamp: self.lastTimestamp), atIndex:0)
+                    self.addPostBeginning(titleString, description: descriptionString, date: dateString, author: authorString, imagePresents: false, image: nil, timestamp: dateTimestampInterval)
                     print("image no present, imageData bug!")
                 }
             } else {
                 //self.photos.insert(nil, atIndex: 0)
-                self.posts.insert(post(title: titleString, description: descriptionString, date: dateString, author: authorString, imagePresents: false, image: nil), atIndex:0)
+                //self.posts.insert(post(title: titleString, description: descriptionString, date: dateString, author: authorString, imagePresents: false, image: nil, timestamp: self.lastTimestamp), atIndex:0)
+                self.addPostBeginning(titleString, description: descriptionString, date: dateString, author: authorString, imagePresents: false, image: nil, timestamp: dateTimestampInterval)
                 print("image no present")
             }
             print(snapshot.value.objectForKey("author")!)
@@ -135,9 +188,141 @@ class PostTableViewController: UITableViewController {
              */
             
             self.tableView.reloadData()
-        })
+        }
+        //)
     }
     
+    func loadMorePosts() {
+        //let postQuery = postRef.queryOrderedByChild("timestampInverse").queryEndingAtValue(lastTimestamp).queryLimitedToLast(LOAD_MORE_POST_LIMIT)
+        let postQuery = postRef.queryOrderedByChild("timestampInverse").queryStartingAtValue(lastTimestampReverse).queryLimitedToFirst(LOAD_MORE_POST_LIMIT)
+        //let dateTimestampInverseInterval = snapshot.value["timestampInverse"] as! NSTimeInterval
+        //let postQuery = postRef.queryEndingAtValue(lastTimestamp).queryLimitedToLast(LOAD_MORE_POST_LIMIT).or
+        var index = UInt(0)
+        postQuery.observeEventType(.ChildAdded) { (snapshot: FDataSnapshot!) in
+            var titleString = ""
+            var descriptionString = ""
+            var authorString = ""
+            var dateString = ""
+            var imagePresentsBool = false
+            var imageDataString = ""
+            var timestamp: NSTimeInterval
+            //let title = snapshot.value.objectForKey("title") as! String
+            if let title = snapshot.value.objectForKey("title") as? String {
+                titleString = title
+            }
+            //let description = snapshot.value.objectForKey("description") as! String
+            if let description = snapshot.value.objectForKey("description") as? String {
+                descriptionString = description
+            }
+            //let author = snapshot.value.objectForKey("author") as! String
+            if let author = snapshot.value.objectForKey("author") as? String {
+                authorString = author
+            }
+            //let date = snapshot.value.objectForKey("date") as! String
+            if let date = snapshot.value.objectForKey("date") as? String {
+                dateString = date
+            }
+            //let imagePresents = snapshot.value.objectForKey("imagePresents") as! Bool
+            if let imagePresents = snapshot.value.objectForKey("imagePresents") as? Bool {
+                imagePresentsBool = imagePresents
+            }
+            //let imageData = snapshot.value.objectForKey("imageData") as! String
+            if let imageData = snapshot.value.objectForKey("imageData") as? String {
+                imageDataString = imageData
+            }
+            
+            let dateTimestampInterval = snapshot.value["timestamp"] as! NSTimeInterval
+            if (self.shouldUpdateLastTimestamp(dateTimestampInterval)){
+                self.lastTimestamp = dateTimestampInterval
+                //timestamp = dateTimestampInterval
+                print("---------------> in lastTimeStamp update : title = \(titleString)")
+            }
+            let dateTimestampInverseInterval = snapshot.value["timestampInverse"] as! NSTimeInterval
+            self.lastTimestampReverse = dateTimestampInverseInterval
+            index += 1
+            if index <= self.LOAD_MORE_POST_LIMIT {
+                print("index = \(index), self.LOAD_MORE_POST_LIMIT = \(self.LOAD_MORE_POST_LIMIT)")
+                if imagePresentsBool {
+                    print("image present")
+                    let base64EncodedString = imageDataString
+                    if let imageData = NSData(base64EncodedString: base64EncodedString,
+                                              options: NSDataBase64DecodingOptions.IgnoreUnknownCharacters) {
+                        let image = UIImage(data: imageData)
+                        //self.posts.append(post(title: titleString, description: descriptionString, date: dateString, author: authorString, imagePresents: true, image: image!, timestamp: self.lastTimestamp))
+                        //if !self.postAlreadyPresent(dateTimestampInterval){
+                            self.addPostAppend(titleString, description: descriptionString, date: dateString, author: authorString, imagePresents: true, image: image!, timestamp: dateTimestampInterval)
+                        //}
+                    } else {
+                        //self.posts.append(post(title: titleString, description: descriptionString, date: dateString, author: authorString, imagePresents: false, image: nil, timestamp: self.lastTimestamp))
+                       // if !self.postAlreadyPresent(dateTimestampInterval){
+                            self.addPostAppend(titleString, description: descriptionString, date: dateString, author: authorString, imagePresents: false, image: nil, timestamp: dateTimestampInterval)
+                        //}
+                        print("image no present, imageData bug!")
+                    }
+                } else {
+                    //self.posts.append(post(title: titleString, description: descriptionString, date: dateString, author: authorString, imagePresents: false, image: nil, timestamp: self.lastTimestamp))
+                   // if !self.postAlreadyPresent(dateTimestampInterval){
+                        self.addPostAppend(titleString, description: descriptionString, date: dateString, author: authorString, imagePresents: false, image: nil, timestamp: dateTimestampInterval)
+                    //}
+                    print("image no present")
+                }
+
+                print("title = \(titleString), description = \(descriptionString)")
+                //self.resetTimer()
+                self.tableView.reloadData()
+                //self.tableView.finishInfiniteScroll()
+            } else {
+                print("self.tableView.finishInfiniteScroll()")
+                self.tableView.finishInfiniteScroll()
+            }
+
+        }
+        self.resetTimer()
+    }
+    
+    func addPostAppend(title: String, description: String, date: String, author: String, imagePresents: Bool, image: UIImage?, timestamp: NSTimeInterval) {
+        print("------------------------------------------------------------------")
+        if self.postAlreadyPresent(timestamp, titleDescription: "\(title)\(description)") == false{
+            self.posts.append(post(title: title, description: description, date: date, author: author, imagePresents: imagePresents, image: image, timestamp: timestamp))
+        } else {
+            print("/!\\ le post est déjà présent !!")
+        }
+        print("D'add dans mon array [append]")
+        print("title = \(title), description = \(description) timestamp = \(timestamp)")
+        print("------------------------------------------------------------------")
+    }
+    
+    func addPostBeginning(title: String, description: String, date: String, author: String, imagePresents: Bool, image: UIImage?, timestamp: NSTimeInterval) {
+        self.posts.insert(post(title: title, description: description, date: date, author: author, imagePresents: imagePresents, image: image, timestamp: timestamp), atIndex: 0)
+    }
+    
+    func postAlreadyPresent(timestampPost: NSTimeInterval, titleDescription: String) -> Bool {
+        var alreadyPresent = false
+        for post in posts {
+            if post.timestamp == timestampPost || "\(post.title)\(post.description)" == titleDescription {
+                alreadyPresent = true
+                print("FOUND IT --> ALREADY PRESENT, timestamp = \(post.timestamp), title = \(post.title)")
+            }
+        }
+        return alreadyPresent
+    }
+    
+    func resetTimer() {
+        timer.invalidate()
+        let nextTimer = NSTimer.scheduledTimerWithTimeInterval(4.0, target: self, selector: #selector(PostTableViewController.handleIdleEvent(_:)), userInfo: nil, repeats: false)
+        print("TIMERRRR 1")
+        timer = nextTimer
+    }
+    
+    func handleIdleEvent(timer: NSTimer) {
+        // do whatever you want when idle after certain period of time
+        print("TIMERRRR 2")
+        self.tableView.finishInfiniteScroll()
+    }
+    
+    func shouldUpdateLastTimestamp(timestamp: NSTimeInterval) -> Bool {
+        return (lastTimestamp == nil) || timestamp < lastTimestamp
+    }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()

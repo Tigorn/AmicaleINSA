@@ -28,6 +28,7 @@
 		9247CD7D1CB12D07008F51E2 /* PostTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9247CD7C1CB12D07008F51E2 /* PostTableViewController.swift */; };
 		9265E2671CA8348A000BE187 /* WashINSATableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9265E2661CA8348A000BE187 /* WashINSATableViewController.swift */; };
 		9265E26B1CA8355B000BE187 /* WashINSATableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9265E26A1CA8355B000BE187 /* WashINSATableViewCell.swift */; };
+		929D4C4A1CB2ECB00097CFA6 /* CustomInfiniteIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 929D4C491CB2ECB00097CFA6 /* CustomInfiniteIndicator.swift */; };
 		92A7013D1C847B4C000E1E8F /* WebPlanningViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92A7013C1C847B4C000E1E8F /* WebPlanningViewController.swift */; };
 		92A7013F1C847EA0000E1E8F /* Device.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92A7013E1C847EA0000E1E8F /* Device.swift */; };
 		92B366F51CA8889000C3265E /* WashINSADetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92B366F41CA8889000C3265E /* WashINSADetailsViewController.swift */; };
@@ -83,6 +84,7 @@
 		9247CD7C1CB12D07008F51E2 /* PostTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostTableViewController.swift; sourceTree = "<group>"; };
 		9265E2661CA8348A000BE187 /* WashINSATableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WashINSATableViewController.swift; sourceTree = "<group>"; };
 		9265E26A1CA8355B000BE187 /* WashINSATableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WashINSATableViewCell.swift; sourceTree = "<group>"; };
+		929D4C491CB2ECB00097CFA6 /* CustomInfiniteIndicator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomInfiniteIndicator.swift; sourceTree = "<group>"; };
 		92A7013C1C847B4C000E1E8F /* WebPlanningViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebPlanningViewController.swift; sourceTree = "<group>"; };
 		92A7013E1C847EA0000E1E8F /* Device.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Device.swift; sourceTree = "<group>"; };
 		92B366F41CA8889000C3265E /* WashINSADetailsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WashINSADetailsViewController.swift; sourceTree = "<group>"; };
@@ -143,7 +145,6 @@
 			children = (
 				9206F3B91C838F8B00978CF5 /* AppDelegate.swift */,
 				9247CD771CB12CCA008F51E2 /* Post */,
-				923677F71CAC287E00FA7084 /* UI */,
 				9265E2651CA8346F000BE187 /* Washinsa */,
 				92128FD61C86064000AA96AD /* Settings */,
 				92A701421C848309000E1E8F /* Constants */,
@@ -153,6 +154,7 @@
 				92A7013A1C847A2A000E1E8F /* Chat */,
 				92A701391C847A1D000E1E8F /* Menu */,
 				92A701381C847A12000E1E8F /* Bridging Header */,
+				923677F71CAC287E00FA7084 /* UI */,
 				9206F3BB1C838F8B00978CF5 /* ViewController.swift */,
 				9206F3BD1C838F8B00978CF5 /* Main.storyboard */,
 				9206F3C31C838F8B00978CF5 /* Assets.xcassets */,
@@ -193,6 +195,7 @@
 			isa = PBXGroup;
 			children = (
 				923677FA1CAC28A100FA7084 /* BreakOutToRefreshView.swift */,
+				929D4C491CB2ECB00097CFA6 /* CustomInfiniteIndicator.swift */,
 			);
 			name = UI;
 			sourceTree = "<group>";
@@ -485,6 +488,7 @@
 				9206F3F31C839A4200978CF5 /* Secret.swift in Sources */,
 				9206F3ED1C83963D00978CF5 /* MenuController.swift in Sources */,
 				9247CD7B1CB12CFA008F51E2 /* PostWithoutImageTableViewCell.swift in Sources */,
+				929D4C4A1CB2ECB00097CFA6 /* CustomInfiniteIndicator.swift in Sources */,
 				9206F3C21C838F8B00978CF5 /* AmicaleINSA.xcdatamodeld in Sources */,
 				92B366F51CA8889000C3265E /* WashINSADetailsViewController.swift in Sources */,
 				9206F3BC1C838F8B00978CF5 /* ViewController.swift in Sources */,

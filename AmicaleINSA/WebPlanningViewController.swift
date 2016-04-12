@@ -18,6 +18,7 @@ class WebPlanningViewController: UIViewController, UIWebViewDelegate, UIScrollVi
     var weekNumberToday : Int = 0
     var debug = false
     let offsetScroll = CGFloat(190)
+    var AmITheCurrentWeek = true
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -64,32 +65,39 @@ class WebPlanningViewController: UIViewController, UIWebViewDelegate, UIScrollVi
     }
     
     func webViewDidFinishLoad(webView: UIWebView) {
+        let offSetOfDay = getOffsetOfDay()
         if (debug) {
             print("[WebPlanningViewController][webViewDidFinishLoad] I stop loading my page")
         }
         SwiftSpinner.hide()
         
         self.webView.scrollView.setZoomScale(getZoomValue(), animated: true)
-        print("getOffSet: \(getOffsetOfDay())")
-        self.webView.scrollView.contentOffset = CGPointMake(getOffsetOfDay(), 0)
+        if debug {
+            print("getOffSet: \(offSetOfDay)")
+        }
+        self.webView.scrollView.contentOffset = CGPointMake(offSetOfDay, 0)
         
     }
     
     func getZoomValue() -> CGFloat {
-        let currentLang = Device.CURRENT_LANGUAGE
-        let dayOfWeek = getDayOfWeek()
-        if (currentLang == "en"){
-            if (dayOfWeek == "Saturday") || (dayOfWeek == "Sunday"){
-                return 0
+        if AmITheCurrentWeek {
+            let currentLang = Device.CURRENT_LANGUAGE
+            let dayOfWeek = getDayOfWeek()
+            if (currentLang == "en"){
+                if (dayOfWeek == "Saturday") || (dayOfWeek == "Sunday"){
+                    return 0
+                } else {
+                    return 3
+                }
             } else {
-                return 3
+                if (dayOfWeek == "samedi") || (dayOfWeek == "dimanche"){
+                    return 0
+                } else {
+                    return 3
+                }
             }
         } else {
-            if (dayOfWeek == "samedi") || (dayOfWeek == "dimanche"){
-                return 0
-            } else {
-                return 3
-            }
+            return 0
         }
     }
     
@@ -100,7 +108,9 @@ class WebPlanningViewController: UIViewController, UIWebViewDelegate, UIScrollVi
     func getOffsetOfDay() -> CGFloat{
         var dayValueOffset = 0
         let iPhoneSizeScreen = getIphoneSizeScreen()
-        print("getDayOfWeek: \(getDayOfWeek())")
+        if debug {
+            print("getDayOfWeek: \(getDayOfWeek())")
+        }
         let currentLang = Device.CURRENT_LANGUAGE
         if (currentLang == "en"){
             if (iPhoneSizeScreen == "iPhone6"){
@@ -229,7 +239,9 @@ class WebPlanningViewController: UIViewController, UIWebViewDelegate, UIScrollVi
                 }
             }
         }
-        print("current size: \(Device.CURRENT_SIZE)")
+        if debug {
+            print("current size: \(Device.CURRENT_SIZE)")
+        }
         return CGFloat(dayValueOffset)
     }
     
@@ -281,7 +293,9 @@ class WebPlanningViewController: UIViewController, UIWebViewDelegate, UIScrollVi
         if IDWebPlanning == "" {
             return "http://apple.com/"
         } else {
-            print("https://www.etud.insa-toulouse.fr/planning/index.php?gid=\(IDWebPlanning)&wid=\(weekNumber)&platform=ios")
+            if debug {
+                print("https://www.etud.insa-toulouse.fr/planning/index.php?gid=\(IDWebPlanning)&wid=\(weekNumber)&platform=ios")
+            }
             return "https://www.etud.insa-toulouse.fr/planning/index.php?gid=\(IDWebPlanning)&wid=\(weekNumber)&platform=ios"
         }
     }
@@ -290,12 +304,20 @@ class WebPlanningViewController: UIViewController, UIWebViewDelegate, UIScrollVi
         let calender = NSCalendar.currentCalendar()
         let dateComponent = calender.component(NSCalendarUnit.WeekOfYear, fromDate: NSDate())
         let dayOfWeek = getDayOfWeek()
-        print("dayOfWeek = \(dayOfWeek)")
+        if debug {
+            print("dayOfWeek = \(dayOfWeek)")
+        }
         if (dayOfWeek == "Saturday" || dayOfWeek == "samedi" || dayOfWeek == "Sunday" || dayOfWeek == "dimanche"){
             return dateComponent + 1
         } else {
             return dateComponent
         }
+    }
+    
+    func getWeekNumberForZoom() -> Int {
+        let calender = NSCalendar.currentCalendar()
+        let dateComponent = calender.component(NSCalendarUnit.WeekOfYear, fromDate: NSDate())
+        return dateComponent
     }
     
     
@@ -312,6 +334,7 @@ class WebPlanningViewController: UIViewController, UIWebViewDelegate, UIScrollVi
     
     @IBAction func nextWeekButtonAction(sender: AnyObject) {
         weekNumberToday += 1
+        AmITheCurrentWeek = false
         let url = NSURL(string: getUrlPlanning(weekNumberToday))
         let request = NSURLRequest(URL: url!)
         webView.loadRequest(request)
@@ -319,12 +342,14 @@ class WebPlanningViewController: UIViewController, UIWebViewDelegate, UIScrollVi
     
     @IBAction func lastWeekButtonAction(sender: AnyObject) {
         weekNumberToday -= 1
+        AmITheCurrentWeek = false
         let url = NSURL(string: getUrlPlanning(weekNumberToday))
         let request = NSURLRequest(URL: url!)
         webView.loadRequest(request)
     }
     
     @IBAction func todayWeekButtonAction(sender: AnyObject) {
+        AmITheCurrentWeek = true
         let url = NSURL(string: getUrlPlanning(getWeekNumber()))
         let request = NSURLRequest(URL: url!)
         weekNumberToday = getWeekNumber()
