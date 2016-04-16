@@ -16,6 +16,7 @@ import NYTPhotoViewer
 import ALCameraViewController
 import ImagePicker
 import SWRevealViewController
+import MBProgressHUD
 
 
 class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, MenuControllerDelegate, ImagePickerDelegate {
@@ -23,6 +24,7 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
     @IBOutlet weak var menuButton: UIBarButtonItem!
     
     var myActivityIndicator: UIActivityIndicatorView!
+    var myActivityIndicatorHUD = MBProgressHUD()
     
     var messages = [JSQMessage]()
     var messagesHashValue = [String]()
@@ -37,6 +39,7 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
     var incomingBubbleImageView: JSQMessagesBubbleImage!
     
     var messageRef: Firebase!
+    var firebaseRef = Firebase(url: Secret.BASE_URL)
     //let firebaseManager = FirebaseManager()
     
     var lastTimestamp: NSTimeInterval!
@@ -72,12 +75,24 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
         }
     }
     
+//    func initActivityIndicator() {
+//        myActivityIndicator = UIActivityIndicatorView(frame: CGRectMake(0,0, 50, 50)) as UIActivityIndicatorView
+//        myActivityIndicator.center = CGPoint(x: UIScreen.mainScreen().bounds.width/2, y: UIScreen.mainScreen().bounds.height/2)
+//        myActivityIndicator.hidesWhenStopped = true
+//        myActivityIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.Gray
+//        view.addSubview(myActivityIndicator)
+//    }
+    
     func initActivityIndicator() {
-        myActivityIndicator = UIActivityIndicatorView(frame: CGRectMake(0,0, 50, 50)) as UIActivityIndicatorView
-        myActivityIndicator.center = CGPoint(x: UIScreen.mainScreen().bounds.width/2, y: UIScreen.mainScreen().bounds.height/2)
-        myActivityIndicator.hidesWhenStopped = true
-        myActivityIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.Gray
-        view.addSubview(myActivityIndicator)
+        let myActivityIndicatorHUD = MBProgressHUD.showHUDAddedTo(self.navigationController?.view, animated: true)
+        myActivityIndicatorHUD.mode = MBProgressHUDMode.Indeterminate
+        myActivityIndicatorHUD.labelText = "Loading..."
+        myActivityIndicatorHUD.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(ChatViewController.tapToCancel)))
+    }
+    
+    func tapToCancel(){
+        print("cancel tap")
+        MBProgressHUD.hideAllHUDsForView(self.navigationController?.view, animated: true)
     }
     
     override func viewDidLoad() {
@@ -91,6 +106,7 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
             //pan.addTarget(self, action: #selector(ChatViewController.dismissKeyboard))
             //self.view.addGestureRecognizer(pan)
         }
+        initChat()
         initActivityIndicator()
         
         title = "Chat"
@@ -104,7 +120,7 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
         automaticallyScrollsToMostRecentMessage = false
         //self.scrollToBottomAnimated(true)
         
-        Configuration.doneButtonTitle = "Send"
+        //Configuration.doneButtonTitle = "Send"
         
         collectionView!.addInfiniteScrollingWithActionHandler( { () -> Void in
             self.loadMoreMessages()
@@ -115,6 +131,12 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
         self.inputToolbar?.contentView?.leftBarButtonItem?.imageView?.contentMode = UIViewContentMode.ScaleAspectFit
         
         self.inputToolbar?.contentView?.leftBarButtonItemWidth = 30
+    }
+    
+    func initChat(){
+        firebaseRef.authAnonymouslyWithCompletionBlock { (error, authData) in // 1
+            if error != nil { print("Error connection Firebase Anonymous \(error.description)");}
+        }
     }
     
     func testSelector(){
@@ -153,10 +175,16 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
     }
     
     private func observeMessages() {
-        myActivityIndicator.startAnimating()
+        var SwiftSpinnerAlreadyHidden = false
+        //myActivityIndicator.startAnimating()
         let messagesQuery = messageRef.queryLimitedToLast(INITIAL_MESSAGE_LIMIT)
         messagesQuery.observeEventType(.ChildAdded) { (snapshot: FDataSnapshot!) in
-            self.myActivityIndicator.stopAnimating()
+            if !SwiftSpinnerAlreadyHidden {
+                SwiftSpinnerAlreadyHidden = true
+                //MBProgressHUD.hideAllHUDsForView(self.appDelegate.window, animated: true)
+                MBProgressHUD.hideAllHUDsForView(self.navigationController?.view, animated: true)
+            }
+            //self.myActivityIndicator.stopAnimating()
             let id = snapshot.value["senderId"] as! String
             let text = snapshot.value["text"] as! String
             let senderDisplayName = snapshot.value["senderDisplayName"] as! String

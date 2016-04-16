@@ -367,6 +367,12 @@
 				TargetAttributes = {
 					9206F3B51C838F8B00978CF5 = {
 						CreatedOnToolsVersion = 7.2.1;
+						DevelopmentTeam = Q4B996RU7K;
+						SystemCapabilities = {
+							com.apple.Push = {
+								enabled = 1;
+							};
+						};
 					};
 					9206F3CC1C838F8B00978CF5 = {
 						CreatedOnToolsVersion = 7.2.1;
@@ -641,9 +647,10 @@
 			baseConfigurationReference = 0182FEAF19A81F9AB3EA55FE /* Pods-AmicaleINSA.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				INFOPLIST_FILE = AmicaleINSA/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = INSA.AmicaleINSA;
+				PRODUCT_BUNDLE_IDENTIFIER = Amicale.INSAAmicaleINSA;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -653,9 +660,10 @@
 			baseConfigurationReference = 935DF77FC9D0967ED183E2CC /* Pods-AmicaleINSA.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				INFOPLIST_FILE = AmicaleINSA/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = INSA.AmicaleINSA;
+				PRODUCT_BUNDLE_IDENTIFIER = Amicale.INSAAmicaleINSA;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;

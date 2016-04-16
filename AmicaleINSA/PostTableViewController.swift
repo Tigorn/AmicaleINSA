@@ -15,12 +15,8 @@ import UIScrollView_InfiniteScroll
 
 class PostTableViewController: UITableViewController {
     
-    let text1 = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
-    
-    let text2 = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
-    
-    let INITIAL_POST_LIMIT = UInt(2)
-    let LOAD_MORE_POST_LIMIT  = UInt(4)
+    let INITIAL_POST_LIMIT = UInt(10)
+    let LOAD_MORE_POST_LIMIT  = UInt(10)
     
     struct post {
         var title: String
@@ -62,6 +58,8 @@ class PostTableViewController: UITableViewController {
         initApp()
         initUI()
         
+        self.refreshControl?.addTarget(self, action: #selector(PostTableViewController.refresh(_:)), forControlEvents: UIControlEvents.ValueChanged)
+        
         postRef = FirebaseManager.firebaseManager.createPostRef()
         
         tableView.estimatedRowHeight = 405
@@ -78,6 +76,15 @@ class PostTableViewController: UITableViewController {
         
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem()
+    }
+    
+    func refresh(sender:AnyObject)
+    {
+        timer = NSTimer.scheduledTimerWithTimeInterval(0.5, target: self, selector: #selector(PostTableViewController.endRefresh), userInfo: nil, repeats: true)
+    }
+    
+    func endRefresh(){
+        self.refreshControl!.endRefreshing()
     }
     
     func initUI() {
@@ -181,17 +188,13 @@ class PostTableViewController: UITableViewController {
             print(snapshot.value.objectForKey("title")!)
             print(snapshot.value.objectForKey("description")!)
             print(snapshot.value.objectForKey("imagePresents")!)
-            /*
-             let base64EncodedString = snapshot.value["image"] as! String
-             let imageData = NSData(base64EncodedString: base64EncodedString,
-             options: NSDataBase64DecodingOptions.IgnoreUnknownCharacters)
-             */
             
             self.tableView.reloadData()
         }
-        //)
     }
     
+    
+
     func loadMorePosts() {
         //let postQuery = postRef.queryOrderedByChild("timestampInverse").queryEndingAtValue(lastTimestamp).queryLimitedToLast(LOAD_MORE_POST_LIMIT)
         let postQuery = postRef.queryOrderedByChild("timestampInverse").queryStartingAtValue(lastTimestampReverse).queryLimitedToFirst(LOAD_MORE_POST_LIMIT)
@@ -205,7 +208,8 @@ class PostTableViewController: UITableViewController {
             var dateString = ""
             var imagePresentsBool = false
             var imageDataString = ""
-            var timestamp: NSTimeInterval
+            //var timestamp: NSTimeInterval
+            
             //let title = snapshot.value.objectForKey("title") as! String
             if let title = snapshot.value.objectForKey("title") as? String {
                 titleString = title

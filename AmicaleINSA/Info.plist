@@ -46,12 +46,12 @@
 			<string>$(PRODUCT_BUNDLE_IDENTIFIER).Second</string>
 		</dict>
 		<dict>
+			<key>UIApplicationShortcutItemIconFile</key>
+			<string>Washing</string>
 			<key>UIApplicationShortcutItemTitle</key>
 			<string>WashINSA</string>
 			<key>UIApplicationShortcutItemType</key>
 			<string>$(PRODUCT_BUNDLE_IDENTIFIER).Third</string>
-			<key>UIApplicationShortcutItemIconFile</key>
-			<string>Washing</string>
 		</dict>
 	</array>
 	<key>UILaunchStoryboardName</key>
