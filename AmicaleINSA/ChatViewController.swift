@@ -58,6 +58,8 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
         }
     }
     
+    var timer = NSTimer()
+    
     let imagePicker = UIImagePickerController()
     
     var usersTypingQuery: FQuery!
@@ -310,7 +312,20 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
             self.collectionView!.layoutIfNeeded()
             self.collectionView!.contentOffset = CGPointMake(0, self.collectionView!.contentSize.height - oldBottomOffset)
         }
-        
+        self.resetTimer()
+    }
+    
+    func resetTimer() {
+        timer.invalidate()
+        let nextTimer = NSTimer.scheduledTimerWithTimeInterval(4.0, target: self, selector: #selector(ChatViewController.handleIdleEvent(_:)), userInfo: nil, repeats: false)
+        print("TIMERRRR 1")
+        timer = nextTimer
+    }
+    
+    func handleIdleEvent(timer: NSTimer) {
+        // do whatever you want when idle after certain period of time
+        print("TIMERRRR 2")
+        self.collectionView!.infiniteScrollingView.stopAnimating()
     }
     
     func customSortJSQMessage(msg1: JSQMessage, msg2 : JSQMessage) -> Bool {
