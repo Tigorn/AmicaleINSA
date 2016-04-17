@@ -110,6 +110,7 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
         }
         initChat()
         initActivityIndicator()
+        collectionView.infiniteScrollIndicatorView = CustomInfiniteIndicator(frame: CGRectMake(0, 0, 24, 24))
         
         title = "Chat"
         setupBubbles()
