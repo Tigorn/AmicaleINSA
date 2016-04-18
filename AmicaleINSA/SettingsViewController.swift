@@ -141,10 +141,10 @@ class SettingsViewController: UIViewController, UITextFieldDelegate, ImagePicker
         usernameChatTextField.layer.borderColor = UIColor.redColor().CGColor
         usernameChatTextField.layer.borderWidth = 2.0
         
-        usernameChatTextField.attributedPlaceholder = NSAttributedString(string: Storyboard.usernameChat, attributes: [NSForegroundColorAttributeName: UIColor(red: 100, green: 0, blue: 0, alpha: 0.4)])
+        usernameChatTextField.attributedPlaceholder = NSAttributedString(string: Public.usernameChat, attributes: [NSForegroundColorAttributeName: UIColor(red: 100, green: 0, blue: 0, alpha: 0.4)])
         
         // pickerView set default row
-        let defautlRowPickerView = NSUserDefaults.standardUserDefaults().integerForKey(Storyboard.rowPickerViewSettings)
+        let defautlRowPickerView = NSUserDefaults.standardUserDefaults().integerForKey(Public.rowPickerViewSettings)
         pickerViewYearsINSA.selectRow(defautlRowPickerView, inComponent: 0, animated: true)
         
         // Year spe group
@@ -187,7 +187,7 @@ class SettingsViewController: UIViewController, UITextFieldDelegate, ImagePicker
         let idPlanningExpress = yearsINSA[row].1
         let yearSpeGroupString = yearsINSA[row].0
         yearSpeGroupLabel.text = yearSpeGroupString
-        NSUserDefaults.standardUserDefaults().setInteger(row, forKey: Storyboard.rowPickerViewSettings)
+        NSUserDefaults.standardUserDefaults().setInteger(row, forKey: Public.rowPickerViewSettings)
         savedMBProgressHUDAction()
         setIDPlanningExpress(idPlanningExpress)
         setYearSpeGroupPlanningExpress(yearSpeGroupString)

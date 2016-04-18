@@ -116,126 +116,126 @@ class WebPlanningViewController: UIViewController, UIWebViewDelegate, UIScrollVi
             if (iPhoneSizeScreen == "iPhone6"){
                 switch getDayOfWeek() {
                 case "Monday":
-                    dayValueOffset = Storyboard.Monday_iPhone6
+                    dayValueOffset = Public.Monday_iPhone6
                 case "Tuesday":
-                    dayValueOffset = Storyboard.Tuesday_iPhone6
+                    dayValueOffset = Public.Tuesday_iPhone6
                 case "Wednesday":
-                    dayValueOffset = Storyboard.Wednesday_iPhone6
+                    dayValueOffset = Public.Wednesday_iPhone6
                 case "Thursday":
-                    dayValueOffset = Storyboard.Thursday_iPhone6
+                    dayValueOffset = Public.Thursday_iPhone6
                 case "Friday":
-                    dayValueOffset = Storyboard.Friday_iPhone6
+                    dayValueOffset = Public.Friday_iPhone6
                 default:
-                    dayValueOffset = Storyboard.Weekend_iPhone6
+                    dayValueOffset = Public.Weekend_iPhone6
                 }
             } else if (iPhoneSizeScreen == "iPhone6+"){
                 switch getDayOfWeek() {
                 case "Monday":
-                    dayValueOffset = Storyboard.Monday_iPhone6Plus
+                    dayValueOffset = Public.Monday_iPhone6Plus
                 case "Tuesday":
-                    dayValueOffset = Storyboard.Tuesday_iPhone6Plus
+                    dayValueOffset = Public.Tuesday_iPhone6Plus
                 case "Wednesday":
-                    dayValueOffset = Storyboard.Wednesday_iPhone6Plus
+                    dayValueOffset = Public.Wednesday_iPhone6Plus
                 case "Thursday":
-                    dayValueOffset = Storyboard.Thursday_iPhone6Plus
+                    dayValueOffset = Public.Thursday_iPhone6Plus
                 case "Friday":
-                    dayValueOffset = Storyboard.Friday_iPhone6Plus
+                    dayValueOffset = Public.Friday_iPhone6Plus
                 default:
-                    dayValueOffset = Storyboard.Weekend_iPhone6Plus
+                    dayValueOffset = Public.Weekend_iPhone6Plus
                 }
                 
             } else if (iPhoneSizeScreen == "iPhone5"){
                 switch getDayOfWeek() {
                 case "Monday":
-                    dayValueOffset = Storyboard.Monday_iPhone5
+                    dayValueOffset = Public.Monday_iPhone5
                 case "Tuesday":
-                    dayValueOffset = Storyboard.Tuesday_iPhone5
+                    dayValueOffset = Public.Tuesday_iPhone5
                 case "Wednesday":
-                    dayValueOffset = Storyboard.Wednesday_iPhone5
+                    dayValueOffset = Public.Wednesday_iPhone5
                 case "Thursday":
-                    dayValueOffset = Storyboard.Thursday_iPhone5
+                    dayValueOffset = Public.Thursday_iPhone5
                 case "Friday":
-                    dayValueOffset = Storyboard.Friday_iPhone5
+                    dayValueOffset = Public.Friday_iPhone5
                 default:
-                    dayValueOffset = Storyboard.Weekend_iPhone5
+                    dayValueOffset = Public.Weekend_iPhone5
                 }
             } else if (iPhoneSizeScreen == "iPhone4"){
                 switch getDayOfWeek() {
                 case "Monday":
-                    dayValueOffset = Storyboard.Monday_iPhone4
+                    dayValueOffset = Public.Monday_iPhone4
                 case "Tuesday":
-                    dayValueOffset = Storyboard.Tuesday_iPhone4
+                    dayValueOffset = Public.Tuesday_iPhone4
                 case "Wednesday":
-                    dayValueOffset = Storyboard.Wednesday_iPhone4
+                    dayValueOffset = Public.Wednesday_iPhone4
                 case "Thursday":
-                    dayValueOffset = Storyboard.Thursday_iPhone4
+                    dayValueOffset = Public.Thursday_iPhone4
                 case "Friday":
-                    dayValueOffset = Storyboard.Friday_iPhone4
+                    dayValueOffset = Public.Friday_iPhone4
                 default:
-                    dayValueOffset = Storyboard.Weekend_iPhone4
+                    dayValueOffset = Public.Weekend_iPhone4
                 }
             }
         } else {
             if (iPhoneSizeScreen == "iPhone6"){
                 switch getDayOfWeek() {
                 case "lundi":
-                    dayValueOffset = Storyboard.Monday_iPhone6
+                    dayValueOffset = Public.Monday_iPhone6
                 case "mardi":
-                    dayValueOffset = Storyboard.Tuesday_iPhone6
+                    dayValueOffset = Public.Tuesday_iPhone6
                 case "mercredi":
-                    dayValueOffset = Storyboard.Wednesday_iPhone6
+                    dayValueOffset = Public.Wednesday_iPhone6
                 case "jeudi":
-                    dayValueOffset = Storyboard.Thursday_iPhone6
+                    dayValueOffset = Public.Thursday_iPhone6
                 case "vendredi":
-                    dayValueOffset = Storyboard.Friday_iPhone6
+                    dayValueOffset = Public.Friday_iPhone6
                 default:
-                    dayValueOffset = Storyboard.Weekend_iPhone6
+                    dayValueOffset = Public.Weekend_iPhone6
                 }
             } else if (iPhoneSizeScreen == "iPhone6+"){
                 switch getDayOfWeek() {
                 case "lundi":
-                    dayValueOffset = Storyboard.Monday_iPhone6Plus
+                    dayValueOffset = Public.Monday_iPhone6Plus
                 case "mardi":
-                    dayValueOffset = Storyboard.Tuesday_iPhone6Plus
+                    dayValueOffset = Public.Tuesday_iPhone6Plus
                 case "mercredi":
-                    dayValueOffset = Storyboard.Wednesday_iPhone6Plus
+                    dayValueOffset = Public.Wednesday_iPhone6Plus
                 case "jeudi":
-                    dayValueOffset = Storyboard.Thursday_iPhone6Plus
+                    dayValueOffset = Public.Thursday_iPhone6Plus
                 case "vendredi":
-                    dayValueOffset = Storyboard.Friday_iPhone6Plus
+                    dayValueOffset = Public.Friday_iPhone6Plus
                 default:
-                    dayValueOffset = Storyboard.Weekend_iPhone6Plus
+                    dayValueOffset = Public.Weekend_iPhone6Plus
                 }
                 
             } else if (iPhoneSizeScreen == "iPhone5"){
                 switch getDayOfWeek() {
                 case "lundi":
-                    dayValueOffset = Storyboard.Monday_iPhone5
+                    dayValueOffset = Public.Monday_iPhone5
                 case "mardi":
-                    dayValueOffset = Storyboard.Tuesday_iPhone5
+                    dayValueOffset = Public.Tuesday_iPhone5
                 case "mercredi":
-                    dayValueOffset = Storyboard.Wednesday_iPhone5
+                    dayValueOffset = Public.Wednesday_iPhone5
                 case "jeudi":
-                    dayValueOffset = Storyboard.Thursday_iPhone5
+                    dayValueOffset = Public.Thursday_iPhone5
                 case "vendredi":
-                    dayValueOffset = Storyboard.Friday_iPhone5
+                    dayValueOffset = Public.Friday_iPhone5
                 default:
-                    dayValueOffset = Storyboard.Weekend_iPhone5
+                    dayValueOffset = Public.Weekend_iPhone5
                 }
             } else if (iPhoneSizeScreen == "iPhone4"){
                 switch getDayOfWeek() {
                 case "lundi":
-                    dayValueOffset = Storyboard.Monday_iPhone4
+                    dayValueOffset = Public.Monday_iPhone4
                 case "mardi":
-                    dayValueOffset = Storyboard.Tuesday_iPhone4
+                    dayValueOffset = Public.Tuesday_iPhone4
                 case "mercredi":
-                    dayValueOffset = Storyboard.Wednesday_iPhone4
+                    dayValueOffset = Public.Wednesday_iPhone4
                 case "jeudi":
-                    dayValueOffset = Storyboard.Thursday_iPhone4
+                    dayValueOffset = Public.Thursday_iPhone4
                 case "vendredi":
-                    dayValueOffset = Storyboard.Friday_iPhone4
+                    dayValueOffset = Public.Friday_iPhone4
                 default:
-                    dayValueOffset = Storyboard.Weekend_iPhone4
+                    dayValueOffset = Public.Weekend_iPhone4
                 }
             }
         }

@@ -6,7 +6,8 @@
 target 'AmicaleINSA' do
     pod 'SWRevealViewController', :git => 'https://github.com/John-Lluch/SWRevealViewController.git'
     pod 'Firebase'
-    pod 'JSQMessagesViewController'
+    pod 'JSQMessagesViewController', :git => 'https://github.com/jessesquires/JSQMessagesViewController.git', :branch => 'develop'
+    #pod 'JSQMessagesViewController', :git => 'https://github.com/TeletronicsDotAe/JSQMessagesViewController.git', :branch => 'tlt-issue1458-support-scrolling-to-last-message'
     pod 'CryptoSwift'
     pod 'SVPullToRefresh', :git => 'https://github.com/gabro/SVPullToRefresh.git', :branch => 'top-infinitescrolling'
     pod 'NYTPhotoViewer', '~> 1.1.0'

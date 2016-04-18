@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 import SwiftyJSON
 
-public struct Storyboard {
+public struct Public {
     
     // Chat
     static let usernameChat = "usernameChat"
@@ -51,6 +51,7 @@ public struct Storyboard {
     
     static let urlProxyWash = "http://www.proxiwash.com/weblaverie/ma-laverie-2?s=cf4f39&16d33a57b3fb9a05d4da88969c71de74=1"
     static let urlWeatherToulouse = "https://api.forecast.io/forecast/5877c3394948db03ae04471da46fde3c/43.5722715,1.4687831"
+    static let urlWashINSAAPI = "http://92.222.86.168/washinsa/json"
     
     // Planning Express
     static let idPlanningExpress = "idPlanningExpress"
@@ -67,10 +68,10 @@ public struct Storyboard {
  */
 
 public func initApp() {
-    if (NSUserDefaults.standardUserDefaults().boolForKey(Storyboard.usernameChatRegistred) ==  false) {
+    if (NSUserDefaults.standardUserDefaults().boolForKey(Public.usernameChatRegistred) ==  false) {
         let usernameChat = "invite\(Int(arc4random_uniform(UInt32(2500))))"
-        NSUserDefaults.standardUserDefaults().setObject(usernameChat, forKey: Storyboard.usernameChat)
-        NSUserDefaults.standardUserDefaults().setBool(true, forKey: Storyboard.usernameChatRegistred)
+        NSUserDefaults.standardUserDefaults().setObject(usernameChat, forKey: Public.usernameChat)
+        NSUserDefaults.standardUserDefaults().setBool(true, forKey: Public.usernameChatRegistred)
     }
     setTemperature()
 }
@@ -80,11 +81,11 @@ public func initApp() {
  */
 
 public func setUsernameChat(username: String) {
-    NSUserDefaults.standardUserDefaults().setObject(username, forKey: Storyboard.usernameChat)
+    NSUserDefaults.standardUserDefaults().setObject(username, forKey: Public.usernameChat)
 }
 
 public func getUsernameChat() -> String {
-    return NSUserDefaults.standardUserDefaults().stringForKey(Storyboard.usernameChat)!
+    return NSUserDefaults.standardUserDefaults().stringForKey(Public.usernameChat)!
 }
 
 /*
@@ -100,7 +101,7 @@ private func _returnDefaultYearSpeGroupPlanningExpress() -> String {
 }
 
 public func getIDPlanningExpress() -> String {
-    if let idPlanningExpress = NSUserDefaults.standardUserDefaults().stringForKey(Storyboard.idPlanningExpress) {
+    if let idPlanningExpress = NSUserDefaults.standardUserDefaults().stringForKey(Public.idPlanningExpress) {
         return idPlanningExpress
     } else {
         return _returnDefaultIDPlanningExpress()
@@ -108,11 +109,11 @@ public func getIDPlanningExpress() -> String {
 }
 
 public func setIDPlanningExpress(id: String) {
-    NSUserDefaults.standardUserDefaults().setObject(id, forKey: Storyboard.idPlanningExpress)
+    NSUserDefaults.standardUserDefaults().setObject(id, forKey: Public.idPlanningExpress)
 }
 
 public func getYearSpeGroupPlanningExpress() -> String {
-    if let yearSpeGroup = NSUserDefaults.standardUserDefaults().stringForKey(Storyboard.yearSpeGroupPlanningExpress) {
+    if let yearSpeGroup = NSUserDefaults.standardUserDefaults().stringForKey(Public.yearSpeGroupPlanningExpress) {
         return yearSpeGroup
     } else {
         return _returnDefaultYearSpeGroupPlanningExpress()
@@ -120,7 +121,7 @@ public func getYearSpeGroupPlanningExpress() -> String {
 }
 
 public func setYearSpeGroupPlanningExpress(yearSpeGroup:String){
-    NSUserDefaults.standardUserDefaults().setObject(yearSpeGroup, forKey: Storyboard.yearSpeGroupPlanningExpress)
+    NSUserDefaults.standardUserDefaults().setObject(yearSpeGroup, forKey: Public.yearSpeGroupPlanningExpress)
 }
 
 /*
@@ -128,15 +129,15 @@ public func setYearSpeGroupPlanningExpress(yearSpeGroup:String){
  */
 
 public func setProfilPicture(image : UIImage){
-    NSUserDefaults.standardUserDefaults().setObject(UIImagePNGRepresentation(image), forKey: Storyboard.profilePicture)
-    NSUserDefaults.standardUserDefaults().setBool(true, forKey: Storyboard.profilePictureIsSet)
+    NSUserDefaults.standardUserDefaults().setObject(UIImagePNGRepresentation(image), forKey: Public.profilePicture)
+    NSUserDefaults.standardUserDefaults().setBool(true, forKey: Public.profilePictureIsSet)
     NSUserDefaults.standardUserDefaults().synchronize()
 }
 
 public func getProfilPicture() -> UIImage {
-    let isProfilePictureIsSet = NSUserDefaults.standardUserDefaults().boolForKey(Storyboard.profilePictureIsSet)
+    let isProfilePictureIsSet = NSUserDefaults.standardUserDefaults().boolForKey(Public.profilePictureIsSet)
     if isProfilePictureIsSet{
-        if let  imageData = NSUserDefaults.standardUserDefaults().objectForKey(Storyboard.profilePicture) as? NSData {
+        if let  imageData = NSUserDefaults.standardUserDefaults().objectForKey(Public.profilePicture) as? NSData {
             let profilePicture = UIImage(data: imageData)
             return profilePicture!
         } else{
@@ -151,7 +152,7 @@ public func getProfilPicture() -> UIImage {
  */
 
 public func getTemperature() -> String {
-    if let temperature = NSUserDefaults.standardUserDefaults().stringForKey(Storyboard.temperatureNSUserDefaults) {
+    if let temperature = NSUserDefaults.standardUserDefaults().stringForKey(Public.temperatureNSUserDefaults) {
         return "\(temperature) °C"
     } else {
         return ""
@@ -159,7 +160,7 @@ public func getTemperature() -> String {
 }
 
 private func setTemperature(){
-    let url = Storyboard.urlWeatherToulouse
+    let url = Public.urlWeatherToulouse
     let urlNSUrl = NSURL(string: url)
     let qos = Int(QOS_CLASS_USER_INITIATED.rawValue) // qos = quality of service (if it's slow, important...)
     dispatch_async(dispatch_get_global_queue(qos, 0)) { () -> Void in
@@ -170,7 +171,7 @@ private func setTemperature(){
                     let temperatureCelsius = (temperature-32)/1.8
                     let temperatureCelsiusString = String(format: "%.1f", temperatureCelsius)
                     // println("Temperature actuelle =  \(temperatureCelsiusString)")
-                    NSUserDefaults.standardUserDefaults().setObject(temperatureCelsiusString, forKey: Storyboard.temperatureNSUserDefaults)
+                    NSUserDefaults.standardUserDefaults().setObject(temperatureCelsiusString, forKey: Public.temperatureNSUserDefaults)
                 }
                 NSUserDefaults.standardUserDefaults().synchronize()
                 }

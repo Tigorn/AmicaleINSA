@@ -20,6 +20,7 @@ import MBProgressHUD
 
 
 class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, MenuControllerDelegate, ImagePickerDelegate {
+//, JSQMessagesViewControllerScrollingDelegate {
     
     @IBOutlet weak var menuButton: UIBarButtonItem!
     
@@ -111,6 +112,8 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
         initChat()
         initActivityIndicator()
         collectionView.infiniteScrollIndicatorView = CustomInfiniteIndicator(frame: CGRectMake(0, 0, 24, 24))
+        /*[JSQMessage, scroll to bottom]*/
+        //self.scrollingDelegate = self
         
         title = "Chat"
         setupBubbles()
@@ -120,9 +123,13 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
         messageRef = FirebaseManager.firebaseManager.createMessageRef()
         // #Test: before: automaticallyScrollsToMostRecentMessage = false, and no scrollToBottomAnimated
         //automaticallyScrollsToMostRecentMessage = true
-        automaticallyScrollsToMostRecentMessage = false
         //self.scrollToBottomAnimated(true)
         
+        
+        
+        /* [JSQMESSAGE] Ceci est le code avant de faire la MAJ JSQMessage*/
+        automaticallyScrollsToMostRecentMessage = false
+        automaticallyAdjustsScrollViewInsets = true
         //Configuration.doneButtonTitle = "Send"
         
         collectionView!.addInfiniteScrollingWithActionHandler( { () -> Void in
@@ -213,7 +220,9 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
                 }
                 self.messagesHashValue += [hashValue]
             }
+            /* [JSQMESSAGE] Ceci est le code avant de faire la MAJ JSQMessage*/
             self.automaticallyScrollsToMostRecentMessage = false
+            
             print("messages = \(self.messages.count)")
             self.finishReceivingMessage()
         }
@@ -307,6 +316,7 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
             } else {
                 self.collectionView!.infiniteScrollingView.stopAnimating()
             }
+            /* [JSQMESSAGE] Ceci est le code avant de faire la MAJ JSQMessage*/
             self.automaticallyScrollsToMostRecentMessage = false
             self.scrollToBottomAnimated(false)
             self.finishReceivingMessageAnimated(false)
@@ -514,5 +524,20 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
             }
         }
     }
+    
+    /*[JSQMessage, scroll to bottom]*/
+    /*
+        Delegate JSQMessage
+    */
+    
+//    func shouldScrollToNewlyReceivedMessageAtIndexPath(indexPath: NSIndexPath!) -> Bool {
+//        print("in delegate shouldScrollToNewlyReceivedMessageAtIndexPath \(isLastCellVisible)")
+//        return self.isLastCellVisible
+//    }
+//    
+//    func shouldScrollToLastMessageAtStartup() -> Bool {
+//        print("shouldScrollToLastMessageAtStartup")
+//        return true
+//    }
     
 }

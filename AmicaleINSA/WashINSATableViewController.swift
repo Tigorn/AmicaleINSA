@@ -119,7 +119,7 @@ class WashINSATableViewController: UITableViewController {
     
     func loadInfoInMachinesDB(){
         //timer = NSTimer.scheduledTimerWithTimeInterval(10, target: self, selector: #selector(WashINSATableViewController.endRefresh), userInfo: nil, repeats: true)
-        let url = "http://51.255.171.231/washinsa/json";
+        let url = Public.urlWashINSAAPI
         var indexMachine = 0
         SwiftSpinner.show("Connexion \nen cours...").addTapHandler({
             SwiftSpinner.hide()
