@@ -335,25 +335,39 @@ class WebPlanningViewController: UIViewController, UIWebViewDelegate, UIScrollVi
     @IBAction func nextWeekButtonAction(sender: AnyObject) {
         weekNumberToday += 1
         AmITheCurrentWeek = false
-        let url = NSURL(string: getUrlPlanning(weekNumberToday))
-        let request = NSURLRequest(URL: url!)
-        webView.loadRequest(request)
+        if let url = NSURL(string: getUrlPlanning(weekNumberToday)) {
+            let request = NSURLRequest(URL: url)
+            webView.loadRequest(request)
+        } else {
+            let url = NSURL(string:"https://www.etud.insa-toulouse.fr/planning/index.php")
+            let request = NSURLRequest(URL: url!)
+            webView.loadRequest(request)
+        }
     }
     
     @IBAction func lastWeekButtonAction(sender: AnyObject) {
         weekNumberToday -= 1
         AmITheCurrentWeek = false
-        let url = NSURL(string: getUrlPlanning(weekNumberToday))
-        let request = NSURLRequest(URL: url!)
-        webView.loadRequest(request)
+        if let url = NSURL(string: getUrlPlanning(weekNumberToday)) {
+            let request = NSURLRequest(URL: url)
+            webView.loadRequest(request)
+        } else {
+            let url = NSURL(string:"https://www.etud.insa-toulouse.fr/planning/index.php")
+            let request = NSURLRequest(URL: url!)
+            webView.loadRequest(request)
+        }
     }
     
     @IBAction func todayWeekButtonAction(sender: AnyObject) {
         AmITheCurrentWeek = true
-        let url = NSURL(string: getUrlPlanning(getWeekNumber()))
-        let request = NSURLRequest(URL: url!)
-        weekNumberToday = getWeekNumber()
-        webView.loadRequest(request)
+        if let url = NSURL(string: getUrlPlanning(getWeekNumber())) {
+            let request = NSURLRequest(URL: url)
+            webView.loadRequest(request)
+        } else {
+            let url = NSURL(string:"https://www.etud.insa-toulouse.fr/planning/index.php")
+            let request = NSURLRequest(URL: url!)
+            webView.loadRequest(request)
+        }
     }
     
 }

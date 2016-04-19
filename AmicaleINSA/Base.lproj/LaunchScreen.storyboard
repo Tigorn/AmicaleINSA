@@ -25,8 +25,8 @@
                                     <constraint firstAttribute="height" constant="215" id="Ft9-ZH-dRG"/>
                                 </constraints>
                             </imageView>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="  Copyright (c) 2016 Arthur Papailhau. All rights reserved." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="9" translatesAutoresizingMaskIntoConstraints="NO" id="GiM-DW-Snb">
-                                <rect key="frame" x="68" y="571" width="464" height="21"/>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="  Copyright (c) 2016 Arthur Papailhau. All rights reserved." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="4" translatesAutoresizingMaskIntoConstraints="NO" id="GiM-DW-Snb">
+                                <rect key="frame" x="40" y="571" width="520" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
@@ -35,10 +35,11 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="MN4-c8-iWP" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="1yj-BF-fFi"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="GiM-DW-Snb" secondAttribute="trailing" constant="20" id="GBw-Be-Fvz"/>
                             <constraint firstItem="xb3-aO-Qok" firstAttribute="top" secondItem="GiM-DW-Snb" secondAttribute="bottom" constant="8" symbolic="YES" id="UZM-7K-Phw"/>
                             <constraint firstItem="MN4-c8-iWP" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="X1i-22-wba"/>
                             <constraint firstItem="GiM-DW-Snb" firstAttribute="centerX" secondItem="MN4-c8-iWP" secondAttribute="centerX" id="coW-zs-fXl"/>
-                            <constraint firstItem="GiM-DW-Snb" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leadingMargin" constant="48" id="v2Y-3C-1SL"/>
+                            <constraint firstItem="GiM-DW-Snb" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leadingMargin" constant="20" id="v2Y-3C-1SL"/>
                         </constraints>
                     </view>
                 </viewController>

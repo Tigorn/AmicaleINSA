@@ -52,6 +52,7 @@ class WashINSATableViewController: UITableViewController {
     }
     
     private let tableController = UITableViewController()
+    var messageMachineDone = ""
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -118,7 +119,6 @@ class WashINSATableViewController: UITableViewController {
     }
     
     func loadInfoInMachinesDB(){
-        //timer = NSTimer.scheduledTimerWithTimeInterval(10, target: self, selector: #selector(WashINSATableViewController.endRefresh), userInfo: nil, repeats: true)
         let url = Public.urlWashINSAAPI
         var indexMachine = 0
         SwiftSpinner.show("Connexion \nen cours...").addTapHandler({
@@ -131,6 +131,9 @@ class WashINSATableViewController: UITableViewController {
                 if let value = response.result.value {
                     let json_full = JSON(value)
                     let errorCode = json_full["errorCode"].int
+                    if let messageMachineDoneString = json_full["messageMachineTermine"].string {
+                        self.messageMachineDone = messageMachineDoneString
+                    }
                     if errorCode != -1 {
                         let json = json_full["json"]
                         for (key,subJson):(String, JSON) in json {
@@ -261,6 +264,7 @@ class WashINSATableViewController: UITableViewController {
             } else if machines[indexInArray].available.containsString("Terminé") {
                 cell.availabilityMachineLabel.text = machines[indexInArray].available
                 cell.startEndTimeLabel.text = ""
+                cell.availableInTimeMachineLabel.text = messageMachineDone
                 cell.numberMachineLabel.backgroundColor = UIColor.yellowColor()
             } else if machines[indexInArray].available.containsString("Hors service") {
                 cell.availabilityMachineLabel.text = "HORS SERVICE"
@@ -313,21 +317,6 @@ class WashINSATableViewController: UITableViewController {
         }
     }
     
-    //    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-    //        let detailVC = segue.destinationViewController as! ProxyWashDetailsViewController
-    //
-    //        // Pass the selected object to the destination view controller.
-    //        if let indexPath = self.tableView.indexPathForSelectedRow {
-    //            var indexInArray = 0
-    //            let row = Int(indexPath.row)
-    //            if indexPath.section == 1 {
-    //                //cell.numberMachineLabel.backgroundColor = UIColor.redColor()
-    //                indexInArray += 3
-    //            }
-    //            detailVC.machineInfo.type = machines[row].type
-    //            //detailScene.currentObject = (objects?[row] as! PFObject)
-    //        }
-    //    }
     
     // Override to support conditional editing of the table view.
     override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {

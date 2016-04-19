@@ -18,9 +18,6 @@ class PostWithImageTableViewCell: UITableViewCell, NYTPhotosViewControllerDelega
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
-//        let tapGestureRecognizer = UITapGestureRecognizer(target:self, action:#selector(PostWithImageTableViewCell.imageTapped(_:)))
-//        postImageView.userInteractionEnabled = true
-//        postImageView.addGestureRecognizer(tapGestureRecognizer)
     }
 
     override func setSelected(selected: Bool, animated: Bool) {
@@ -29,14 +26,6 @@ class PostWithImageTableViewCell: UITableViewCell, NYTPhotosViewControllerDelega
         // Configure the view for the selected state
     }
     
-//    func imageTapped(img: AnyObject)
-//    {
-//        print("image clicked")
-////        if let image = img as? UIImageView {
-//////            let photo = Photo(photo: image.image!)
-//////            let viewer = NYTPhotosViewController(photos: [photo])
-//////            presentViewController(viewer, animated: true, completion: nil)
-////        }
-//    }
+
 
 }

@@ -61,6 +61,8 @@ class MenuController: UITableViewController {
             //let rand = Int(arc4random_uniform(UInt32(100)))
             //chatVc.senderId = "\(uuid.md5())\(rand)"
             //chatVc.senderId = getUsernameChat()
+            
+            /* ça c'est pas bon parce qu'il faut faire la diff entre plusieurs pseudos, */
             chatVc.senderId = "\(uuid.md5())"
             chatVc.senderDisplayName = getUsernameChat()
             print(chatVc.senderDisplayName)
