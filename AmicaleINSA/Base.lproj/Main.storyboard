@@ -179,11 +179,12 @@
                     </refreshControl>
                     <connections>
                         <outlet property="menuButton" destination="SuN-Sw-tmz" id="3V5-qw-s9K"/>
+                        <segue destination="NN4-0w-OfH" kind="show" identifier="showSettingsFirstConnexion" id="9ql-Tt-0Pt"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Q5B-nB-Zvw" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2701" y="-297"/>
+            <point key="canvasLocation" x="1597" y="2055"/>
         </scene>
         <!--Menu Controller-->
         <scene sceneID="Rnr-Iq-np7">
@@ -763,7 +764,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="oUI-lz-i1O" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1769" y="-94"/>
+            <point key="canvasLocation" x="825" y="2026"/>
         </scene>
     </scenes>
     <resources>
@@ -777,5 +778,6 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="wA0-c9-FjZ"/>
+        <segue reference="9ql-Tt-0Pt"/>
     </inferredMetricsTieBreakers>
 </document>

@@ -129,6 +129,7 @@ class SettingsViewController: UIViewController, UITextFieldDelegate, ImagePicker
             self.view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
         }
         
+        setBeenToSettingsOnce()
         
         let tapDismissKeyboard: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(SettingsViewController.dismissKeyboard))
         view.addGestureRecognizer(tapDismissKeyboard)

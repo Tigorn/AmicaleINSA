@@ -55,6 +55,8 @@ class PostTableViewController: UITableViewController {
             self.view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
         }
         
+        segueToSettingsIfNeeded()
+        
         initApp()
         initUI()
         
@@ -74,6 +76,16 @@ class PostTableViewController: UITableViewController {
         
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem()
+    }
+    
+    func segueToSettingsIfNeeded(){
+        print("bool = \(getBeenToSettingsOnce())")
+        if !getBeenToSettingsOnce() {
+            self.performSegueWithIdentifier(Public.segueBeenToSettingsOnce, sender: self)
+        }
+    }
+    
+    override func viewWillAppear(animated: Bool) {
     }
     
     func refresh(sender:AnyObject)

@@ -19,6 +19,8 @@ public struct Public {
     // Settings
     static let profilePictureIsSet = "profilePictureIsSet"
     static let profilePicture = "profilePicture"
+    static let beenToSettingsOnce = "beenToSettingsOnce"
+    static let segueBeenToSettingsOnce = "showSettingsFirstConnexion"
     
     // Webview offset
     static let Monday_iPhone4 = 0
@@ -64,6 +66,18 @@ public struct Public {
 }
 
 /*
+ 
+ */
+
+public func removeNSUserDefault(){
+    for key in NSUserDefaults.standardUserDefaults().dictionaryRepresentation().keys {
+        print(key)
+        NSUserDefaults.standardUserDefaults().removeObjectForKey(key)
+    }
+    NSUserDefaults.standardUserDefaults().synchronize()
+}
+
+/*
  Function called when app launched
  */
 
@@ -74,6 +88,18 @@ public func initApp() {
         NSUserDefaults.standardUserDefaults().setBool(true, forKey: Public.usernameChatRegistred)
     }
     setTemperature()
+}
+
+/*
+ Settings
+ */
+
+public func setBeenToSettingsOnce(){
+    NSUserDefaults.standardUserDefaults().setBool(true, forKey: Public.beenToSettingsOnce)
+}
+
+public func getBeenToSettingsOnce() -> Bool {
+    return NSUserDefaults.standardUserDefaults().boolForKey(Public.beenToSettingsOnce)
 }
 
 /*
