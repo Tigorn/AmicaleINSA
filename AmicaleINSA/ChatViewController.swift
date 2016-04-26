@@ -44,8 +44,8 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
     //let firebaseManager = FirebaseManager()
     
     var lastTimestamp: NSTimeInterval!
-    let LOAD_MORE_MESSAGE_LIMIT  = UInt(30)
-    let INITIAL_MESSAGE_LIMIT = UInt(30)
+    let LOAD_MORE_MESSAGE_LIMIT  = UInt(60)
+    let INITIAL_MESSAGE_LIMIT = UInt(60)
     
     var userIsTypingRef: Firebase! // 1
     private var localTyping = false // 2

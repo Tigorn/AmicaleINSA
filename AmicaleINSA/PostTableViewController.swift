@@ -15,7 +15,7 @@ import UIScrollView_InfiniteScroll
 
 class PostTableViewController: UITableViewController {
     
-    let INITIAL_POST_LIMIT = UInt(15)
+    let INITIAL_POST_LIMIT = UInt(10)
     let LOAD_MORE_POST_LIMIT  = UInt(10)
     
     struct post {
