@@ -279,6 +279,7 @@ class WashINSATableViewController: UITableViewController {
             }
         } else {
             cell.numberMachineLabel.text = ""
+            cell.startEndTimeLabel.text = "Loading..."
             cell.typeMachineLabel.text = ""
             cell.availableInTimeMachineLabel.text = ""
             cell.availabilityMachineLabel.text = ""
