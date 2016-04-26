@@ -15,7 +15,7 @@ import UIScrollView_InfiniteScroll
 
 class PostTableViewController: UITableViewController {
     
-    let INITIAL_POST_LIMIT = UInt(10)
+    let INITIAL_POST_LIMIT = UInt(15)
     let LOAD_MORE_POST_LIMIT  = UInt(10)
     
     struct post {
@@ -181,7 +181,7 @@ class PostTableViewController: UITableViewController {
     
 
     func loadMorePosts() {
-        let postQuery = postRef.queryOrderedByChild("timestampInverse").queryStartingAtValue(lastTimestampReverse).queryLimitedToFirst(LOAD_MORE_POST_LIMIT)
+        let postQuery = postRef.queryOrderedByChild("timestampInverse").queryStartingAtValue(lastTimestampReverse).queryLimitedToFirst(LOAD_MORE_POST_LIMIT+LOAD_MORE_POST_LIMIT)
         var index = UInt(0)
         postQuery.observeEventType(.ChildAdded) { (snapshot: FDataSnapshot!) in
             var titleString = ""
@@ -218,15 +218,17 @@ class PostTableViewController: UITableViewController {
             let dateTimestampInterval = snapshot.value["timestamp"] as! NSTimeInterval
             if (self.shouldUpdateLastTimestamp(dateTimestampInterval)){
                 self.lastTimestamp = dateTimestampInterval
-                print("---------------> in lastTimeStamp update : title = \(titleString)")
+                //print("---------------> in lastTimeStamp update : title = \(titleString)")
             }
             let dateTimestampInverseInterval = snapshot.value["timestampInverse"] as! NSTimeInterval
             self.lastTimestampReverse = dateTimestampInverseInterval
             index += 1
-            if index <= self.LOAD_MORE_POST_LIMIT {
-                print("index = \(index), self.LOAD_MORE_POST_LIMIT = \(self.LOAD_MORE_POST_LIMIT)")
+            print("index: \(index) LOAD_MORE_POST_LIMIT: \(self.LOAD_MORE_POST_LIMIT)")
+            self.printMessage(titleString, description: descriptionString, timestamp: dateTimestampInterval, date: dateString)
+            if index <= (self.LOAD_MORE_POST_LIMIT+self.LOAD_MORE_POST_LIMIT) {
+                //print("index = \(index), self.LOAD_MORE_POST_LIMIT = \(self.LOAD_MORE_POST_LIMIT)")
                 if imagePresentsBool {
-                    print("image present")
+                    //print("image present")
                     let base64EncodedString = imageDataString
                     if let imageData = NSData(base64EncodedString: base64EncodedString,
                                               options: NSDataBase64DecodingOptions.IgnoreUnknownCharacters) {
@@ -246,22 +248,36 @@ class PostTableViewController: UITableViewController {
             } else {
                 print("self.tableView.finishInfiniteScroll()")
                 self.tableView.finishInfiniteScroll()
+                self.tableView.reloadData()
             }
 
         }
         self.resetTimer()
     }
     
+    func printMessage(title:String, description: String, timestamp: NSTimeInterval, date: String) {
+        print("")
+        print("----------------------------------------------------------------------")
+        print("---                        PRINT MESSAGE                           ---")
+        print("")
+        print("Title: \(title)")
+        print("Description: \(description)")
+        print("Date: \(date)")
+        print("Timestamp: \(timestamp)")
+        print("----------------------------------------------------------------------")
+        print("")
+    }
+    
     func addPostAppend(title: String, description: String, date: String, author: String, imagePresents: Bool, image: UIImage?, timestamp: NSTimeInterval) {
-        print("------------------------------------------------------------------")
+        //print("------------------------------------------------------------------")
         if self.postAlreadyPresent(timestamp, titleDescription: "\(title)\(description)") == false{
             self.posts.append(post(title: title, description: description, date: date, author: author, imagePresents: imagePresents, image: image, timestamp: timestamp))
         } else {
             print("/!\\ le post est déjà présent !!")
         }
-        print("D'add dans mon array [append]")
-        print("title = \(title), description = \(description) timestamp = \(timestamp)")
-        print("------------------------------------------------------------------")
+        //print("D'add dans mon array [append]")
+        //print("title = \(title), description = \(description) timestamp = \(timestamp)")
+        //print("------------------------------------------------------------------")
     }
     
     func addPostBeginning(title: String, description: String, date: String, author: String, imagePresents: Bool, image: UIImage?, timestamp: NSTimeInterval) {
@@ -282,12 +298,12 @@ class PostTableViewController: UITableViewController {
     func resetTimer() {
         timer.invalidate()
         let nextTimer = NSTimer.scheduledTimerWithTimeInterval(4.0, target: self, selector: #selector(PostTableViewController.handleIdleEvent(_:)), userInfo: nil, repeats: false)
-        print("TIMERRRR 1")
+        //print("TIMERRRR 1")
         timer = nextTimer
     }
     
     func handleIdleEvent(timer: NSTimer) {
-        print("TIMERRRR 2")
+        //print("TIMERRRR 2")
         self.tableView.finishInfiniteScroll()
     }
     
@@ -308,7 +324,7 @@ class PostTableViewController: UITableViewController {
     
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
-        print("posts.count = \(posts.count)")
+        //print("posts.count = \(posts.count)")
         return posts.count
     }
     
