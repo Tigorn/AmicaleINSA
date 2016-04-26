@@ -632,14 +632,42 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
         print("cancel button pressed")
     }
     
+    func createPhotoArray(image: UIImage) -> ([Photo], Int) {
+        var arrayPhoto = [Photo]()
+        var index = 0
+        var tag = -1
+        for message in messages {
+            
+            if message.isMediaMessage {
+                if let imageItem = message.media as? JSQPhotoMediaItem {
+                    arrayPhoto.append(Photo(photo: imageItem.image))
+                    if imageItem.image == image {
+                        tag = index
+                    }
+                    index += 1
+                }
+            }
+        }
+        return (arrayPhoto, tag)
+    }
+    
     override func collectionView(collectionView: JSQMessagesCollectionView!, didTapMessageBubbleAtIndexPath indexPath: NSIndexPath!) {
         let message = self.messages[indexPath.row]
-        if message.isMediaMessage {
-            if let photoItem = message.media as? JSQPhotoMediaItem {
-                let photo = Photo(photo: photoItem.image)
+        if let imageItem = message.media as? JSQPhotoMediaItem {
+            let image = imageItem.image
+            let photo = Photo(photo: image!)
+            let photos = createPhotoArray(image)
+            let tagIndexPhotoInArray = photos.1
+            if tagIndexPhotoInArray != -1 {
+                print("Tag calc = \(tagIndexPhotoInArray)")
+                let viewer = NYTPhotosViewController(photos: photos.0, initialPhoto: photos.0[tagIndexPhotoInArray])
+                presentViewController(viewer, animated: true, completion: nil)
+            } else {
                 let viewer = NYTPhotosViewController(photos: [photo])
                 presentViewController(viewer, animated: true, completion: nil)
             }
+        } else {
+            print("Problem with the image JSQMediaItem when I click on an image on chat")
         }
     }
     
