@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10116" systemVersion="15D21" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" initialViewController="01J-lp-oVM">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10116" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" initialViewController="01J-lp-oVM">
     <dependencies>
-        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
@@ -18,11 +17,11 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo_amicale" translatesAutoresizingMaskIntoConstraints="NO" id="MN4-c8-iWP">
-                                <rect key="frame" x="213" y="192" width="174" height="215"/>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Appli-Amicale_Logo" translatesAutoresizingMaskIntoConstraints="NO" id="MN4-c8-iWP">
+                                <rect key="frame" x="213" y="212.5" width="174" height="174"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="174" id="3dz-TX-KF5"/>
-                                    <constraint firstAttribute="height" constant="215" id="Ft9-ZH-dRG"/>
+                                    <constraint firstAttribute="height" constant="174" id="Ft9-ZH-dRG"/>
                                 </constraints>
                             </imageView>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="  Copyright (c) 2016 Arthur Papailhau. All rights reserved." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="4" translatesAutoresizingMaskIntoConstraints="NO" id="GiM-DW-Snb">
@@ -49,6 +48,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="logo_amicale" width="1656" height="2204"/>
+        <image name="Appli-Amicale_Logo" width="1024" height="1024"/>
     </resources>
 </document>
