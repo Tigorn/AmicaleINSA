@@ -283,6 +283,7 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
             print("messages = \(self.messages.count)")
             self.finishReceivingMessage()
             index += 1
+            //self.scrollToBottomAnimated(true)
             if UInt(index) == self.INITIAL_MESSAGE_LIMIT {
                 self.scrollToBottomAnimated(true)
                 print("[self.scrollToBottomAnimated(true)]")

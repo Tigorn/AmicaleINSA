@@ -569,18 +569,26 @@
                         <barButtonItem key="leftBarButtonItem" image="menu" id="nq7-Pa-rmZ">
                             <color key="tintColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" systemItem="done" id="Zl1-Et-WW2">
+                            <color key="tintColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                            <connections>
+                                <action selector="doneButtonAction:" destination="NN4-0w-OfH" id="jXf-Ur-3rG"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="doneButton" destination="Zl1-Et-WW2" id="MV0-rg-2JV"/>
                         <outlet property="menuButton" destination="nq7-Pa-rmZ" id="D2N-8B-jvA"/>
                         <outlet property="pickerViewYearsINSA" destination="QPo-Pn-EYJ" id="Nrl-Ig-cdY"/>
                         <outlet property="profileImageView" destination="1MM-8k-9kd" id="MN7-ac-59j"/>
                         <outlet property="usernameChatTextField" destination="b1d-X2-o4W" id="Hon-IR-W1U"/>
                         <outlet property="yearSpeGroupLabel" destination="2VF-r0-Xnd" id="PtM-rz-fyc"/>
+                        <segue destination="SQm-Tp-11b" kind="custom" identifier="goToPostVCFromSettings" customClass="SWRevealViewControllerSeguePushController" id="s9e-tu-1Fq"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ZQ7-Ba-JP4" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3513" y="1885"/>
+            <point key="canvasLocation" x="2960" y="1875"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="TVz-lj-Ak0">
@@ -616,7 +624,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="0Os-N9-msv" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2701" y="1885"/>
+            <point key="canvasLocation" x="2255" y="1855"/>
         </scene>
         <!--Washinsa-->
         <scene sceneID="fvQ-ad-h2r">
@@ -778,7 +786,7 @@
         <image name="menu" width="22" height="22"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="wA0-c9-FjZ"/>
-        <segue reference="9ql-Tt-0Pt"/>
+        <segue reference="s9e-tu-1Fq"/>
+        <segue reference="on2-ui-6sW"/>
     </inferredMetricsTieBreakers>
 </document>

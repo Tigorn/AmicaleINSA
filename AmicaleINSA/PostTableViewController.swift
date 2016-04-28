@@ -48,7 +48,7 @@ class PostTableViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        print("First line viewDidLoad")
         if self.revealViewController() != nil {
             menuButton.target = self.revealViewController()
             menuButton.action = #selector(SWRevealViewController.revealToggle(_:))
@@ -71,6 +71,9 @@ class PostTableViewController: UITableViewController {
         
         lastTimestampReverse = 0
         
+        
+        print("Last line viewDidLoad")
+        
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
         
@@ -79,7 +82,7 @@ class PostTableViewController: UITableViewController {
     }
     
     func segueToSettingsIfNeeded(){
-        print("bool = \(getBeenToSettingsOnce())")
+        print("bool segueToSettingsIfNeeded, getBeenToSettingsOnce = \(getBeenToSettingsOnce())")
         if !getBeenToSettingsOnce() {
             self.performSegueWithIdentifier(Public.segueBeenToSettingsOnce, sender: self)
         }
@@ -105,13 +108,14 @@ class PostTableViewController: UITableViewController {
     }
     
     func obversePosts(){
-        
         var SwiftSpinnerAlreadyHidden = false
+        print("In observePosts first line, SwiftSpinnerAlreadyHidden: \(SwiftSpinnerAlreadyHidden)")
         
         let postQuery = postRef.queryLimitedToLast(INITIAL_POST_LIMIT)
         postQuery.observeEventType(.ChildAdded) { (snapshot: FDataSnapshot!) in
-        
+            print("In observePosts observeEvent, SwiftSpinnerAlreadyHidden: \(SwiftSpinnerAlreadyHidden)")
             if !SwiftSpinnerAlreadyHidden {
+                print("inside SwiftSpinnerAlreadyHidden")
                 SwiftSpinnerAlreadyHidden = true
                 MBProgressHUD.hideAllHUDsForView(self.navigationController?.view, animated: true)
             }
@@ -159,7 +163,7 @@ class PostTableViewController: UITableViewController {
             self.lastTimestampReverse = dateTimestampInverseInterval
             
             if imagePresentsBool {
-                print("image present")
+                //print("image present")
                 let base64EncodedString = imageDataString
                 if let imageData = NSData(base64EncodedString: base64EncodedString,
                     options: NSDataBase64DecodingOptions.IgnoreUnknownCharacters) {
@@ -171,7 +175,7 @@ class PostTableViewController: UITableViewController {
                 }
             } else {
                 self.addPostBeginning(titleString, description: descriptionString, date: dateString, author: authorString, imagePresents: false, image: nil, timestamp: dateTimestampInterval)
-                print("image no present")
+                //print("image no present")
             }
             
             self.tableView.reloadData()
@@ -367,7 +371,7 @@ class PostTableViewController: UITableViewController {
             cell.selectionStyle = UITableViewCellSelectionStyle.None
             cell.titlePostLabel.text = posts[section].title
             
-            cell.postImageView.layer.cornerRadius = 10.0;
+            cell.postImageView.layer.cornerRadius = 6.0;
             cell.postImageView.layer.borderWidth = 0.5
             cell.postImageView.clipsToBounds = true
             cell.postImageView.layer.borderColor = colorForBorder.CGColor

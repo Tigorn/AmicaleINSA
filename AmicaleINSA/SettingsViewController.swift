@@ -14,6 +14,7 @@ import MBProgressHUD
 class SettingsViewController: UIViewController, UITextFieldDelegate, ImagePickerDelegate, UIPickerViewDataSource, UIPickerViewDelegate {
 
     @IBOutlet weak var menuButton: UIBarButtonItem!
+    @IBOutlet weak var doneButton: UIBarButtonItem!
     @IBOutlet weak var usernameChatTextField: UITextField!
     @IBOutlet weak var profileImageView: UIImageView!
     @IBOutlet weak var yearSpeGroupLabel: UILabel!
@@ -125,7 +126,12 @@ class SettingsViewController: UIViewController, UITextFieldDelegate, ImagePicker
         
         if self.revealViewController() != nil {
             menuButton.target = self.revealViewController()
-            menuButton.action = #selector(SWRevealViewController.revealToggle(_:))
+            menuButton.action = #selector
+                (SWRevealViewController.revealToggle(_:))
+            doneButton.target = self.revealViewController()
+            doneButton.action = #selector
+                (SWRevealViewController.revealToggle(_:))
+            
             self.view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
         }
         
@@ -169,6 +175,13 @@ class SettingsViewController: UIViewController, UITextFieldDelegate, ImagePicker
     
     func numberOfComponentsInPickerView(pickerView: UIPickerView) -> Int {
         return 1
+    }
+    
+    
+    @IBAction func doneButtonAction(sender: AnyObject) {
+        print("doneButtonAction clicked")
+        //self.performSegueWithIdentifier("goToPostVCFromSettings", sender: self)
+        savedMBProgressHUDAction()
     }
     
     
