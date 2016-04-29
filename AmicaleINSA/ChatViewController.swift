@@ -444,6 +444,7 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
             if message.senderId == senderId {
                 cell.textView!.textColor = UIColor.whiteColor()
             } else {
+                cell.textView!.linkTextAttributes = [NSForegroundColorAttributeName:UIColor.blueColor(), NSUnderlineColorAttributeName: UIColor.blueColor(), NSUnderlineStyleAttributeName: NSUnderlineStyle.StyleSingle.rawValue]
                 cell.textView!.textColor = UIColor.blackColor()
             }
         } else {
