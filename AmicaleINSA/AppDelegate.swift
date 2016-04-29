@@ -24,6 +24,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
+        print("in didFinishLaunchingWithOptions")
         UIApplication.sharedApplication().applicationIconBadgeNumber = 0
         let configuration = ParseClientConfiguration {
             $0.applicationId = Secret.PARSE_APPLICATION_ID
@@ -32,10 +33,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         Parse.initializeWithConfiguration(configuration)
         
-        let userNotificationTypes: UIUserNotificationType = [.Alert, .Badge, .Sound]
-        let settings = UIUserNotificationSettings(forTypes: userNotificationTypes, categories: nil)
-        application.registerUserNotificationSettings(settings)
-        application.registerForRemoteNotifications()
+//        let userNotificationTypes: UIUserNotificationType = [.Alert, .Badge, .Sound]
+//        let settings = UIUserNotificationSettings(forTypes: userNotificationTypes, categories: nil)
+//        application.registerUserNotificationSettings(settings)
+        //application.registerForRemoteNotifications()
         
         return true
     }

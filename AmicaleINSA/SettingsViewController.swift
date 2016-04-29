@@ -165,6 +165,7 @@ class SettingsViewController: UIViewController, UITextFieldDelegate, ImagePicker
     
     override func viewDidAppear(animated: Bool) {
         profileImageView.image = getProfilPicture()
+        registerForNotificationsAndEnterApp(self)
     }
     
     

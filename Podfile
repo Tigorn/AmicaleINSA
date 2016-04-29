@@ -22,6 +22,7 @@ target 'AmicaleINSA' do
     pod 'UIScrollView-InfiniteScroll'
     pod 'Parse'
     pod 'Alamofire', '~> 3.3'
+    pod 'SCLAlertView'
 end
 
 target 'AmicaleINSATests' do

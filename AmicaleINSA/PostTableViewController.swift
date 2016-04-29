@@ -110,13 +110,13 @@ class PostTableViewController: UITableViewController {
     func obversePosts(){
         initActivityIndicator()
         var SwiftSpinnerAlreadyHidden = false
-        print("In observePosts first line, SwiftSpinnerAlreadyHidden: \(SwiftSpinnerAlreadyHidden)")
+        //print("In observePosts first line, SwiftSpinnerAlreadyHidden: \(SwiftSpinnerAlreadyHidden)")
         
         let postQuery = postRef.queryLimitedToLast(INITIAL_POST_LIMIT)
         postQuery.observeEventType(.ChildAdded) { (snapshot: FDataSnapshot!) in
-            print("In observePosts observeEvent, SwiftSpinnerAlreadyHidden: \(SwiftSpinnerAlreadyHidden)")
+            //print("In observePosts observeEvent, SwiftSpinnerAlreadyHidden: \(SwiftSpinnerAlreadyHidden)")
             if !SwiftSpinnerAlreadyHidden {
-                print("inside SwiftSpinnerAlreadyHidden")
+                //print("inside SwiftSpinnerAlreadyHidden")
                 SwiftSpinnerAlreadyHidden = true
                 //MBProgressHUD.hideAllHUDsForView(self.navigationController?.view, animated: true)
 
@@ -324,6 +324,14 @@ class PostTableViewController: UITableViewController {
     
     override func viewDidAppear(animated: Bool) {
         tableView.reloadData()
+        registerForNotificationsAndEnterApp(self)
+//        let alreadyRegisteredForPushNotifications = getRegisterForPushNotifications()
+//        if !alreadyRegisteredForPushNotifications {
+//            print("Show popup for push notifications")
+//            registerForNotificationsAndEnterApp(self)
+//        } else {
+//            print("Already registered for push notifications")
+//        }
         //initActivityIndicator()
     }
     

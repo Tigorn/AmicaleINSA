@@ -9,6 +9,7 @@
 import Foundation
 import UIKit
 import SwiftyJSON
+import SCLAlertView
 
 public struct Public {
     
@@ -63,10 +64,20 @@ public struct Public {
     // Weather
     static let temperatureNSUserDefaults = "temperatureWeather"
     
+    // Push Notifications
+    static let isRegisterForPushNotifications = "isRegisterForPushNotifications"
+    static let userWantsToBeRegistreredForPushNotifications = "userWantsToBeRegistreredForPushNotifications"
+    static let userDeclinedToBeRegisteredForPushNotifications = "userDeclinedToBeRegisteredForPushNotifications"
+    static let userAnsweredForPushNotifications = "userAnsweredForPushNotifications"
+    
+    static let titleAlertPushNotification = "Push Notifications"
+    static let subtitleAlertPushNotification = "Accepte les notifications pour bénéficier des dernières infos du campus en temps réel !"
+    //
+    
 }
 
 /*
- 
+ removeNSUserDefault
  */
 
 public func removeNSUserDefault(){
@@ -203,5 +214,84 @@ private func setTemperature(){
                 }
             )
         }
+    }
+}
+
+/*
+ Push Notifications
+ Si l'utilisateur n'a jamais rien dit, il faut lui demander si il veut accepter les push notifications
+ Si l'utilisateur a dékà accepté, on dit rien
+ Si l'utilisateur a dit non, on dit rien
+ */
+
+private func getUserAnsweredForPushNotifications() -> Bool {
+    return NSUserDefaults.standardUserDefaults().boolForKey(Public.userAnsweredForPushNotifications)
+}
+
+private func setUserAnsweredForPushNotifications() {
+    NSUserDefaults.standardUserDefaults().setBool(true, forKey: Public.userAnsweredForPushNotifications)
+}
+
+private func getUserWantsToBeRegistreredForPushNotifications() -> Bool {
+    return NSUserDefaults.standardUserDefaults().boolForKey(Public.userWantsToBeRegistreredForPushNotifications)
+}
+
+private func getUserDeclinedToBeRegisteredForPushNotifications() -> Bool {
+    return NSUserDefaults.standardUserDefaults().boolForKey(Public.userDeclinedToBeRegisteredForPushNotifications)
+}
+
+public func setUserDeclinedToBeRegisteredForPushNotifications() {
+    NSUserDefaults.standardUserDefaults().setBool(true, forKey: Public.userDeclinedToBeRegisteredForPushNotifications)
+}
+
+private func getUserAlreadyRegisteredForPushNotifications() -> Bool {
+    let notificationType = UIApplication.sharedApplication().currentUserNotificationSettings()!.types
+    if notificationType == UIUserNotificationType.None {
+        return false
+    }else{
+        return true
+    }
+}
+
+/*
+ TODO: set userDeclined... to true if user declines to be registered for Push Notification
+ */
+private func getShowAlertForPermissionPushNotifications() -> Bool {
+    let userDeclinedToBeRegisteredForPushNotifications = getUserDeclinedToBeRegisteredForPushNotifications()
+    let userAlreadyRegisteredForPushNotifications = getUserAlreadyRegisteredForPushNotifications()
+    let userAnsweredForPushNotifications = getUserAnsweredForPushNotifications()
+    
+    if userDeclinedToBeRegisteredForPushNotifications {
+        print("userDeclinedToBeRegisteredForPushNotifications")
+        return false
+    } else if userAlreadyRegisteredForPushNotifications {
+        print("userAlreadyRegisteredForPushNotifications")
+        return false
+    } else if userAnsweredForPushNotifications {
+        return false
+    } else {
+        print("ELSE getShowAlertForPermissionPushNotifications")
+        return true
+    }
+}
+
+public func registerForNotificationsAndEnterApp(controller: UIViewController) {
+    let showAlert = getShowAlertForPermissionPushNotifications()
+    if showAlert {
+        let alert = SCLAlertView()
+        alert.addButton("Compris !") {
+            setUserAnsweredForPushNotifications()
+            let application = UIApplication.sharedApplication()
+            print("J'affiche l'alert qui va demander de recevoir des notifications")
+            let userNotificationTypes: UIUserNotificationType = [.Alert, .Badge, .Sound]
+            let settings = UIUserNotificationSettings(forTypes: userNotificationTypes, categories: nil)
+            application.registerUserNotificationSettings(settings)
+            application.registerForRemoteNotifications()
+        }
+//        alert.addButton("TEST") {
+//            print("Ceci est un bouton de test")
+//        }
+        alert.showCloseButton = false
+        alert.showInfo(Public.titleAlertPushNotification, subTitle: Public.subtitleAlertPushNotification)
     }
 }
