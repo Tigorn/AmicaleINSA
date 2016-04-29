@@ -435,9 +435,6 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
     }
     
     
-    
-    
-    
     override func collectionView(collectionView: UICollectionView,
                                  cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         let cell = super.collectionView(collectionView, cellForItemAtIndexPath: indexPath)
@@ -450,6 +447,8 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
                 cell.textView!.textColor = UIColor.blackColor()
             }
         } else {
+            //cell.mediaView.layer.borderColor = UIColor.blackColor().CGColor
+            //cell.mediaView.layer.borderWidth = CGFloat(10)
             //cell.mediaView?.contentMode = .ScaleAspectFill
         }
         return cell

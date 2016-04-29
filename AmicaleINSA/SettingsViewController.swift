@@ -182,6 +182,7 @@ class SettingsViewController: UIViewController, UITextFieldDelegate, ImagePicker
     
     @IBAction func doneButtonAction(sender: AnyObject) {
         print("doneButtonAction clicked")
+        setUsernameChat(usernameChatTextField.text!)
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let frontNavigationController = storyboard.instantiateViewControllerWithIdentifier("PostViewController")
         let rearNavifationController = storyboard.instantiateViewControllerWithIdentifier("menuViewController")
