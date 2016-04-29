@@ -570,7 +570,7 @@
                             <color key="tintColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" systemItem="done" id="Zl1-Et-WW2">
-                            <color key="tintColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                            <color key="tintColor" red="0.96470588235294119" green="0.38823529411764707" blue="0.40784313725490196" alpha="1" colorSpace="calibratedRGB"/>
                             <connections>
                                 <action selector="doneButtonAction:" destination="NN4-0w-OfH" id="jXf-Ur-3rG"/>
                             </connections>
@@ -582,7 +582,6 @@
                         <outlet property="profileImageView" destination="1MM-8k-9kd" id="MN7-ac-59j"/>
                         <outlet property="usernameChatTextField" destination="b1d-X2-o4W" id="Hon-IR-W1U"/>
                         <outlet property="yearSpeGroupLabel" destination="2VF-r0-Xnd" id="PtM-rz-fyc"/>
-                        <segue destination="SQm-Tp-11b" kind="custom" identifier="goToPostVCFromSettings" customClass="SWRevealViewControllerSeguePushController" id="s9e-tu-1Fq"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ZQ7-Ba-JP4" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -786,6 +785,6 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="wA0-c9-FjZ"/>
-        <segue reference="on2-ui-6sW"/>
+        <segue reference="9ql-Tt-0Pt"/>
     </inferredMetricsTieBreakers>
 </document>
