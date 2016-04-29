@@ -179,11 +179,22 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
         activeUsersRef.observeEventType(.Value, withBlock: { (snapshot: FDataSnapshot!) in
             print("in observeActiveUsers")
             singleUserRef.setValue(value)
-            var count = UInt(0)
+            var count = 0
             if snapshot.exists() {
-                count = snapshot.childrenCount
+                count = Int(snapshot.childrenCount)
+                var titleChat = "Chat (\(count)) "
+                switch count {
+                case 1:
+                    titleChat += "👍"
+                case 2 ... 3:
+                    titleChat += "🎅"
+                case 4 ... 6:
+                    titleChat += "👁"
+                default:
+                    titleChat = "Chat"
+                }
                 print("count users: \(count)")
-                self.title = "Chat (\(count))"
+                self.title = titleChat
             }
 //            var users = snapshot.children
 //            for user in users {
