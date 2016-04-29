@@ -71,6 +71,7 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
         userIsTypingRef.onDisconnectRemoveValue()
         usersTypingQuery = typingIndicatorRef.queryOrderedByValue().queryEqualToValue(true)
         usersTypingQuery.observeEventType(.Value) { (data: FDataSnapshot!) in
+            print("number users typing: \(data.childrenCount)")
             if data.childrenCount == 1 && self.isTyping {
                 return
             }
@@ -80,6 +81,7 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
             }
         }
     }
+    
     
     //    func initActivityIndicator() {
     //        myActivityIndicator = UIActivityIndicatorView(frame: CGRectMake(0,0, 50, 50)) as UIActivityIndicatorView
@@ -106,7 +108,7 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        print("In viewDidLoad ChatVC")
+        //print("In viewDidLoad ChatVC")
         if self.revealViewController() != nil {
             menuButton.target = self.revealViewController()
             menuButton.action = #selector(SWRevealViewController.revealToggle(_:))
@@ -151,9 +153,43 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
     }
     
     func initChat(){
-        firebaseRef.authAnonymouslyWithCompletionBlock { (error, authData) in // 1
-            if error != nil { print("Error connection Firebase Anonymous \(error.description)");}
+        firebaseRef.authAnonymouslyWithCompletionBlock { (error, authData) in
+            if error != nil {
+                print("Error connection Firebase Anonymous \(error.description)");
+            }
+            if authData != nil {
+//                print("authData: \(authData)")
+//                let activeUsersRef = FirebaseManager.firebaseManager.createActiveUsersRef()
+//                let singleUserRef = activeUsersRef.childByAppendingPath(self.senderId)
+//                let value = "\(self.senderDisplayName)"
+//                singleUserRef.setValue(value)
+//                singleUserRef.onDisconnectRemoveValue()
+            } else {
+                print("in else authData == nil")
+            }
         }
+    }
+    
+    private func observeActiveUsers() {
+        //print("in observeActiveUsers")
+        let activeUsersRef = FirebaseManager.firebaseManager.createActiveUsersRef()
+        let singleUserRef = activeUsersRef.childByAppendingPath(self.senderId)
+        let value = "\(self.senderDisplayName)"
+        singleUserRef.onDisconnectRemoveValue()
+        activeUsersRef.observeEventType(.Value, withBlock: { (snapshot: FDataSnapshot!) in
+            print("in observeActiveUsers")
+            singleUserRef.setValue(value)
+            var count = UInt(0)
+            if snapshot.exists() {
+                count = snapshot.childrenCount
+                print("count users: \(count)")
+                self.title = "Chat (\(count))"
+            }
+//            var users = snapshot.children
+//            for user in users {
+//                print("user: \(user)")
+//            }
+        })
     }
     
     
@@ -203,12 +239,12 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
     
     func messageAlreadyPresent(id: String, senderDisplayName: String, media: JSQPhotoMediaItem, date: NSDate) -> Bool {
         let msg = "\(id)\(senderDisplayName)\(date)"
-        print("msg.date = \(date)")
+        //print("msg.date = \(date)")
         var msgToCompare = ""
         for message in messages {
             if message.isMediaMessage == true {
                 msgToCompare = "\(message.senderId)\(message.senderDisplayName)\(message.date)"
-                print("messgae.date = \(message.date)")
+                //print("messgae.date = \(message.date)")
                 if msgToCompare == msg {
                     return true
                 }
@@ -269,8 +305,8 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
                     let imageData = NSData(base64EncodedString: base64EncodedString,
                                            options: NSDataBase64DecodingOptions.IgnoreUnknownCharacters)
                     let mediaMessageData: JSQPhotoMediaItem = JSQPhotoMediaItem(image: UIImage(data: imageData!))
-                    print("Length")
-                    print(imageData?.length)
+                    //print("Length")
+                    //print(imageData?.length)
                     self.addMessage(idString, media: mediaMessageData, senderDisplayName: senderDisplayNameString, date: date)
                 } else {
                     self.addMessage(idString, text: textString, senderDisplayName: senderDisplayNameString, date: date)
@@ -280,13 +316,13 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
             /* [JSQMESSAGE] Ceci est le code avant de faire la MAJ JSQMessage*/
             //self.automaticallyScrollsToMostRecentMessage = false
             
-            print("messages = \(self.messages.count)")
+            //print("messages = \(self.messages.count)")
             self.finishReceivingMessage()
             index += 1
             //self.scrollToBottomAnimated(true)
             if UInt(index) == self.INITIAL_MESSAGE_LIMIT {
                 self.scrollToBottomAnimated(true)
-                print("[self.scrollToBottomAnimated(true)]")
+                //print("[self.scrollToBottomAnimated(true)]")
             }
         }
     }
@@ -306,7 +342,10 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
         super.viewDidAppear(animated)
         observeMessages()
         observeTyping()
+        observeActiveUsers()
     }
+    
+  
     
     override func viewDidDisappear(animated: Bool) {
         super.viewDidDisappear(animated)
@@ -562,7 +601,7 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
     
     override func collectionView(collectionView: UICollectionView,
                                  numberOfItemsInSection section: Int) -> Int {
-        print("numberOfItemsInSection = \(messages.count)")
+        //print("numberOfItemsInSection = \(messages.count)")
         return messages.count
     }
     
@@ -679,16 +718,16 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        print("In viewWillAppear ChatVC")
+        //print("In viewWillAppear ChatVC")
     }
     
         func shouldScrollToNewlyReceivedMessageAtIndexPath(indexPath: NSIndexPath!) -> Bool {
-            print("in delegate shouldScrollToNewlyReceivedMessageAtIndexPath \(self.isLastCellVisible)")
+            //print("in delegate shouldScrollToNewlyReceivedMessageAtIndexPath \(self.isLastCellVisible)")
             return self.isLastCellVisible
         }
     
         func shouldScrollToLastMessageAtStartup() -> Bool {
-            print("shouldScrollToLastMessageAtStartup")
+            //print("shouldScrollToLastMessageAtStartup")
             return true
         }
     

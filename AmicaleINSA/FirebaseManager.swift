@@ -21,6 +21,10 @@ class FirebaseManager {
         return BASE_REF.childByAppendingPath("typingIndicator")
     }
     
+    func createActiveUsersRef() -> Firebase {
+        return BASE_REF.childByAppendingPath("activeUsers")
+    }
+    
     func createMessageRef() -> Firebase {
         return BASE_REF.childByAppendingPath("messages")
     }
