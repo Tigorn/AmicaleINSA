@@ -13,6 +13,7 @@ protocol MenuControllerDelegate  {
     func dismissKeyboardFromMenu(_: MenuController)
 }
 
+
 class MenuController: UITableViewController {
     
     @IBOutlet weak var topViewMenu: UIView!
@@ -37,6 +38,7 @@ class MenuController: UITableViewController {
         profileImageView.image = getProfilPicture()
         temperatureLabel.text = getTemperature()
     }
+    
     
     private func initUI() {
         profileImageView.layer.cornerRadius = self.profileImageView.frame.size.width / 2
@@ -67,6 +69,8 @@ class MenuController: UITableViewController {
             chatVc.senderDisplayName = getUsernameChat()
             print(chatVc.senderDisplayName)
             delegate = chatVc
+        } else if (segue.identifier == "GoToHome"){
+            print("GoToHome called")
         }
     }
     

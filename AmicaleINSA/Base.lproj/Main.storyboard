@@ -577,7 +577,6 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
-                        <outlet property="doneButton" destination="Zl1-Et-WW2" id="MV0-rg-2JV"/>
                         <outlet property="menuButton" destination="nq7-Pa-rmZ" id="D2N-8B-jvA"/>
                         <outlet property="pickerViewYearsINSA" destination="QPo-Pn-EYJ" id="Nrl-Ig-cdY"/>
                         <outlet property="profileImageView" destination="1MM-8k-9kd" id="MN7-ac-59j"/>
@@ -606,7 +605,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Yfw-SV-wOk" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2701" y="1176"/>
+            <point key="canvasLocation" x="2663" y="1190"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="hCw-5M-azN">
@@ -786,7 +785,7 @@
         <image name="menu" width="22" height="22"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="s9e-tu-1Fq"/>
+        <segue reference="wA0-c9-FjZ"/>
         <segue reference="on2-ui-6sW"/>
     </inferredMetricsTieBreakers>
 </document>

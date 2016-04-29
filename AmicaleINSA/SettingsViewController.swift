@@ -11,6 +11,7 @@ import ImagePicker
 import SWRevealViewController
 import MBProgressHUD
 
+
 class SettingsViewController: UIViewController, UITextFieldDelegate, ImagePickerDelegate, UIPickerViewDataSource, UIPickerViewDelegate {
 
     @IBOutlet weak var menuButton: UIBarButtonItem!
@@ -128,9 +129,9 @@ class SettingsViewController: UIViewController, UITextFieldDelegate, ImagePicker
             menuButton.target = self.revealViewController()
             menuButton.action = #selector
                 (SWRevealViewController.revealToggle(_:))
-            doneButton.target = self.revealViewController()
-            doneButton.action = #selector
-                (SWRevealViewController.revealToggle(_:))
+//            doneButton.target = self.revealViewController()
+//            doneButton.action = #selector
+//                (SWRevealViewController.revealToggle(_:))
             
             self.view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
         }
@@ -166,6 +167,7 @@ class SettingsViewController: UIViewController, UITextFieldDelegate, ImagePicker
         profileImageView.image = getProfilPicture()
     }
     
+    
     func profilePictureSelected() {
         let imagePickerController = ImagePickerController()
         imagePickerController.imageLimit = 1
@@ -180,8 +182,11 @@ class SettingsViewController: UIViewController, UITextFieldDelegate, ImagePicker
     
     @IBAction func doneButtonAction(sender: AnyObject) {
         print("doneButtonAction clicked")
-        //self.performSegueWithIdentifier("goToPostVCFromSettings", sender: self)
-        savedMBProgressHUDAction()
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let frontNavigationController = storyboard.instantiateViewControllerWithIdentifier("PostViewController")
+        let rearNavifationController = storyboard.instantiateViewControllerWithIdentifier("menuViewController")
+        let mainRevealController : SWRevealViewController = SWRevealViewController(rearViewController: rearNavifationController, frontViewController: frontNavigationController)
+        self.revealViewController().setFrontViewController(mainRevealController, animated: true)
     }
     
     

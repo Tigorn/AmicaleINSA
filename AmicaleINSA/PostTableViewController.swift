@@ -108,6 +108,7 @@ class PostTableViewController: UITableViewController {
     }
     
     func obversePosts(){
+        initActivityIndicator()
         var SwiftSpinnerAlreadyHidden = false
         print("In observePosts first line, SwiftSpinnerAlreadyHidden: \(SwiftSpinnerAlreadyHidden)")
         
@@ -117,7 +118,9 @@ class PostTableViewController: UITableViewController {
             if !SwiftSpinnerAlreadyHidden {
                 print("inside SwiftSpinnerAlreadyHidden")
                 SwiftSpinnerAlreadyHidden = true
-                MBProgressHUD.hideAllHUDsForView(self.navigationController?.view, animated: true)
+                //MBProgressHUD.hideAllHUDsForView(self.navigationController?.view, animated: true)
+
+                MBProgressHUD.hideAllHUDsForView(self.view, animated: true)
             }
             var titleString = ""
             var descriptionString = ""
@@ -321,7 +324,7 @@ class PostTableViewController: UITableViewController {
     
     override func viewDidAppear(animated: Bool) {
         tableView.reloadData()
-        initActivityIndicator()
+        //initActivityIndicator()
     }
     
     // MARK: - Table view data source
@@ -390,15 +393,21 @@ class PostTableViewController: UITableViewController {
     }
     
     func initActivityIndicator() {
-        let myActivityIndicatorHUD = MBProgressHUD.showHUDAddedTo(self.navigationController?.view, animated: true)
+        //myActivityIndicatorHUD = MBProgressHUD.showHUDAddedTo(self.navigationController?.view, animated: true)
+        myActivityIndicatorHUD = MBProgressHUD.showHUDAddedTo(self.view, animated: true)
         myActivityIndicatorHUD.mode = MBProgressHUDMode.Indeterminate
         myActivityIndicatorHUD.labelText = "Loading..."
         myActivityIndicatorHUD.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(PostTableViewController.tapToCancel)))
+        myActivityIndicatorHUD.layer.zPosition = 2
+        self.tableView.layer.zPosition = 1
     }
     
     func tapToCancel(){
         print("cancel tap")
-        MBProgressHUD.hideAllHUDsForView(self.navigationController?.view, animated: true)
+        //MBProgressHUD.hide(myActivityIndicatorHUD)
+        //MBProgressHUD.hideAllHUDsForView(self.navigationController?.view, animated: true)
+        MBProgressHUD.hideAllHUDsForView(self.view, animated: true)
+        //myActivityIndicator.hidden = true
     }
     
     func createPhotoArray(image: UIImage) -> ([Photo], Int) {
