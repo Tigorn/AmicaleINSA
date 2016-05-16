@@ -1,0 +1,13 @@
+16/05/2016
+Trois choses vont être ajoutés à l'appli actuelle :
+
+1- Une partie club, qui aura 2 sous parties
+1.a : Une présentation de tous les clubs, qqch de statique.
+1.b : Une timeline de news de la part des clubs. Il faudra trouver un moyen de dire "moi, en tant qu'utilisateur, je veux m'abonner à ce club" et du coup si le club envoi une notif, seulelemnt la personne abonnée recevoir LA NOTIFICATION. Mais tout le monde aura la news.
+
+2. Une partie pour "les locaux" avec une tableView contenant les locaux des clubs, et en gros il y aura 3 couleurs :
+- ROUGE : local fermé
+- JAUNE : théoriquement ouvert (genre ça sera jaune de 18 à 19h, ça va dépendre de l'heure théorique d'ouverture des clubs
+- VERT : le club en question s'est connecté sur le site, et a dit : je suis ouvert, et devra en partant penser à ce déconnecter. S'il oublie, au bout de X minutes ça repassera rouge/jaune.
+
+3. Un plan de l'INSA et de l'amicale avec tous les clubs. On va pas se faire chier ça sera une image qu'on a déjà smile emoticon

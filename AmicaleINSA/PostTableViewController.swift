@@ -393,6 +393,7 @@ class PostTableViewController: UITableViewController {
             return cell
         } else {
             let cell = tableView.dequeueReusableCellWithIdentifier("cell_no_image", forIndexPath: indexPath) as! PostWithoutImageTableViewCell
+            //cell.textPostLabel.delegate = self
             cell.titlePostLabel.text = posts[section].title
             cell.textPostLabel.text = posts[section].description
             cell.selectionStyle = UITableViewCellSelectionStyle.None

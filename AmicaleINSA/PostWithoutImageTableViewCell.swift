@@ -13,6 +13,8 @@ class PostWithoutImageTableViewCell: UITableViewCell {
     @IBOutlet weak var titlePostLabel: UILabel!
     @IBOutlet weak var textPostLabel: UILabel!
     
+    //@IBOutlet weak var textPostLabel: TTTAttributedLabel!
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code

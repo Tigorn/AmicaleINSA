@@ -31,6 +31,7 @@
 		929D4C4A1CB2ECB00097CFA6 /* CustomInfiniteIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 929D4C491CB2ECB00097CFA6 /* CustomInfiniteIndicator.swift */; };
 		92A7013D1C847B4C000E1E8F /* WebPlanningViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92A7013C1C847B4C000E1E8F /* WebPlanningViewController.swift */; };
 		92A7013F1C847EA0000E1E8F /* Device.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92A7013E1C847EA0000E1E8F /* Device.swift */; };
+		92AAF0F51CEA5EB000301CBD /* TODO.txt in Resources */ = {isa = PBXBuildFile; fileRef = 92AAF0F41CEA5EB000301CBD /* TODO.txt */; };
 		92B366F51CA8889000C3265E /* WashINSADetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92B366F41CA8889000C3265E /* WashINSADetailsViewController.swift */; };
 		92CBC4E61C8642CB0074B9B2 /* Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92CBC4E51C8642CB0074B9B2 /* Extension.swift */; };
 		DCEABC98C48CB22B6CC94938 /* Pods_AmicaleINSA.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E8396CEAADB9C97025A79BF /* Pods_AmicaleINSA.framework */; };
@@ -87,6 +88,7 @@
 		929D4C491CB2ECB00097CFA6 /* CustomInfiniteIndicator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomInfiniteIndicator.swift; sourceTree = "<group>"; };
 		92A7013C1C847B4C000E1E8F /* WebPlanningViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebPlanningViewController.swift; sourceTree = "<group>"; };
 		92A7013E1C847EA0000E1E8F /* Device.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Device.swift; sourceTree = "<group>"; };
+		92AAF0F41CEA5EB000301CBD /* TODO.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = TODO.txt; sourceTree = "<group>"; };
 		92B366F41CA8889000C3265E /* WashINSADetailsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WashINSADetailsViewController.swift; sourceTree = "<group>"; };
 		92CBC4E51C8642CB0074B9B2 /* Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extension.swift; sourceTree = "<group>"; };
 		935DF77FC9D0967ED183E2CC /* Pods-AmicaleINSA.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AmicaleINSA.release.xcconfig"; path = "Pods/Target Support Files/Pods-AmicaleINSA/Pods-AmicaleINSA.release.xcconfig"; sourceTree = "<group>"; };
@@ -143,6 +145,7 @@
 		9206F3B81C838F8B00978CF5 /* AmicaleINSA */ = {
 			isa = PBXGroup;
 			children = (
+				92AAF0F31CEA5E9600301CBD /* TODO */,
 				9206F3B91C838F8B00978CF5 /* AppDelegate.swift */,
 				9247CD771CB12CCA008F51E2 /* Post */,
 				9265E2651CA8346F000BE187 /* Washinsa */,
@@ -279,6 +282,14 @@
 			name = Constants;
 			sourceTree = "<group>";
 		};
+		92AAF0F31CEA5E9600301CBD /* TODO */ = {
+			isa = PBXGroup;
+			children = (
+				92AAF0F41CEA5EB000301CBD /* TODO.txt */,
+			);
+			name = TODO;
+			sourceTree = "<group>";
+		};
 		9EE607008615919B4529BC79 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -409,6 +420,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				92AAF0F51CEA5EB000301CBD /* TODO.txt in Resources */,
 				9206F3C71C838F8B00978CF5 /* LaunchScreen.storyboard in Resources */,
 				9206F3C41C838F8B00978CF5 /* Assets.xcassets in Resources */,
 				9206F3BF1C838F8B00978CF5 /* Main.storyboard in Resources */,

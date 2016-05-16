@@ -23,6 +23,7 @@ target 'AmicaleINSA' do
     pod 'Parse'
     pod 'Alamofire', '~> 3.3'
     pod 'SCLAlertView'
+    pod 'TTTAttributedLabel'
 end
 
 target 'AmicaleINSATests' do

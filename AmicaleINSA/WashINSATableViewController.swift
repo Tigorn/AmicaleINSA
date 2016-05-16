@@ -105,6 +105,7 @@ class WashINSATableViewController: UITableViewController {
         loadInfoInMachinesDB()
     }
     
+    
     func initActivityIndicator() {
         myActivityIndicator = UIActivityIndicatorView(frame: CGRectMake(0,0, 50, 50)) as UIActivityIndicatorView
         myActivityIndicator.center = CGPoint(x: UIScreen.mainScreen().bounds.width/2, y: UIScreen.mainScreen().bounds.height/2)
