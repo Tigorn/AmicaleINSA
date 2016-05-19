@@ -13,6 +13,7 @@ import SWRevealViewController
 import SwiftyJSON
 import Alamofire
 import MBProgressHUD
+import SCLAlertView
 
 class WashINSATableViewController: UITableViewController {
     
@@ -292,7 +293,37 @@ class WashINSATableViewController: UITableViewController {
         return cell
     }
     
+    override func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [UITableViewRowAction]? {
+        var indexInArray = indexPath.row
+        if indexPath.section == 1 {
+            indexInArray += 3
+        }
+        let remainingTime = machines[indexInArray].remainingTime
+        var minuteString = "minutes"
+        let alarm = UITableViewRowAction(style: .Normal, title: "Set\nAlarm") { action, index in
+            print("alarm button tapped")
+            if let minute = Int(remainingTime) {
+                if minute < 2 {
+                    minuteString = "minute"
+                }
+                sendLocalNotificationWashingMachine(minute)
+            }
+            let alert = SCLAlertView()
+            alert.addButton("Compris !") {
+                print("compris's button tapped")
+                self.tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Left)
+            }
+            alert.showCloseButton = false
+            alert.showInfo("Alarme laverie", subTitle: "Vous allez recevoir une notification dans \(remainingTime) \(minuteString) pour vous rappeler que vous devez aller chercher votre linge !")
+        }
+        alarm.backgroundColor = UIColor.redColor()
+        return [alarm]
+    }
     
+    
+    override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
+        // you need to implement this method too or you can't swipe to display the actions
+    }
     
     override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         switch section {
@@ -322,8 +353,15 @@ class WashINSATableViewController: UITableViewController {
     
     // Override to support conditional editing of the table view.
     override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
-        return false
+        var indexInArray = indexPath.row
+        if indexPath.section == 1 {
+            indexInArray += 3
+        }
+        if machines[indexInArray].available.containsString("En cours d'utilisation") {
+            return true
+        } else {
+            return false
+        }
     }
     
     

@@ -279,6 +279,7 @@ private func getShowAlertForPermissionPushNotifications() -> Bool {
     }
 }
 
+
 public func registerForNotificationsAndEnterApp(controller: UIViewController) {
     let showAlert = getShowAlertForPermissionPushNotifications()
     if showAlert {
@@ -298,4 +299,13 @@ public func registerForNotificationsAndEnterApp(controller: UIViewController) {
         alert.showCloseButton = false
         alert.showInfo(Public.titleAlertPushNotification, subTitle: Public.subtitleAlertPushNotification)
     }
+}
+
+public func sendLocalNotificationWashingMachine(time: Int) {
+    let notification = UILocalNotification()
+    notification.fireDate = NSDate(timeIntervalSinceNow: Double(time*60))
+    notification.alertBody = "Vite, ton linge est prêt !!"
+    notification.alertAction = "récupérer ton linge !"
+    notification.soundName = UILocalNotificationDefaultSoundName
+    UIApplication.sharedApplication().scheduleLocalNotification(notification)
 }

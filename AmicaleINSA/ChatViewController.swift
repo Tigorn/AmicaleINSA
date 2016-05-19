@@ -183,23 +183,77 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
             if snapshot.exists() {
                 count = Int(snapshot.childrenCount)
                 var titleChat = "Chat (\(count)) "
-                switch count {
-                case 1:
-                    titleChat += "👍"
-                case 2 ... 3:
-                    titleChat += "🎅"
-                case 4 ... 6:
+                if count == 1 {
+                    titleChat += "👶"
+                } else if  count == 2 {
+                   titleChat += "👦"
+                } else if  count == 3 {
+                    titleChat += "👧"
+                } else if  count == 4 {
+                    titleChat += "🤗"
+                } else if  count == 5 {
+                    titleChat += "🚶"
+                } else if  count == 6 {
+                    titleChat += "🍻"
+                } else if count <= 7 {
+                    titleChat += "😎"
+                } else if count <= 10 {
+                    titleChat += "🤓"
+                } else if count <= 15 {
+                    titleChat += "😱"
+                } else if count <= 20 {
+                    titleChat += "😍"
+                } else if count <= 25 {
+                    titleChat += "🍷"
+                } else if count <= 30 {
+                    titleChat += "🐤"
+                } else if count <= 35 {
+                    titleChat += "🐙"
+                } else if count <= 40 {
+                    titleChat += "🐸"
+                } else if count <= 45 {
+                    titleChat += "🐔"
+                } else if count <= 50 {
+                    titleChat += "🐌"
+                } else if count <= 60 {
+                    titleChat += "🐨"
+                } else if count <= 70 {
+                    titleChat += "🐢"
+                } else if count <= 80 {
+                    titleChat += "🐳"
+                } else if count <= 90 {
+                    titleChat += "🐲"
+                } else if count <= 100 {
+                    titleChat += "💥"
+                } else if count <= 110 {
+                    titleChat += "🌨"
+                } else if count <= 120 {
+                    titleChat += "🌩"
+                } else if count <= 130 {
+                    titleChat += "⛈"
+                } else if count <= 140 {
+                    titleChat += "🌧"
+                } else if count <= 150 {
+                    titleChat += "🌦"
+                } else if count <= 160 {
+                    titleChat += "🌬"
+                } else if count <= 170 {
+                    titleChat += "☁️"
+                } else if count <= 180 {
+                    titleChat += "⛅️"
+                } else if count <= 190 {
+                    titleChat += "🌤"
+                } else if count <= 195 {
+                    titleChat += "☀️"
+                } else if count <= 200 {
+                    titleChat += "🔥"
+                } else {
                     titleChat += "👁"
-                default:
-                    titleChat = "Chat"
                 }
+                
                 print("count users: \(count)")
                 self.title = titleChat
             }
-//            var users = snapshot.children
-//            for user in users {
-//                print("user: \(user)")
-//            }
         })
     }
     
