@@ -300,26 +300,66 @@ class WashINSATableViewController: UITableViewController {
         }
         let remainingTime = machines[indexInArray].remainingTime
         var minuteString = "minutes"
-        let alarm = UITableViewRowAction(style: .Normal, title: "Set\nAlarm") { action, index in
-            print("alarm button tapped")
-            if let minute = Int(remainingTime) {
-                if minute < 2 {
-                    minuteString = "minute"
-                }
-                sendLocalNotificationWashingMachine(minute)
-            }
-            let alert = SCLAlertView()
-            alert.addButton("Compris !") {
-                print("compris's button tapped")
+        var alarm: UITableViewRowAction!
+        if alreadyNotificationForMachine(indexInArray) {
+            alarm = UITableViewRowAction(style: .Normal, title: "Unset\nAlarm") { action, index in
+                print("alarm button tapped")
+                self.cancelNotificationForMachine(indexInArray)
                 self.tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Left)
+                alarm.backgroundColor = UIColor.redColor()
             }
-            alert.showCloseButton = false
-            alert.showInfo("Alarme laverie", subTitle: "Vous allez recevoir une notification dans \(remainingTime) \(minuteString) pour vous rappeler que vous devez aller chercher votre linge !")
+            alarm.backgroundColor = UIColor.redColor()
+        } else {
+            alarm = UITableViewRowAction(style: .Normal, title: "Set\nAlarm") { action, index in
+                print("alarm button tapped")
+                if let minute = Int(remainingTime) {
+                    if minute < 2 {
+                        minuteString = "minute"
+                    }
+                    sendLocalNotificationWashingMachine(minute, numeroMachine: indexInArray)
+                }
+                let alert = SCLAlertView()
+                alert.addButton("Compris !") {
+                    print("compris's button tapped")
+                    self.tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Left)
+                }
+                alert.showCloseButton = false
+                alert.showInfo("Alarme laverie", subTitle: "Vous allez recevoir une notification dans \(remainingTime) \(minuteString) pour vous rappeler que vous devez aller chercher votre linge !")
+            }
+            alarm.backgroundColor = UIColor.redColor()
         }
-        alarm.backgroundColor = UIColor.redColor()
         return [alarm]
     }
     
+    func cancelNotificationForMachine(machineNumber:Int) {
+        let app:UIApplication = UIApplication.sharedApplication()
+        for oneEvent in app.scheduledLocalNotifications! {
+            let notification = oneEvent as UILocalNotification
+            if let userInfoCurrent = notification.userInfo as? [String:Int] {
+                if let number = userInfoCurrent["numero_machine"] {
+                    if number == machineNumber {
+                        app.cancelLocalNotification(notification)
+                    }
+                }
+            }
+        }
+    }
+    
+    func alreadyNotificationForMachine(machineNumber: Int) -> Bool {
+        let app:UIApplication = UIApplication.sharedApplication()
+        for oneEvent in app.scheduledLocalNotifications! {
+            let notification = oneEvent as UILocalNotification
+            if let userInfoCurrent = notification.userInfo as? [String:Int] {
+                if let number = userInfoCurrent["numero_machine"] {
+                    if number == machineNumber {
+                        app.cancelLocalNotification(notification)
+                        return true
+                    }
+                }
+            }
+        }
+        return false
+    }
     
     override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
         // you need to implement this method too or you can't swipe to display the actions

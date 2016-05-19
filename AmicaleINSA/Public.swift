@@ -301,11 +301,12 @@ public func registerForNotificationsAndEnterApp(controller: UIViewController) {
     }
 }
 
-public func sendLocalNotificationWashingMachine(time: Int) {
+public func sendLocalNotificationWashingMachine(time: Int, numeroMachine: Int) {
     let notification = UILocalNotification()
     notification.fireDate = NSDate(timeIntervalSinceNow: Double(time*60))
     notification.alertBody = "Vite, ton linge est prêt !!"
     notification.alertAction = "récupérer ton linge !"
+    notification.userInfo = ["numero_machine": numeroMachine]
     notification.soundName = UILocalNotificationDefaultSoundName
     UIApplication.sharedApplication().scheduleLocalNotification(notification)
 }
