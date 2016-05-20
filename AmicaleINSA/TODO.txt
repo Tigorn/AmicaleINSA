@@ -1,3 +1,7 @@
+TODO :
+
+MAJ Majeur:
+
 [MAJ 2.0]
 16/05/2016
 Trois choses vont être ajoutés à l'appli actuelle :
@@ -13,14 +17,3 @@ Parse info about channel: https://www.parse.com/docs/ios/guide#push-notification
 - VERT : le club en question s'est connecté sur le site, et a dit : je suis ouvert, et devra en partant penser à ce déconnecter. S'il oublie, au bout de X minutes ça repassera rouge/jaune.
 
 3. Un plan de l'INSA et de l'amicale avec tous les clubs. On va pas se faire chier ça sera une image qu'on a déjà smile emoticon
-
-
-TODO :
-
-MAJ mineur
-- Réserver machine à lacher : Swipe to set an alarm.
-
-- Finir le nombre de gens dans le chat, + implémenter le système d'emoji qui va avec.
-
-MAJ Majeur:
-- 1,2,3 du haut, cf [MAJ 2.0]
