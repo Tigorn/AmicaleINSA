@@ -332,6 +332,7 @@ class WashINSATableViewController: UITableViewController {
     }
     
     func cancelNotificationForMachine(machineNumber:Int) {
+        print("canceled notification for machine \(machineNumber+1)")
         let app:UIApplication = UIApplication.sharedApplication()
         for oneEvent in app.scheduledLocalNotifications! {
             let notification = oneEvent as UILocalNotification
@@ -352,12 +353,14 @@ class WashINSATableViewController: UITableViewController {
             if let userInfoCurrent = notification.userInfo as? [String:Int] {
                 if let number = userInfoCurrent["numero_machine"] {
                     if number == machineNumber {
-                        app.cancelLocalNotification(notification)
+                        //app.cancelLocalNotification(notification)
+                        print("machine number: \(machineNumber+1) exists for notification")
                         return true
                     }
                 }
             }
         }
+        print("machine number: \(machineNumber+1) does not exist for notification")
         return false
     }
     

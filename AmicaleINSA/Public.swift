@@ -55,6 +55,7 @@ public struct Public {
     static let urlProxyWash = "http://www.proxiwash.com/weblaverie/ma-laverie-2?s=cf4f39&16d33a57b3fb9a05d4da88969c71de74=1"
     static let urlWeatherToulouse = "https://api.forecast.io/forecast/5877c3394948db03ae04471da46fde3c/43.5722715,1.4687831"
     static let urlWashINSAAPI = "http://92.222.86.168/washinsa/json"
+    static let urlLocalsINSAAPI = "http://92.222.86.168/locals/json"
     
     // Planning Express
     static let idPlanningExpress = "idPlanningExpress"
