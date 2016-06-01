@@ -19,6 +19,7 @@ import SWRevealViewController
 import MBProgressHUD
 
 
+
 class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, MenuControllerDelegate, ImagePickerDelegate,JSQMessagesViewControllerScrollingDelegate {
     //, JSQMessagesViewControllerScrollingDelegate {
     
@@ -36,19 +37,43 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
         return ChatViewController()
     }()
     
+//    public init(){
+//        
+//    }
+   
+    
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+    }
+    
+    init() {
+        super.init(nibName: nil, bundle: nil)
+        //Do whatever you want here
+        print("init")
+    }
+    
+    
     var outgoingBubbleImageView: JSQMessagesBubbleImage!
     var incomingBubbleImageView: JSQMessagesBubbleImage!
     
+    /* [Update Firebase]
     var messageRef: Firebase!
-    var firebaseRef = Firebase(url: Secret.BASE_URL)
-    //let firebaseManager = FirebaseManager()
+     */
+    var messageRef: FIRDatabaseReference!
+    /* [Update Firebase]
+     var firebaseRef = Firebase(url: Secret.BASE_URL)
+     */
+    var firebaseRef = FIRDatabase.database().reference()
+    
     
     var lastTimestamp: NSTimeInterval!
     let LOAD_MORE_MESSAGE_LIMIT  = UInt(60)
     let INITIAL_MESSAGE_LIMIT = UInt(60)
-    
-    var userIsTypingRef: Firebase! // 1
-    private var localTyping = false // 2
+    /* [Update Firebase]
+    var userIsTypingRef: Firebase!
+     */
+    var userIsTypingRef: FIRDatabaseReference!
+    private var localTyping = false
     var isTyping: Bool {
         get {
             return localTyping
@@ -62,15 +87,20 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
     var timer = NSTimer()
     
     let imagePicker = UIImagePickerController()
-    
-    var usersTypingQuery: FQuery!
+    // [Update Firebase]
+    // var usersTypingQuery: FQuery!
+    var usersTypingQuery: FIRDatabaseQuery!
     
     private func observeTyping() {
         let typingIndicatorRef = FirebaseManager.firebaseManager.createTypingIndicatorRef()
-        userIsTypingRef = typingIndicatorRef.childByAppendingPath(senderId)
+        // [Update Firebase]
+        //userIsTypingRef = typingIndicatorRef.childByAppendingPath(senderId)
+        userIsTypingRef = typingIndicatorRef.child(senderId)
         userIsTypingRef.onDisconnectRemoveValue()
         usersTypingQuery = typingIndicatorRef.queryOrderedByValue().queryEqualToValue(true)
-        usersTypingQuery.observeEventType(.Value) { (data: FDataSnapshot!) in
+        // [Update Firebase]
+        //usersTypingQuery.observeEventType(.Value) { (data: FDataSnapshot!) in
+        usersTypingQuery.observeEventType(.Value) { (data: FIRDataSnapshot!) in
             print("number users typing: \(data.childrenCount)")
             if data.childrenCount == 1 && self.isTyping {
                 return
@@ -108,7 +138,7 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        //print("In viewDidLoad ChatVC")
+        print("In viewDidLoad ChatVC")
         if self.revealViewController() != nil {
             menuButton.target = self.revealViewController()
             menuButton.action = #selector(SWRevealViewController.revealToggle(_:))
@@ -151,33 +181,51 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
         
         self.inputToolbar?.contentView?.leftBarButtonItemWidth = 30
     }
+
+    // [Update firebase]
+//    func initChat(){
+//        firebaseRef.authAnonymouslyWithCompletionBlock { (error, authData) in
+//            if error != nil {
+//                print("Error connection Firebase Anonymous \(error.description)");
+//            }
+//            if authData != nil {
+////                print("authData: \(authData)")
+////                let activeUsersRef = FirebaseManager.firebaseManager.createActiveUsersRef()
+////                let singleUserRef = activeUsersRef.childByAppendingPath(self.senderId)
+////                let value = "\(self.senderDisplayName)"
+////                singleUserRef.setValue(value)
+////                singleUserRef.onDisconnectRemoveValue()
+//            } else {
+//                print("in else authData == nil")
+//            }
+//        }
+//    }
     
     func initChat(){
-        firebaseRef.authAnonymouslyWithCompletionBlock { (error, authData) in
-            if error != nil {
-                print("Error connection Firebase Anonymous \(error.description)");
-            }
-            if authData != nil {
-//                print("authData: \(authData)")
-//                let activeUsersRef = FirebaseManager.firebaseManager.createActiveUsersRef()
-//                let singleUserRef = activeUsersRef.childByAppendingPath(self.senderId)
-//                let value = "\(self.senderDisplayName)"
-//                singleUserRef.setValue(value)
-//                singleUserRef.onDisconnectRemoveValue()
+        FIRAuth.auth()!.signInAnonymouslyWithCompletion() { (user, error) in
+            if let error = error {
+                print("Sign in failed:", error.localizedDescription)
             } else {
-                print("in else authData == nil")
+                print ("Signed in with uid:", user!.uid)
             }
         }
     }
+
     
     private func observeActiveUsers() {
         //print("in observeActiveUsers")
         let activeUsersRef = FirebaseManager.firebaseManager.createActiveUsersRef()
-        let singleUserRef = activeUsersRef.childByAppendingPath(self.senderId)
-        let value = "\(self.senderDisplayName)"
+        // [Firebase update]
+        //let singleUserRef = activeUsersRef.childByAppendingPath(self.senderId)
+        let singleUserRef = activeUsersRef.child(self.senderId)
+        var value = "\(self.senderDisplayName)"
         singleUserRef.onDisconnectRemoveValue()
-        activeUsersRef.observeEventType(.Value, withBlock: { (snapshot: FDataSnapshot!) in
-            print("in observeActiveUsers")
+        // [update firebase]
+        //activeUsersRef.observeEventType(.Value, withBlock: { (snapshot: FDataSnapshot!) in
+        activeUsersRef.observeEventType(.Value, withBlock: { (snapshot: FIRDataSnapshot!) in
+            //value = "\(self.senderDisplayName)"
+            value = getUsernameChat()
+            print("in observeActiveUsers, setValue, value: \(value)")
             singleUserRef.setValue(value)
             var count = 0
             if snapshot.exists() {
@@ -333,7 +381,7 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
         var index = 0;
         //myActivityIndicator.startAnimating()
         let messagesQuery = messageRef.queryLimitedToLast(INITIAL_MESSAGE_LIMIT)
-        messagesQuery.observeEventType(.ChildAdded) { (snapshot: FDataSnapshot!) in
+        messagesQuery.observeEventType(.ChildAdded) { (snapshot: FIRDataSnapshot!) in
             if !SwiftSpinnerAlreadyHidden {
                 SwiftSpinnerAlreadyHidden = true
                 //MBProgressHUD.hideAllHUDsForView(self.appDelegate.window, animated: true)
@@ -343,21 +391,21 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
             var textString = "errorMessage"
             var senderDisplayNameString = "error senderDisplayName"
             var isMediaBool = false
-            if let id = snapshot.value["senderId"] as? String {
+            if let id = snapshot.value!["senderId"] as? String {
                 idString = id
             }
             
-            if let text = snapshot.value["text"] as? String {
+            if let text = snapshot.value!["text"] as? String {
                 textString = text
             }
             
-            if let senderDisplayName = snapshot.value["senderDisplayName"] as? String {
+            if let senderDisplayName = snapshot.value!["senderDisplayName"] as? String {
                 senderDisplayNameString = senderDisplayName
             }
-            if let isMedia = snapshot.value["isMedia"] as? Bool {
+            if let isMedia = snapshot.value!["isMedia"] as? Bool {
                 isMediaBool = isMedia
             }
-            let dateTimestampInterval = snapshot.value["dateTimestamp"] as! NSTimeInterval
+            let dateTimestampInterval = snapshot.value!["dateTimestamp"] as! NSTimeInterval
             if (self.shouldUpdateLastTimestamp(dateTimestampInterval)){
                 self.lastTimestamp = dateTimestampInterval
             }
@@ -366,7 +414,7 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
             let canAdd = self.shouldAddInArray(hashValue)
             if canAdd {
                 if isMediaBool {
-                    let base64EncodedString = snapshot.value["image"] as! String
+                    let base64EncodedString = snapshot.value!["image"] as! String
                     let imageData = NSData(base64EncodedString: base64EncodedString,
                                            options: NSDataBase64DecodingOptions.IgnoreUnknownCharacters)
                     let mediaMessageData: JSQPhotoMediaItem = JSQPhotoMediaItem(image: UIImage(data: imageData!))
@@ -405,6 +453,7 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
+        print("viewDidAppear")
         observeMessages()
         observeTyping()
         observeActiveUsers()
@@ -443,12 +492,12 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
         let oldBottomOffset = self.collectionView!.contentSize.height - self.collectionView!.contentOffset.y
         let messagesQuery = messageRef.queryOrderedByChild("dateTimestamp").queryEndingAtValue(lastTimestamp).queryLimitedToLast(LOAD_MORE_MESSAGE_LIMIT)
         var index = UInt(0)
-        messagesQuery.observeEventType(.ChildAdded) { (snapshot: FDataSnapshot!) in
-            let id = snapshot.value["senderId"] as! String
-            let text = snapshot.value["text"] as! String
-            let senderDisplayName = snapshot.value["senderDisplayName"] as! String
-            let dateTimestampInterval = snapshot.value["dateTimestamp"] as! NSTimeInterval
-            let isMedia = snapshot.value["isMedia"] as! Bool
+        messagesQuery.observeEventType(.ChildAdded) { (snapshot: FIRDataSnapshot!) in
+            let id = snapshot.value!["senderId"] as! String
+            let text = snapshot.value!["text"] as! String
+            let senderDisplayName = snapshot.value!["senderDisplayName"] as! String
+            let dateTimestampInterval = snapshot.value!["dateTimestamp"] as! NSTimeInterval
+            let isMedia = snapshot.value!["isMedia"] as! Bool
             if (self.shouldUpdateLastTimestamp(dateTimestampInterval)){
                 self.lastTimestamp = dateTimestampInterval
             }
@@ -456,7 +505,7 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
             index += 1
             if index < self.LOAD_MORE_MESSAGE_LIMIT {
                 if isMedia {
-                    let base64EncodedString = snapshot.value["image"] as! String
+                    let base64EncodedString = snapshot.value!["image"] as! String
                     let imageData = NSData(base64EncodedString: base64EncodedString,
                                            options: NSDataBase64DecodingOptions.IgnoreUnknownCharacters)
                     let mediaMessageData: JSQPhotoMediaItem = JSQPhotoMediaItem(image: UIImage(data: imageData!))

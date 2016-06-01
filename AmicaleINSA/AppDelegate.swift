@@ -26,6 +26,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Override point for customization after application launch.
         print("in didFinishLaunchingWithOptions")
         UIApplication.sharedApplication().applicationIconBadgeNumber = 0
+        
+        // Parse conf
         let configuration = ParseClientConfiguration {
             $0.applicationId = Secret.PARSE_APPLICATION_ID
             $0.clientKey = Secret.PARSE_CLIENT_KEY
@@ -33,10 +35,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         Parse.initializeWithConfiguration(configuration)
         
-//        let userNotificationTypes: UIUserNotificationType = [.Alert, .Badge, .Sound]
-//        let settings = UIUserNotificationSettings(forTypes: userNotificationTypes, categories: nil)
-//        application.registerUserNotificationSettings(settings)
-        //application.registerForRemoteNotifications()
+        // Firebase conf
+        FIRApp.configure()
         
         return true
     }

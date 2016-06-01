@@ -318,12 +318,15 @@ class WashINSATableViewController: UITableViewController {
                     }
                     sendLocalNotificationWashingMachine(minute, numeroMachine: indexInArray)
                 }
-                let alert = SCLAlertView()
+                let appearance = SCLAlertView.SCLAppearance(
+                    showCloseButton: false
+                )
+                let alert = SCLAlertView(appearance: appearance)
                 alert.addButton("Compris !") {
                     print("compris's button tapped")
                     self.tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Left)
                 }
-                alert.showCloseButton = false
+                //alert.showCloseButton = false
                 alert.showInfo("Alarme laverie", subTitle: "Vous allez recevoir une notification dans \(remainingTime) \(minuteString) pour vous rappeler que vous devez aller chercher votre linge !")
             }
             alarm.backgroundColor = UIColor.redColor()

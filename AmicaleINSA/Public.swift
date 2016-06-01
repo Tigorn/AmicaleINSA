@@ -284,7 +284,10 @@ private func getShowAlertForPermissionPushNotifications() -> Bool {
 public func registerForNotificationsAndEnterApp(controller: UIViewController) {
     let showAlert = getShowAlertForPermissionPushNotifications()
     if showAlert {
-        let alert = SCLAlertView()
+        let appearance = SCLAlertView.SCLAppearance(
+            showCloseButton: false
+        )
+        let alert = SCLAlertView(appearance: appearance)
         alert.addButton("Compris !") {
             setUserAnsweredForPushNotifications()
             let application = UIApplication.sharedApplication()
@@ -297,7 +300,7 @@ public func registerForNotificationsAndEnterApp(controller: UIViewController) {
 //        alert.addButton("TEST") {
 //            print("Ceci est un bouton de test")
 //        }
-        alert.showCloseButton = false
+        //alert.showCloseButton = false
         alert.showInfo(Public.titleAlertPushNotification, subTitle: Public.subtitleAlertPushNotification)
     }
 }

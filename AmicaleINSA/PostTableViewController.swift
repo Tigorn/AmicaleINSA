@@ -31,8 +31,9 @@ class PostTableViewController: UITableViewController {
     
     var posts = [post]()
     
-    var postRef: Firebase!
-    
+    // [firebase update]
+    //var postRef: Firebase!
+    var postRef: FIRDatabaseReference!
     var lastTimestamp: NSTimeInterval!
     var lastTimestampReverse: NSTimeInterval!
     
@@ -113,8 +114,9 @@ class PostTableViewController: UITableViewController {
         //print("In observePosts first line, SwiftSpinnerAlreadyHidden: \(SwiftSpinnerAlreadyHidden)")
         
         let postQuery = postRef.queryLimitedToLast(INITIAL_POST_LIMIT)
-        postQuery.observeEventType(.ChildAdded) { (snapshot: FDataSnapshot!) in
-            //print("In observePosts observeEvent, SwiftSpinnerAlreadyHidden: \(SwiftSpinnerAlreadyHidden)")
+        // [Firebase update]
+        //postQuery.observeEventType(.ChildAdded) { (snapshot: FDataSnapshot!) in
+        postQuery.observeEventType(.ChildAdded) { (snapshot: FIRDataSnapshot!) in
             if !SwiftSpinnerAlreadyHidden {
                 //print("inside SwiftSpinnerAlreadyHidden")
                 SwiftSpinnerAlreadyHidden = true
@@ -129,40 +131,40 @@ class PostTableViewController: UITableViewController {
             var imagePresentsBool = false
             var imageDataString = ""
             
-            if let title = snapshot.value.objectForKey("title") as? String {
+            if let title = snapshot.value!.objectForKey("title") as? String {
                 titleString = title
             }
             
-            if let description = snapshot.value.objectForKey("description") as? String {
+            if let description = snapshot.value!.objectForKey("description") as? String {
                 descriptionString = description
             }
             
-            if let author = snapshot.value.objectForKey("author") as? String {
+            if let author = snapshot.value!.objectForKey("author") as? String {
                 authorString = author
             }
             
-            if let date = snapshot.value.objectForKey("date") as? String {
+            if let date = snapshot.value!.objectForKey("date") as? String {
                 dateString = date
             }
             
-            if let imagePresents = snapshot.value.objectForKey("imagePresents") as? Bool {
+            if let imagePresents = snapshot.value!.objectForKey("imagePresents") as? Bool {
                 imagePresentsBool = imagePresents
             }
             
-            if let imageData = snapshot.value.objectForKey("imageData") as? String {
+            if let imageData = snapshot.value!.objectForKey("imageData") as? String {
                 imageDataString = imageData
             }
             
-            if let timestamp = snapshot.value.objectForKey("timestamp") as? String {
+            if let timestamp = snapshot.value!.objectForKey("timestamp") as? String {
                 imageDataString = timestamp
             }
             
-            let dateTimestampInterval = snapshot.value["timestamp"] as! NSTimeInterval
+            let dateTimestampInterval = snapshot.value!["timestamp"] as! NSTimeInterval
             if (self.shouldUpdateLastTimestamp(dateTimestampInterval)){
                 self.lastTimestamp = dateTimestampInterval
             }
             
-            let dateTimestampInverseInterval = snapshot.value["timestampInverse"] as! NSTimeInterval
+            let dateTimestampInverseInterval = snapshot.value!["timestampInverse"] as! NSTimeInterval
             self.lastTimestampReverse = dateTimestampInverseInterval
             
             if imagePresentsBool {
@@ -190,7 +192,7 @@ class PostTableViewController: UITableViewController {
     func loadMorePosts() {
         let postQuery = postRef.queryOrderedByChild("timestampInverse").queryStartingAtValue(lastTimestampReverse).queryLimitedToFirst(LOAD_MORE_POST_LIMIT+LOAD_MORE_POST_LIMIT)
         var index = UInt(0)
-        postQuery.observeEventType(.ChildAdded) { (snapshot: FDataSnapshot!) in
+        postQuery.observeEventType(.ChildAdded) { (snapshot: FIRDataSnapshot!) in
             var titleString = ""
             var descriptionString = ""
             var authorString = ""
@@ -198,36 +200,36 @@ class PostTableViewController: UITableViewController {
             var imagePresentsBool = false
             var imageDataString = ""
             
-            if let title = snapshot.value.objectForKey("title") as? String {
+            if let title = snapshot.value!.objectForKey("title") as? String {
                 titleString = title
             }
             
-            if let description = snapshot.value.objectForKey("description") as? String {
+            if let description = snapshot.value!.objectForKey("description") as? String {
                 descriptionString = description
             }
             
-            if let author = snapshot.value.objectForKey("author") as? String {
+            if let author = snapshot.value!.objectForKey("author") as? String {
                 authorString = author
             }
             
-            if let date = snapshot.value.objectForKey("date") as? String {
+            if let date = snapshot.value!.objectForKey("date") as? String {
                 dateString = date
             }
             
-            if let imagePresents = snapshot.value.objectForKey("imagePresents") as? Bool {
+            if let imagePresents = snapshot.value!.objectForKey("imagePresents") as? Bool {
                 imagePresentsBool = imagePresents
             }
             
-            if let imageData = snapshot.value.objectForKey("imageData") as? String {
+            if let imageData = snapshot.value!.objectForKey("imageData") as? String {
                 imageDataString = imageData
             }
             
-            let dateTimestampInterval = snapshot.value["timestamp"] as! NSTimeInterval
+            let dateTimestampInterval = snapshot.value!["timestamp"] as! NSTimeInterval
             if (self.shouldUpdateLastTimestamp(dateTimestampInterval)){
                 self.lastTimestamp = dateTimestampInterval
                 //print("---------------> in lastTimeStamp update : title = \(titleString)")
             }
-            let dateTimestampInverseInterval = snapshot.value["timestampInverse"] as! NSTimeInterval
+            let dateTimestampInverseInterval = snapshot.value!["timestampInverse"] as! NSTimeInterval
             self.lastTimestampReverse = dateTimestampInverseInterval
             index += 1
             print("index: \(index) LOAD_MORE_POST_LIMIT: \(self.LOAD_MORE_POST_LIMIT)")

@@ -67,7 +67,7 @@ class MenuController: UITableViewController {
             /* ça c'est pas bon parce qu'il faut faire la diff entre plusieurs pseudos, */
             chatVc.senderId = "\(uuid.md5())"
             chatVc.senderDisplayName = getUsernameChat()
-            print(chatVc.senderDisplayName)
+            print("Sender display name: \(chatVc.senderDisplayName)")
             delegate = chatVc
         } else if (segue.identifier == "GoToHome"){
             print("GoToHome called")
