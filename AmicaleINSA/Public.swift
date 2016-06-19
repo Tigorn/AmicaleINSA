@@ -10,6 +10,7 @@ import Foundation
 import UIKit
 import SwiftyJSON
 import SCLAlertView
+import Alamofire
 
 public struct Public {
     
@@ -52,10 +53,12 @@ public struct Public {
     static let Friday_iPhone6Plus = 860
     static let Weekend_iPhone6Plus = 0
     
+    static let SERVER_ADDR = "http://92.222.86.168/"
     static let urlProxyWash = "http://www.proxiwash.com/weblaverie/ma-laverie-2?s=cf4f39&16d33a57b3fb9a05d4da88969c71de74=1"
     static let urlWeatherToulouse = "https://api.forecast.io/forecast/5877c3394948db03ae04471da46fde3c/43.5722715,1.4687831"
-    static let urlWashINSAAPI = "http://92.222.86.168/washinsa/json"
-    static let urlLocalsINSAAPI = "http://92.222.86.168/locals/json"
+    static let urlWashINSAAPI = "\(Public.SERVER_ADDR)washinsa/json"
+    static let urlLocalsINSAAPI = "\(Public.SERVER_ADDR)locals/json"
+    static let urlVersionsNotAllowed = "\(Public.SERVER_ADDR)versions/json"
     
     // Planning Express
     static let idPlanningExpress = "idPlanningExpress"
@@ -73,7 +76,10 @@ public struct Public {
     
     static let titleAlertPushNotification = "Push Notifications"
     static let subtitleAlertPushNotification = "Accepte les notifications pour bénéficier des dernières infos du campus en temps réel !"
-    //
+    
+    // App versions not Allowed
+    static let titleAlertVersionNotAllowed = "Attention !"
+    static let subtitleAlertVersionNotAllowed = "La version actuelle de l'application risque de ne pas fonctionner correctement, veuillez la mettre à jour."
     
 }
 
@@ -100,6 +106,8 @@ public func initApp() {
         NSUserDefaults.standardUserDefaults().setBool(true, forKey: Public.usernameChatRegistred)
     }
     setTemperature()
+    print("Version number: \(getVersionNumberApp())")
+    loadVersionsNumberNotAllowed()
 }
 
 /*
@@ -131,7 +139,7 @@ public func getUsernameChat() -> String {
 }
 
 /*
-    Planning Express
+ Planning Express
  */
 
 private func _returnDefaultIDPlanningExpress() -> String {
@@ -167,7 +175,7 @@ public func setYearSpeGroupPlanningExpress(yearSpeGroup:String){
 }
 
 /*
-    profile picture getter/setter
+ profile picture getter/setter
  */
 
 public func setProfilPicture(image : UIImage){
@@ -190,7 +198,7 @@ public func getProfilPicture() -> UIImage {
 }
 
 /*
-    Weather
+ Weather
  */
 
 public func getTemperature() -> String {
@@ -297,9 +305,9 @@ public func registerForNotificationsAndEnterApp(controller: UIViewController) {
             application.registerUserNotificationSettings(settings)
             application.registerForRemoteNotifications()
         }
-//        alert.addButton("TEST") {
-//            print("Ceci est un bouton de test")
-//        }
+        //        alert.addButton("TEST") {
+        //            print("Ceci est un bouton de test")
+        //        }
         //alert.showCloseButton = false
         alert.showInfo(Public.titleAlertPushNotification, subTitle: Public.subtitleAlertPushNotification)
     }
@@ -313,4 +321,61 @@ public func sendLocalNotificationWashingMachine(time: Int, numeroMachine: Int) {
     notification.userInfo = ["numero_machine": numeroMachine]
     notification.soundName = UILocalNotificationDefaultSoundName
     UIApplication.sharedApplication().scheduleLocalNotification(notification)
+}
+
+public func getVersionNumberApp() -> String {
+    return NSBundle.mainBundle().infoDictionary!["CFBundleShortVersionString"] as! String
+}
+
+public func checkIfVersionNumberIsAllowed(versionsNumberNotAllowed: [String]) -> Bool {
+    let versionNumberApp = getVersionNumberApp()
+    if versionsNumberNotAllowed.contains(versionNumberApp) {
+        return false
+    } else {
+        return true
+    }
+}
+
+public func alertViewApplicationTooOld(message : String) {
+    let appearance = SCLAlertView.SCLAppearance(
+        showCloseButton: false
+    )
+    let alert = SCLAlertView(appearance: appearance)
+    alert.addButton("Compris !"){
+        
+    }
+    alert.showInfo(Public.titleAlertVersionNotAllowed, subTitle: message)
+}
+
+public func loadVersionsNotAllowedFromServer() {
+    var msg = ""
+    let url = Public.urlVersionsNotAllowed
+    Alamofire.request(.GET, url).validate().responseJSON { response in
+        switch response.result {
+        case .Success:
+            //print("response = \(response)")
+            if let value = response.result.value {
+                let json_full = JSON(value)
+                let json = json_full["json"]
+                if let messageVersionNotAllowed = json["iOS"]["message"].string {
+                    msg = messageVersionNotAllowed
+                }
+                let arrayVersionNotAllowedJSON = json["iOS"]["versionsNotAllowed"]
+                var arrayVersionNotAllowedString:[String] = []
+                for version in arrayVersionNotAllowedJSON {
+                    arrayVersionNotAllowedString.append(String(version.1))
+                }
+                print("arrayVersionNotAllowed:  \(arrayVersionNotAllowedString)")
+                if !checkIfVersionNumberIsAllowed(arrayVersionNotAllowedString) {
+                    alertViewApplicationTooOld(msg)
+                }
+            }
+        case .Failure(let error):
+            print("Error: \(error)")
+        }
+    }
+}
+
+public func loadVersionsNumberNotAllowed() {
+    loadVersionsNotAllowedFromServer()
 }
