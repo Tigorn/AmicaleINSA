@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BYZ-38-t0r">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
         <capability name="Alignment constraints to the first baseline" minToolsVersion="6.0"/>
@@ -704,7 +704,7 @@
                                 <rect key="frame" x="0.0" y="92" width="600" height="81"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="blm-po-HDc" id="sIz-vT-MqU">
-                                    <rect key="frame" x="0.0" y="0.0" width="600" height="80.5"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="600" height="81"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5Ix-mV-oKh">
@@ -741,6 +741,16 @@
                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Jck-dR-6b3">
+                                            <rect key="frame" x="581" y="4" width="11" height="11"/>
+                                            <color key="backgroundColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" constant="11" id="pYm-EY-jja"/>
+                                            </constraints>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
                                     </subviews>
                                     <constraints>
                                         <constraint firstItem="fl6-zW-Zsa" firstAttribute="leading" secondItem="CjL-bc-xd9" secondAttribute="leading" id="1Qc-Si-nzK"/>
@@ -754,10 +764,13 @@
                                         <constraint firstItem="JKD-fn-bNT" firstAttribute="top" secondItem="sIz-vT-MqU" secondAttribute="topMargin" constant="15" id="VfR-Zm-Wa7"/>
                                         <constraint firstItem="CjL-bc-xd9" firstAttribute="firstBaseline" secondItem="JKD-fn-bNT" secondAttribute="baseline" id="apX-I1-z6D"/>
                                         <constraint firstAttribute="bottomMargin" secondItem="fl6-zW-Zsa" secondAttribute="bottom" constant="-5.5" id="bSn-6Q-F8U"/>
+                                        <constraint firstItem="Jck-dR-6b3" firstAttribute="trailing" secondItem="2QZ-hS-ir4" secondAttribute="trailing" id="gNp-Lj-Ytr"/>
+                                        <constraint firstItem="Jck-dR-6b3" firstAttribute="top" secondItem="sIz-vT-MqU" secondAttribute="topMargin" constant="-4" id="hYf-fN-9Jr"/>
                                         <constraint firstItem="2QZ-hS-ir4" firstAttribute="firstBaseline" secondItem="5Ix-mV-oKh" secondAttribute="firstBaseline" id="lmo-Eh-ZVl"/>
                                         <constraint firstItem="fl6-zW-Zsa" firstAttribute="trailing" secondItem="CjL-bc-xd9" secondAttribute="trailing" id="mfY-aX-TV4"/>
                                         <constraint firstItem="2QZ-hS-ir4" firstAttribute="leading" secondItem="JKD-fn-bNT" secondAttribute="leading" id="r0N-49-bUq"/>
                                         <constraint firstItem="CjL-bc-xd9" firstAttribute="trailing" secondItem="JKD-fn-bNT" secondAttribute="trailing" id="sSu-VL-b0s"/>
+                                        <constraint firstItem="JKD-fn-bNT" firstAttribute="top" secondItem="Jck-dR-6b3" secondAttribute="bottom" constant="8" symbolic="YES" id="w3F-qE-OH6"/>
                                         <constraint firstItem="CjL-bc-xd9" firstAttribute="leading" secondItem="JKD-fn-bNT" secondAttribute="leading" id="wqn-Kn-9mi"/>
                                         <constraint firstItem="2QZ-hS-ir4" firstAttribute="trailing" secondItem="JKD-fn-bNT" secondAttribute="trailing" id="yrE-4D-C1B"/>
                                         <constraint firstItem="fl6-zW-Zsa" firstAttribute="firstBaseline" secondItem="JKD-fn-bNT" secondAttribute="baseline" id="zVJ-YE-Fis"/>
@@ -767,6 +780,7 @@
                                     <outlet property="availabilityMachineLabel" destination="JKD-fn-bNT" id="NzZ-3t-31Q"/>
                                     <outlet property="availableInTimeMachineLabel" destination="fl6-zW-Zsa" id="ZDU-Po-6PH"/>
                                     <outlet property="numberMachineLabel" destination="5Ix-mV-oKh" id="8ip-AE-xZ0"/>
+                                    <outlet property="reservedMachineCircularLabel" destination="Jck-dR-6b3" id="7dW-Z4-HvN"/>
                                     <outlet property="startEndTimeLabel" destination="CjL-bc-xd9" id="YWP-wh-Lxz"/>
                                     <outlet property="typeMachineLabel" destination="2QZ-hS-ir4" id="P6u-XP-vwM"/>
                                 </connections>

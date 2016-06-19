@@ -15,6 +15,7 @@ class WashINSATableViewCell: UITableViewCell {
     @IBOutlet weak var availabilityMachineLabel: UILabel!
     @IBOutlet weak var availableInTimeMachineLabel: UILabel!
     @IBOutlet weak var startEndTimeLabel: UILabel!
+    @IBOutlet weak var reservedMachineCircularLabel: UILabel!
     
     
     override func awakeFromNib() {

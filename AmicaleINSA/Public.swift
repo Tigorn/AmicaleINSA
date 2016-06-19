@@ -275,15 +275,15 @@ private func getShowAlertForPermissionPushNotifications() -> Bool {
     let userAnsweredForPushNotifications = getUserAnsweredForPushNotifications()
     
     if userDeclinedToBeRegisteredForPushNotifications {
-        print("userDeclinedToBeRegisteredForPushNotifications")
+        //print("userDeclinedToBeRegisteredForPushNotifications")
         return false
     } else if userAlreadyRegisteredForPushNotifications {
-        print("userAlreadyRegisteredForPushNotifications")
+        //print("userAlreadyRegisteredForPushNotifications")
         return false
     } else if userAnsweredForPushNotifications {
         return false
     } else {
-        print("ELSE getShowAlertForPermissionPushNotifications")
+        //print("ELSE getShowAlertForPermissionPushNotifications")
         return true
     }
 }

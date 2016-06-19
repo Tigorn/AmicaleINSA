@@ -72,9 +72,6 @@ class PostTableViewController: UITableViewController {
         
         lastTimestampReverse = 0
         
-        
-        print("Last line viewDidLoad")
-        
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
         
@@ -83,7 +80,7 @@ class PostTableViewController: UITableViewController {
     }
     
     func segueToSettingsIfNeeded(){
-        print("bool segueToSettingsIfNeeded, getBeenToSettingsOnce = \(getBeenToSettingsOnce())")
+        //print("bool segueToSettingsIfNeeded, getBeenToSettingsOnce = \(getBeenToSettingsOnce())")
         if !getBeenToSettingsOnce() {
             self.performSegueWithIdentifier(Public.segueBeenToSettingsOnce, sender: self)
         }

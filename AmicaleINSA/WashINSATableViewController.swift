@@ -256,6 +256,12 @@ class WashINSATableViewController: UITableViewController {
             cell.numberMachineLabel.layer.borderWidth = 0.5
             cell.numberMachineLabel.clipsToBounds = true
             
+            /* Reserved machine */
+            cell.reservedMachineCircularLabel.layer.cornerRadius = cell.reservedMachineCircularLabel.frame.size.width/2
+            cell.reservedMachineCircularLabel.layer.borderWidth = 0.5
+            cell.reservedMachineCircularLabel.clipsToBounds = true
+            cell.reservedMachineCircularLabel.text = ""
+            
             cell.numberMachineLabel.text = machines[indexInArray].numberMachine
             cell.typeMachineLabel.text = machines[indexInArray].type
             if machines[indexInArray].available.containsString("Disponible") {
@@ -279,6 +285,13 @@ class WashINSATableViewController: UITableViewController {
                 cell.numberMachineLabel.backgroundColor = UIColor.redColor()
                 cell.startEndTimeLabel.text = "\(machines[indexInArray].startTime) - \(machines[indexInArray].endTime)"
             }
+            if alreadyNotificationForMachine(indexInArray) {
+                cell.reservedMachineCircularLabel.backgroundColor = UIColor.redColor()
+                cell.reservedMachineCircularLabel.layer.borderColor = UIColor.blackColor().CGColor
+            } else {
+                cell.reservedMachineCircularLabel.backgroundColor = UIColor.whiteColor()
+                cell.reservedMachineCircularLabel.layer.borderColor = UIColor.whiteColor().CGColor
+            }
         } else {
             cell.numberMachineLabel.text = ""
             cell.startEndTimeLabel.text = "Loading..."
@@ -289,6 +302,8 @@ class WashINSATableViewController: UITableViewController {
             cell.numberMachineLabel.layer.borderWidth = 0.5
             cell.numberMachineLabel.clipsToBounds = true
             cell.numberMachineLabel.backgroundColor = UIColor.whiteColor()
+            cell.reservedMachineCircularLabel.backgroundColor = UIColor.whiteColor()
+            cell.reservedMachineCircularLabel.layer.borderColor = UIColor.whiteColor().CGColor
         }
         return cell
     }

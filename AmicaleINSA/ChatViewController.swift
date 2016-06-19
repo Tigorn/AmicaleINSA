@@ -49,7 +49,7 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
     init() {
         super.init(nibName: nil, bundle: nil)
         //Do whatever you want here
-        print("init")
+        //print("init")
     }
     
     
