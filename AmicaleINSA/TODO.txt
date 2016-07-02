@@ -17,3 +17,7 @@ Parse info about channel: https://www.parse.com/docs/ios/guide#push-notification
 - VERT : le club en question s'est connecté sur le site, et a dit : je suis ouvert, et devra en partant penser à ce déconnecter. S'il oublie, au bout de X minutes ça repassera rouge/jaune.
 
 3. Un plan de l'INSA et de l'amicale avec tous les clubs. On va pas se faire chier ça sera une image qu'on a déjà smile emoticon
+
+4. Mettre à jour to Firebase 2.0 :
+- Les messages, utiliser stockage photo plutôt que base64 String.
+- Idem pour les news
