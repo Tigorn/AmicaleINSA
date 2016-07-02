@@ -9,6 +9,7 @@ target 'AmicaleINSA' do
     pod 'Firebase/Core'
     pod 'Firebase/Database'
     pod 'Firebase/Auth'
+    pod 'Firebase/Storage'
     #pod 'JSQMessagesViewController', :git => 'https://github.com/jessesquires/JSQMessagesViewController.git', :branch => 'develop'    
     pod 'JSQMessagesViewController', :git => 'https://github.com/TeletronicsDotAe/JSQMessagesViewController.git', :branch => 'tlt-issue1458-support-scrolling-to-last-message'
     pod 'CryptoSwift'

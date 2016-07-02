@@ -14,12 +14,18 @@ import CryptoSwift
 class FirebaseManager {
     
     static let firebaseManager = FirebaseManager()
+    
+    private let PATH_CHAT_IMAGE = "chat/"
+    
     // [update]
     var chatVC = ChatViewController.chatViewController
     //var chatVC = ChatViewController.chat
     // [update firebase]
     //private(set) var BASE_REF = Firebase(url: "\(Secret.BASE_URL)")
     private(set) var BASE_REF = FIRDatabase.database().reference()
+    
+    // Storage
+    let storageRef = FIRStorage.storage().referenceForURL(Secret.FIREBASE_STORAGE_BUCKET)
 
     // [update firebase]
     /*func createTypingIndicatorRef() -> Firebase {
@@ -53,6 +59,42 @@ class FirebaseManager {
      */
     func createPostRef() -> FIRDatabaseReference {
         return BASE_REF.child("posts")
+    }
+    
+    // Storage reference
+    func createStorageRef() -> FIRStorageReference {
+        return storageRef
+    }
+    
+    func createStorageRefChat(nameImage: String) -> FIRStorageReference {
+        return storageRef.child(PATH_CHAT_IMAGE+nameImage+".jpg")
+    }
+    
+    func sendMessageFirebase2(text: String, senderId: String, senderDisplayName: String,
+                              date: NSDate, image: NSString, isMedia: Bool, imageURL: String) {
+        let dateTimestamp = date.timeIntervalSince1970
+        if (chatVC.shouldUpdateLastTimestamp(dateTimestamp)){
+            chatVC.lastTimestamp = dateTimestamp
+        }
+        let dateString = String(date)
+        // [update firebase]
+        //let itemRef = BASE_REF.childByAppendingPath("messages").childByAutoId()
+        let itemRef = BASE_REF.child("messages").childByAutoId()
+        let messageItem = [ // 2
+            "text": text,
+            "senderId": senderId,
+            "senderDisplayName": senderDisplayName,
+            "date": dateString,
+            "dateTimestamp": dateTimestamp,
+            "image": image,
+            "isMedia": isMedia,
+            "hashValue": "\(senderId)\(dateTimestamp)".md5(),
+            "imageURL": imageURL
+        ]
+        itemRef.setValue(messageItem)
+        
+        JSQSystemSoundPlayer.jsq_playMessageSentSound()
+        //chatVC.finishSendingMessage()
     }
     
     func sendMessage(text: String, senderId: String, senderDisplayName: String,
