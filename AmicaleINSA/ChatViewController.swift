@@ -416,7 +416,7 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
                 if isMediaBool {
                     if let imageURL = snapshot.value!["imageURL"] as? String {
                         let httpsReferenceImage = FIRStorage.storage().referenceForURL(imageURL)
-                        httpsReferenceImage.dataWithMaxSize(2 * 1024 * 1024) { (data, error) -> Void in
+                        httpsReferenceImage.dataWithMaxSize(3 * 1024 * 1024) { (data, error) -> Void in
                             if (error != nil) {
                                 print("Error downloading image from httpsReferenceImage firebase")
                                 // Uh-oh, an error occurred!

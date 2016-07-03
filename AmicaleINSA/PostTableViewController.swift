@@ -118,7 +118,7 @@ class PostTableViewController: UITableViewController {
                 //print("inside SwiftSpinnerAlreadyHidden")
                 SwiftSpinnerAlreadyHidden = true
                 //MBProgressHUD.hideAllHUDsForView(self.navigationController?.view, animated: true)
-
+                
                 MBProgressHUD.hideAllHUDsForView(self.view, animated: true)
             }
             var titleString = ""
@@ -165,15 +165,31 @@ class PostTableViewController: UITableViewController {
             self.lastTimestampReverse = dateTimestampInverseInterval
             
             if imagePresentsBool {
-                //print("image present")
-                let base64EncodedString = imageDataString
-                if let imageData = NSData(base64EncodedString: base64EncodedString,
-                    options: NSDataBase64DecodingOptions.IgnoreUnknownCharacters) {
-                    let image = UIImage(data: imageData)
-                    self.addPostBeginning(titleString, description: descriptionString, date: dateString, author: authorString, imagePresents: true, image: image!, timestamp: dateTimestampInterval)
+                if let imageURL = snapshot.value!["imageURL"] as? String {
+                    let httpsReferenceImage = FIRStorage.storage().referenceForURL(imageURL)
+                    httpsReferenceImage.dataWithMaxSize(3 * 1024 * 1024) { (data, error) -> Void in
+                        if (error != nil) {
+                            print("Error downloading image from httpsReferenceImage firebase")
+                            // Uh-oh, an error occurred!
+                        } else {
+                            print("I download image from firebase reference")
+                            let image = UIImage(data: data!)
+                            self.addPostBeginning(titleString, description: descriptionString, date: dateString, author: authorString, imagePresents: true, image: image, timestamp: dateTimestampInterval)
+                            self.tableView.reloadData()
+                        }
+                    }
                 } else {
-                    self.addPostBeginning(titleString, description: descriptionString, date: dateString, author: authorString, imagePresents: false, image: nil, timestamp: dateTimestampInterval)
-                    print("image no present, imageData bug!")
+                    
+                    //print("image present")
+                    let base64EncodedString = imageDataString
+                    if let imageData = NSData(base64EncodedString: base64EncodedString,
+                                              options: NSDataBase64DecodingOptions.IgnoreUnknownCharacters) {
+                        let image = UIImage(data: imageData)
+                        self.addPostBeginning(titleString, description: descriptionString, date: dateString, author: authorString, imagePresents: true, image: image!, timestamp: dateTimestampInterval)
+                    } else {
+                        self.addPostBeginning(titleString, description: descriptionString, date: dateString, author: authorString, imagePresents: false, image: nil, timestamp: dateTimestampInterval)
+                        print("image no present, imageData bug!")
+                    }
                 }
             } else {
                 self.addPostBeginning(titleString, description: descriptionString, date: dateString, author: authorString, imagePresents: false, image: nil, timestamp: dateTimestampInterval)
@@ -185,7 +201,7 @@ class PostTableViewController: UITableViewController {
     }
     
     
-
+    
     func loadMorePosts() {
         let postQuery = postRef.queryOrderedByChild("timestampInverse").queryStartingAtValue(lastTimestampReverse).queryLimitedToFirst(LOAD_MORE_POST_LIMIT+LOAD_MORE_POST_LIMIT)
         var index = UInt(0)
@@ -239,16 +255,16 @@ class PostTableViewController: UITableViewController {
                     if let imageData = NSData(base64EncodedString: base64EncodedString,
                                               options: NSDataBase64DecodingOptions.IgnoreUnknownCharacters) {
                         let image = UIImage(data: imageData)
-                            self.addPostAppend(titleString, description: descriptionString, date: dateString, author: authorString, imagePresents: true, image: image!, timestamp: dateTimestampInterval)
+                        self.addPostAppend(titleString, description: descriptionString, date: dateString, author: authorString, imagePresents: true, image: image!, timestamp: dateTimestampInterval)
                     } else {
-                            self.addPostAppend(titleString, description: descriptionString, date: dateString, author: authorString, imagePresents: false, image: nil, timestamp: dateTimestampInterval)
+                        self.addPostAppend(titleString, description: descriptionString, date: dateString, author: authorString, imagePresents: false, image: nil, timestamp: dateTimestampInterval)
                         print("image no present, imageData bug!")
                     }
                 } else {
-                        self.addPostAppend(titleString, description: descriptionString, date: dateString, author: authorString, imagePresents: false, image: nil, timestamp: dateTimestampInterval)
+                    self.addPostAppend(titleString, description: descriptionString, date: dateString, author: authorString, imagePresents: false, image: nil, timestamp: dateTimestampInterval)
                     print("image no present")
                 }
-
+                
                 print("title = \(titleString), description = \(descriptionString)")
                 self.tableView.reloadData()
             } else {
@@ -256,7 +272,7 @@ class PostTableViewController: UITableViewController {
                 self.tableView.finishInfiniteScroll()
                 self.tableView.reloadData()
             }
-
+            
         }
         self.resetTimer()
     }
@@ -324,13 +340,13 @@ class PostTableViewController: UITableViewController {
     override func viewDidAppear(animated: Bool) {
         tableView.reloadData()
         registerForNotificationsAndEnterApp(self)
-//        let alreadyRegisteredForPushNotifications = getRegisterForPushNotifications()
-//        if !alreadyRegisteredForPushNotifications {
-//            print("Show popup for push notifications")
-//            registerForNotificationsAndEnterApp(self)
-//        } else {
-//            print("Already registered for push notifications")
-//        }
+        //        let alreadyRegisteredForPushNotifications = getRegisterForPushNotifications()
+        //        if !alreadyRegisteredForPushNotifications {
+        //            print("Show popup for push notifications")
+        //            registerForNotificationsAndEnterApp(self)
+        //        } else {
+        //            print("Already registered for push notifications")
+        //        }
         //initActivityIndicator()
     }
     
