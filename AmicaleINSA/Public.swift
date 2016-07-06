@@ -11,6 +11,7 @@ import UIKit
 import SwiftyJSON
 import SCLAlertView
 import Alamofire
+import Firebase
 
 public struct Public {
     
@@ -106,8 +107,15 @@ public func initApp() {
         NSUserDefaults.standardUserDefaults().setBool(true, forKey: Public.usernameChatRegistred)
     }
     setTemperature()
-    print("Version number: \(getVersionNumberApp())")
+    //print("Version number: \(getVersionNumberApp())")
     loadVersionsNumberNotAllowed()
+    FIRAuth.auth()!.signInAnonymouslyWithCompletion() { (user, error) in
+        if let error = error {
+            print("Sign in failed:", error.localizedDescription)
+        } else {
+            //print ("Signed in with uid:", user!.uid)
+        }
+    }
 }
 
 /*
@@ -365,7 +373,7 @@ public func loadVersionsNotAllowedFromServer() {
                 for version in arrayVersionNotAllowedJSON {
                     arrayVersionNotAllowedString.append(String(version.1))
                 }
-                print("arrayVersionNotAllowed:  \(arrayVersionNotAllowedString)")
+                //print("arrayVersionNotAllowed:  \(arrayVersionNotAllowedString)")
                 if !checkIfVersionNumberIsAllowed(arrayVersionNotAllowedString) {
                     alertViewApplicationTooOld(msg)
                 }

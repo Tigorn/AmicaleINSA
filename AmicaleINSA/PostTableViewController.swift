@@ -79,6 +79,7 @@ class PostTableViewController: UITableViewController {
         // self.navigationItem.rightBarButtonItem = self.editButtonItem()
     }
     
+    
     func segueToSettingsIfNeeded(){
         //print("bool segueToSettingsIfNeeded, getBeenToSettingsOnce = \(getBeenToSettingsOnce())")
         if !getBeenToSettingsOnce() {
@@ -130,6 +131,7 @@ class PostTableViewController: UITableViewController {
             
             if let title = snapshot.value!.objectForKey("title") as? String {
                 titleString = title
+                print("Title: \(titleString)")
             }
             
             if let description = snapshot.value!.objectForKey("description") as? String {
@@ -170,9 +172,10 @@ class PostTableViewController: UITableViewController {
                     httpsReferenceImage.dataWithMaxSize(3 * 1024 * 1024) { (data, error) -> Void in
                         if (error != nil) {
                             print("Error downloading image from httpsReferenceImage firebase")
+                            print("Error: \(error)")
                             // Uh-oh, an error occurred!
                         } else {
-                            print("I download image from firebase reference")
+                            print("I download image from firebase reference, title: \(titleString)")
                             let image = UIImage(data: data!)
                             self.addPostBeginning(titleString, description: descriptionString, date: dateString, author: authorString, imagePresents: true, image: image, timestamp: dateTimestampInterval)
                             self.tableView.reloadData()
@@ -304,6 +307,11 @@ class PostTableViewController: UITableViewController {
     
     func addPostBeginning(title: String, description: String, date: String, author: String, imagePresents: Bool, image: UIImage?, timestamp: NSTimeInterval) {
         self.posts.insert(post(title: title, description: description, date: date, author: author, imagePresents: imagePresents, image: image, timestamp: timestamp), atIndex: 0)
+        print("Array of posts BEFORE sorting: \(self.posts)")
+        self.posts.sortInPlace({
+            return ($0.timestamp.distanceTo($1.timestamp) < 0)
+        })
+        print("Array of posts AFTER sorting: \(self.posts)")
     }
     
     func postAlreadyPresent(timestampPost: NSTimeInterval, titleDescription: String) -> Bool {
