@@ -202,13 +202,13 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
     //    }
     
     func initChat(){
-        FIRAuth.auth()!.signInAnonymouslyWithCompletion() { (user, error) in
-            if let error = error {
-                print("Sign in failed:", error.localizedDescription)
-            } else {
-                print ("Signed in with uid:", user!.uid)
-            }
-        }
+//        FIRAuth.auth()!.signInAnonymouslyWithCompletion() { (user, error) in
+//            if let error = error {
+//                print("Sign in failed:", error.localizedDescription)
+//            } else {
+//                print ("Signed in with uid:", user!.uid)
+//            }
+//        }
     }
     
     
@@ -226,6 +226,7 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
             //value = "\(self.senderDisplayName)"
             value = getUsernameChat()
             print("in observeActiveUsers, setValue, value: \(value)")
+            //singleUserRef.onDisconnectRemoveValue()
             singleUserRef.setValue(value)
             var count = 0
             if snapshot.exists() {
