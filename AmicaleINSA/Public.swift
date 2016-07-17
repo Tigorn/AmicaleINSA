@@ -486,3 +486,12 @@ public func getYearsINSAPlanning() -> [(String, String)] {
             ("4-GPE-TP - G4", "786"),
     ]
 }
+
+public func stringNotWhiteSpaceAndNotEmpty(str: String) -> Bool {
+    let whitespaceSet = NSCharacterSet.whitespaceCharacterSet()
+    if str.characters.count > 0 && str.stringByTrimmingCharactersInSet(whitespaceSet) != "" {
+        return true
+    }
+    return false
+}
+

@@ -14,7 +14,7 @@ import MBProgressHUD
 class SettingsTableViewController: UITableViewController, UITextFieldDelegate, ImagePickerDelegate, UIPickerViewDataSource, UIPickerViewDelegate {
     
     @IBOutlet weak var menuButton: UIBarButtonItem!
-
+    
     @IBOutlet weak var pseudoTextField: UITextField!
     @IBOutlet weak var profileImageView: UIImageView!
     @IBOutlet weak var pickerViewYearsINSA: UIPickerView!
@@ -72,9 +72,12 @@ class SettingsTableViewController: UITableViewController, UITextFieldDelegate, I
     /* Delegate textField */
     
     func textFieldShouldReturn(textField: UITextField) -> Bool {
-        setUsernameChat(pseudoTextField.text!)
-        savedMBProgressHUDAction()
-        view.endEditing(true)
+        let pseudo = pseudoTextField.text!
+        if stringNotWhiteSpaceAndNotEmpty(pseudo) {
+            setUsernameChat(pseudoTextField.text!)
+            savedMBProgressHUDAction()
+            view.endEditing(true)
+        }
         return true
     }
     
@@ -99,12 +102,15 @@ class SettingsTableViewController: UITableViewController, UITextFieldDelegate, I
     
     @IBAction func doneButtonAction(sender: AnyObject) {
         print("doneButtonAction clicked")
-        setUsernameChat(pseudoTextField.text!)
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let frontNavigationController = storyboard.instantiateViewControllerWithIdentifier("PostViewController")
-        let rearNavifationController = storyboard.instantiateViewControllerWithIdentifier("menuViewController")
-        let mainRevealController : SWRevealViewController = SWRevealViewController(rearViewController: rearNavifationController, frontViewController: frontNavigationController)
-        self.revealViewController().setFrontViewController(mainRevealController, animated: true)
+        let pseudo = pseudoTextField.text!
+        if stringNotWhiteSpaceAndNotEmpty(pseudo) {
+            setUsernameChat(pseudoTextField.text!)
+            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+            let frontNavigationController = storyboard.instantiateViewControllerWithIdentifier("PostViewController")
+            let rearNavifationController = storyboard.instantiateViewControllerWithIdentifier("menuViewController")
+            let mainRevealController : SWRevealViewController = SWRevealViewController(rearViewController: rearNavifationController, frontViewController: frontNavigationController)
+            self.revealViewController().setFrontViewController(mainRevealController, animated: true)
+        }
     }
     
     /* Image Picker methodes delegate */
@@ -171,8 +177,11 @@ class SettingsTableViewController: UITableViewController, UITextFieldDelegate, I
     /* Keyboard delegate */
     
     func dismissKeyboard() {
-        setUsernameChat(pseudoTextField.text!)
-        view.endEditing(true)
+        let pseudo = pseudoTextField.text!
+        if stringNotWhiteSpaceAndNotEmpty(pseudo) {
+            setUsernameChat(pseudoTextField.text!)
+            view.endEditing(true)
+        }
     }
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
@@ -204,11 +213,11 @@ class SettingsTableViewController: UITableViewController, UITextFieldDelegate, I
         header.textLabel?.frame = header.frame
         header.textLabel?.textAlignment = NSTextAlignment.Left
     }
-
-
+    
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-
+    
 }
