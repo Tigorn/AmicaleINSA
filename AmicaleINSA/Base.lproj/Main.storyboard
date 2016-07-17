@@ -109,7 +109,6 @@
                                     <outlet property="postImageView" destination="TZr-T8-w10" id="tu0-Lf-tLy"/>
                                     <outlet property="textPostLabel" destination="HYV-8D-Jlu" id="EdE-TY-dyU"/>
                                     <outlet property="titlePostLabel" destination="oaz-Uj-6Km" id="4fH-wZ-4Nd"/>
-                                    <segue destination="luC-Ld-6yI" kind="show" identifier="showSettingsFirstConnexion" id="OQI-3N-6dq"/>
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="cell_no_image" rowHeight="133" id="rxi-b3-Tfi" customClass="PostWithoutImageTableViewCell" customModule="AmicaleINSA" customModuleProvider="target">
@@ -181,6 +180,7 @@
                     </refreshControl>
                     <connections>
                         <outlet property="menuButton" destination="SuN-Sw-tmz" id="3V5-qw-s9K"/>
+                        <segue destination="luC-Ld-6yI" kind="show" identifier="showSettingsFirstConnexion" id="t47-6V-kbB"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Q5B-nB-Zvw" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -493,7 +493,7 @@
                                         <rect key="frame" x="0.0" y="325" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="7Zy-yj-S7G" id="aTp-it-qZQ">
-                                            <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Group" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4kn-hn-Kib">
@@ -527,7 +527,7 @@
                                         <rect key="frame" x="0.0" y="369" width="600" height="223"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Mlo-Ia-1u0" id="H5G-a9-ceg">
-                                            <rect key="frame" x="0.0" y="0.0" width="600" height="223"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="222.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <pickerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1Bd-UG-Nmc">
@@ -868,6 +868,6 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="wA0-c9-FjZ"/>
-        <segue reference="JSK-QY-7V7"/>
+        <segue reference="t47-6V-kbB"/>
     </inferredMetricsTieBreakers>
 </document>
