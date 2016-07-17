@@ -169,13 +169,13 @@
 		9206F3B81C838F8B00978CF5 /* AmicaleINSA */ = {
 			isa = PBXGroup;
 			children = (
-				92A03D3A1D3BDC860021E0C5 /* Settings2 */,
 				9206F3B91C838F8B00978CF5 /* AppDelegate.swift */,
 				92BCDC711CEF160000237160 /* LocalINSA */,
 				92AAF0F31CEA5E9600301CBD /* TODO */,
 				9247CD771CB12CCA008F51E2 /* Post */,
 				9265E2651CA8346F000BE187 /* Washinsa */,
-				92128FD61C86064000AA96AD /* Settings */,
+				92A03D3A1D3BDC860021E0C5 /* Settings */,
+				92128FD61C86064000AA96AD /* Settings 2 */,
 				92A701421C848309000E1E8F /* Constants */,
 				92A701411C8482F8000E1E8F /* WebPlanning */,
 				92A701401C8482ED000E1E8F /* Frameworks */,
@@ -213,12 +213,12 @@
 			path = AmicaleINSAUITests;
 			sourceTree = "<group>";
 		};
-		92128FD61C86064000AA96AD /* Settings */ = {
+		92128FD61C86064000AA96AD /* Settings 2 */ = {
 			isa = PBXGroup;
 			children = (
 				92128FD41C8605B800AA96AD /* SettingsViewController.swift */,
 			);
-			name = Settings;
+			name = "Settings 2";
 			sourceTree = "<group>";
 		};
 		923677F71CAC287E00FA7084 /* UI */ = {
@@ -250,12 +250,12 @@
 			name = Washinsa;
 			sourceTree = "<group>";
 		};
-		92A03D3A1D3BDC860021E0C5 /* Settings2 */ = {
+		92A03D3A1D3BDC860021E0C5 /* Settings */ = {
 			isa = PBXGroup;
 			children = (
 				92A03D3B1D3BDCA40021E0C5 /* SettingsTableViewController.swift */,
 			);
-			name = Settings2;
+			name = Settings;
 			sourceTree = "<group>";
 		};
 		92A701381C847A12000E1E8F /* Bridging Header */ = {

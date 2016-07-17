@@ -34,6 +34,7 @@ class SettingsTableViewController: UITableViewController, UITextFieldDelegate, I
             self.view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
         }
         initUI()
+        setBeenToSettingsOnce()
         pseudoTextField.delegate = self
         pickerViewYearsINSA.delegate = self
         // pickerView set default row
@@ -71,6 +72,8 @@ class SettingsTableViewController: UITableViewController, UITextFieldDelegate, I
     /* Delegate textField */
     
     func textFieldShouldReturn(textField: UITextField) -> Bool {
+        setUsernameChat(pseudoTextField.text!)
+        savedMBProgressHUDAction()
         view.endEditing(true)
         return true
     }
