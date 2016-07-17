@@ -21,7 +21,6 @@ target 'AmicaleINSA' do
 #    pod 'SwiftSpinner', :git => 'https://github.com/icanzilb/SwiftSpinner.git'
     pod 'SwiftSpinner'
     pod 'Fuzi', '~> 0.3.0'
-    pod 'Charts/Realm'
     pod 'MBCircularProgressBar'
     pod 'MBProgressHUD', '~> 0.9.2'
     pod 'SwiftyJSON', :git => 'https://github.com/SwiftyJSON/SwiftyJSON.git'
