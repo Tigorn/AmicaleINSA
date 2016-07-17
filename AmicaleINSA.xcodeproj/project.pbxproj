@@ -35,6 +35,7 @@
 		928970DC1CFF4550009905C0 /* JSQSystemSoundPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 928970DB1CFF4550009905C0 /* JSQSystemSoundPlayer.framework */; };
 		928970DE1CFF4564009905C0 /* JSQMessagesViewController.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 928970DD1CFF4564009905C0 /* JSQMessagesViewController.framework */; };
 		929D4C4A1CB2ECB00097CFA6 /* CustomInfiniteIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 929D4C491CB2ECB00097CFA6 /* CustomInfiniteIndicator.swift */; };
+		92A03D3C1D3BDCA40021E0C5 /* SettingsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92A03D3B1D3BDCA40021E0C5 /* SettingsTableViewController.swift */; };
 		92A7013D1C847B4C000E1E8F /* WebPlanningViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92A7013C1C847B4C000E1E8F /* WebPlanningViewController.swift */; };
 		92A7013F1C847EA0000E1E8F /* Device.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92A7013E1C847EA0000E1E8F /* Device.swift */; };
 		92AAF0F51CEA5EB000301CBD /* TODO.txt in Resources */ = {isa = PBXBuildFile; fileRef = 92AAF0F41CEA5EB000301CBD /* TODO.txt */; };
@@ -99,6 +100,7 @@
 		928970DB1CFF4550009905C0 /* JSQSystemSoundPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JSQSystemSoundPlayer.framework; path = "../../../Library/Developer/Xcode/DerivedData/AmicaleINSA-dpjnjkkdvevvkyccpjeukgltdywr/Build/Products/Debug-iphonesimulator/JSQSystemSoundPlayer/JSQSystemSoundPlayer.framework"; sourceTree = "<group>"; };
 		928970DD1CFF4564009905C0 /* JSQMessagesViewController.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JSQMessagesViewController.framework; path = "../../../Library/Developer/Xcode/DerivedData/AmicaleINSA-dpjnjkkdvevvkyccpjeukgltdywr/Build/Products/Debug-iphonesimulator/JSQMessagesViewController/JSQMessagesViewController.framework"; sourceTree = "<group>"; };
 		929D4C491CB2ECB00097CFA6 /* CustomInfiniteIndicator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomInfiniteIndicator.swift; sourceTree = "<group>"; };
+		92A03D3B1D3BDCA40021E0C5 /* SettingsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsTableViewController.swift; sourceTree = "<group>"; };
 		92A7013C1C847B4C000E1E8F /* WebPlanningViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebPlanningViewController.swift; sourceTree = "<group>"; };
 		92A7013E1C847EA0000E1E8F /* Device.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Device.swift; sourceTree = "<group>"; };
 		92AAF0F41CEA5EB000301CBD /* TODO.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = TODO.txt; sourceTree = "<group>"; };
@@ -167,6 +169,7 @@
 		9206F3B81C838F8B00978CF5 /* AmicaleINSA */ = {
 			isa = PBXGroup;
 			children = (
+				92A03D3A1D3BDC860021E0C5 /* Settings2 */,
 				9206F3B91C838F8B00978CF5 /* AppDelegate.swift */,
 				92BCDC711CEF160000237160 /* LocalINSA */,
 				92AAF0F31CEA5E9600301CBD /* TODO */,
@@ -245,6 +248,14 @@
 				9265E26A1CA8355B000BE187 /* WashINSATableViewCell.swift */,
 			);
 			name = Washinsa;
+			sourceTree = "<group>";
+		};
+		92A03D3A1D3BDC860021E0C5 /* Settings2 */ = {
+			isa = PBXGroup;
+			children = (
+				92A03D3B1D3BDCA40021E0C5 /* SettingsTableViewController.swift */,
+			);
+			name = Settings2;
 			sourceTree = "<group>";
 		};
 		92A701381C847A12000E1E8F /* Bridging Header */ = {
@@ -653,6 +664,7 @@
 				9247CD791CB12CE8008F51E2 /* PostWithImageTableViewCell.swift in Sources */,
 				92CBC4E61C8642CB0074B9B2 /* Extension.swift in Sources */,
 				9206F3EF1C8399F600978CF5 /* ChatViewController.swift in Sources */,
+				92A03D3C1D3BDCA40021E0C5 /* SettingsTableViewController.swift in Sources */,
 				9206F3BA1C838F8B00978CF5 /* AppDelegate.swift in Sources */,
 				923677FB1CAC28A100FA7084 /* BreakOutToRefreshView.swift in Sources */,
 				92128FD51C8605B800AA96AD /* SettingsViewController.swift in Sources */,

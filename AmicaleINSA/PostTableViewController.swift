@@ -175,7 +175,7 @@ class PostTableViewController: UITableViewController {
                             print("Error: \(error)")
                             // Uh-oh, an error occurred!
                         } else {
-                            print("I download image from firebase reference, title: \(titleString)")
+                            //print("I download image from firebase reference, title: \(titleString)")
                             let image = UIImage(data: data!)
                             self.addPostBeginning(titleString, description: descriptionString, date: dateString, author: authorString, imagePresents: true, image: image, timestamp: dateTimestampInterval)
                             self.tableView.reloadData()
@@ -307,11 +307,11 @@ class PostTableViewController: UITableViewController {
     
     func addPostBeginning(title: String, description: String, date: String, author: String, imagePresents: Bool, image: UIImage?, timestamp: NSTimeInterval) {
         self.posts.insert(post(title: title, description: description, date: date, author: author, imagePresents: imagePresents, image: image, timestamp: timestamp), atIndex: 0)
-        print("Array of posts BEFORE sorting: \(self.posts)")
+        //print("Array of posts BEFORE sorting: \(self.posts)")
         self.posts.sortInPlace({
             return ($0.timestamp.distanceTo($1.timestamp) < 0)
         })
-        print("Array of posts AFTER sorting: \(self.posts)")
+        //print("Array of posts AFTER sorting: \(self.posts)")
     }
     
     func postAlreadyPresent(timestampPost: NSTimeInterval, titleDescription: String) -> Bool {
