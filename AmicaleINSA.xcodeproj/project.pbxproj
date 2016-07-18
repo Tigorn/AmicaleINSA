@@ -11,7 +11,6 @@
 		24F38C5F442F11F602C47A0D /* Pods_AmicaleINSAUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E55D97296342711E96D8E249 /* Pods_AmicaleINSAUITests.framework */; };
 		658D6245D026254566590345 /* Pods_AmicaleINSA.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 99BE2483E29CB956425B6E64 /* Pods_AmicaleINSA.framework */; };
 		9206F3BA1C838F8B00978CF5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9206F3B91C838F8B00978CF5 /* AppDelegate.swift */; };
-		9206F3BC1C838F8B00978CF5 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9206F3BB1C838F8B00978CF5 /* ViewController.swift */; };
 		9206F3BF1C838F8B00978CF5 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9206F3BD1C838F8B00978CF5 /* Main.storyboard */; };
 		9206F3C21C838F8B00978CF5 /* AmicaleINSA.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 9206F3C01C838F8B00978CF5 /* AmicaleINSA.xcdatamodeld */; };
 		9206F3C41C838F8B00978CF5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9206F3C31C838F8B00978CF5 /* Assets.xcassets */; };
@@ -69,7 +68,6 @@
 		846010629BE9E42F568F3673 /* Pods_AmicaleINSATests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AmicaleINSATests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9206F3B61C838F8B00978CF5 /* AmicaleINSA.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AmicaleINSA.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9206F3B91C838F8B00978CF5 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		9206F3BB1C838F8B00978CF5 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		9206F3BE1C838F8B00978CF5 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		9206F3C11C838F8B00978CF5 /* AmicaleINSA.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = AmicaleINSA.xcdatamodel; sourceTree = "<group>"; };
 		9206F3C31C838F8B00978CF5 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -168,20 +166,19 @@
 			isa = PBXGroup;
 			children = (
 				9206F3B91C838F8B00978CF5 /* AppDelegate.swift */,
-				92BCDC711CEF160000237160 /* LocalINSA */,
-				92AAF0F31CEA5E9600301CBD /* TODO */,
-				9247CD771CB12CCA008F51E2 /* Post */,
-				9265E2651CA8346F000BE187 /* Washinsa */,
-				92A03D3A1D3BDC860021E0C5 /* Settings */,
-				92A701421C848309000E1E8F /* Constants */,
-				92A701411C8482F8000E1E8F /* WebPlanning */,
-				92A701401C8482ED000E1E8F /* Frameworks */,
-				92A7013B1C847A3C000E1E8F /* Firebase */,
-				92A7013A1C847A2A000E1E8F /* Chat */,
-				92A701391C847A1D000E1E8F /* Menu */,
 				92A701381C847A12000E1E8F /* Bridging Header */,
+				92A7013A1C847A2A000E1E8F /* Chat */,
+				92A701421C848309000E1E8F /* Constants */,
+				92A7013B1C847A3C000E1E8F /* Firebase */,
+				92A701401C8482ED000E1E8F /* Frameworks */,
+				92BCDC711CEF160000237160 /* LocalINSA */,
+				92A701391C847A1D000E1E8F /* Menu */,
+				9247CD771CB12CCA008F51E2 /* Post */,
+				92A03D3A1D3BDC860021E0C5 /* Settings */,
+				92AAF0F31CEA5E9600301CBD /* TODO */,
 				923677F71CAC287E00FA7084 /* UI */,
-				9206F3BB1C838F8B00978CF5 /* ViewController.swift */,
+				9265E2651CA8346F000BE187 /* Washinsa */,
+				92A701411C8482F8000E1E8F /* WebPlanning */,
 				9206F3BD1C838F8B00978CF5 /* Main.storyboard */,
 				9206F3C31C838F8B00978CF5 /* Assets.xcassets */,
 				9206F3C51C838F8B00978CF5 /* LaunchScreen.storyboard */,
@@ -648,7 +645,6 @@
 				929D4C4A1CB2ECB00097CFA6 /* CustomInfiniteIndicator.swift in Sources */,
 				9206F3C21C838F8B00978CF5 /* AmicaleINSA.xcdatamodeld in Sources */,
 				92B366F51CA8889000C3265E /* WashINSADetailsViewController.swift in Sources */,
-				9206F3BC1C838F8B00978CF5 /* ViewController.swift in Sources */,
 				9265E26B1CA8355B000BE187 /* WashINSATableViewCell.swift in Sources */,
 				9247CD791CB12CE8008F51E2 /* PostWithImageTableViewCell.swift in Sources */,
 				92CBC4E61C8642CB0074B9B2 /* Extension.swift in Sources */,
