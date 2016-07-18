@@ -40,9 +40,7 @@ class SettingsTableViewController: UITableViewController, UITextFieldDelegate, I
         // pickerView set default row
         let defautlRowPickerView = NSUserDefaults.standardUserDefaults().integerForKey(Public.rowPickerViewSettings)
         pickerViewYearsINSA.selectRow(defautlRowPickerView, inComponent: 0, animated: true)
-        // Year spe group
         yearSpeGroupLabel.text = yearsINSA[defautlRowPickerView].0
-        
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -67,6 +65,11 @@ class SettingsTableViewController: UITableViewController, UITextFieldDelegate, I
         
         // text field pseudo
         pseudoTextField.text = Public.usernameChat
+        // Year spe group
+        yearSpeGroupLabel.layer.cornerRadius = 6.0
+        yearSpeGroupLabel.layer.masksToBounds = true
+        yearSpeGroupLabel.layer.borderColor = UIColor.grayColor().colorWithAlphaComponent(0.5).CGColor
+        yearSpeGroupLabel.layer.borderWidth = 0.5
     }
     
     /* Delegate textField */
