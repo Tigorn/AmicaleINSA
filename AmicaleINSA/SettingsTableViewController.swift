@@ -11,7 +11,7 @@ import SWRevealViewController
 import ImagePicker
 import MBProgressHUD
 
-class SettingsTableViewController: UITableViewController, UITextFieldDelegate, ImagePickerDelegate, UIPickerViewDataSource, UIPickerViewDelegate {
+class SettingsTableViewController: UITableViewController, UITextFieldDelegate, ImagePickerDelegate, UIPickerViewDataSource, UIPickerViewDelegate, MenuControllerDelegate {
     
     @IBOutlet weak var menuButton: UIBarButtonItem!
     
@@ -182,6 +182,15 @@ class SettingsTableViewController: UITableViewController, UITextFieldDelegate, I
             setUsernameChat(pseudoTextField.text!)
             view.endEditing(true)
         }
+    }
+    
+    func dismissKeyboardFromMenu(ViewController: MenuController) {
+        let pseudo = pseudoTextField.text!
+        if stringNotWhiteSpaceAndNotEmpty(pseudo) {
+            setUsernameChat(pseudoTextField.text!)
+        }
+        print("I end editing(true)")
+        view.endEditing(true)
     }
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {

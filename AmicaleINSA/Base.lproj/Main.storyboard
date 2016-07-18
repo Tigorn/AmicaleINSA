@@ -369,7 +369,7 @@
                                         </tableViewCellContentView>
                                         <color key="backgroundColor" red="0.94085192679999996" green="0.94903725390000004" blue="0.95307987930000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <connections>
-                                            <segue destination="C6J-ne-Deg" kind="custom" identifier="GoToSettings2" customClass="SWRevealViewControllerSeguePushController" id="Y3F-iW-o3x"/>
+                                            <segue destination="C6J-ne-Deg" kind="custom" identifier="GoToSettings" customClass="SWRevealViewControllerSeguePushController" id="Y3F-iW-o3x"/>
                                         </connections>
                                     </tableViewCell>
                                 </cells>

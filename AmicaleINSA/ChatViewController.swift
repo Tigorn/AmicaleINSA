@@ -318,6 +318,7 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
     
     
     func dismissKeyboardFromMenu(ViewController:MenuController) {
+        print("dismiss keyboard chat")
         inputToolbar?.contentView?.textView?.resignFirstResponder()
     }
     

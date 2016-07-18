@@ -13,7 +13,6 @@ protocol MenuControllerDelegate  {
     func dismissKeyboardFromMenu(_: MenuController)
 }
 
-
 class MenuController: UITableViewController {
     
     @IBOutlet weak var topViewMenu: UIView!
@@ -69,8 +68,10 @@ class MenuController: UITableViewController {
             chatVc.senderDisplayName = getUsernameChat()
             print("Sender display name: \(chatVc.senderDisplayName)")
             delegate = chatVc
-        } else if (segue.identifier == "GoToHome"){
-            print("GoToHome called")
+        } else if (segue.identifier == "GoToSettings"){
+            let navVc = segue.destinationViewController as! UINavigationController
+            let settingsTVc = navVc.viewControllers.first as! SettingsTableViewController
+            delegate = settingsTVc
         }
     }
     
