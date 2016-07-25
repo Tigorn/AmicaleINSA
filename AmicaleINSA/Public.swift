@@ -107,13 +107,10 @@ public func initApp() {
         NSUserDefaults.standardUserDefaults().setBool(true, forKey: Public.usernameChatRegistred)
     }
     setTemperature()
-    //print("Version number: \(getVersionNumberApp())")
     loadVersionsNumberNotAllowed()
     FIRAuth.auth()!.signInAnonymouslyWithCompletion() { (user, error) in
         if let error = error {
             print("Sign in failed:", error.localizedDescription)
-        } else {
-            //print ("Signed in with uid:", user!.uid)
         }
     }
 }
@@ -228,7 +225,6 @@ private func setTemperature(){
                 if let temperature = json["currently"]["temperature"].float{
                     let temperatureCelsius = (temperature-32)/1.8
                     let temperatureCelsiusString = String(format: "%.1f", temperatureCelsius)
-                    // println("Temperature actuelle =  \(temperatureCelsiusString)")
                     NSUserDefaults.standardUserDefaults().setObject(temperatureCelsiusString, forKey: Public.temperatureNSUserDefaults)
                 }
                 NSUserDefaults.standardUserDefaults().synchronize()
@@ -283,15 +279,12 @@ private func getShowAlertForPermissionPushNotifications() -> Bool {
     let userAnsweredForPushNotifications = getUserAnsweredForPushNotifications()
     
     if userDeclinedToBeRegisteredForPushNotifications {
-        //print("userDeclinedToBeRegisteredForPushNotifications")
         return false
     } else if userAlreadyRegisteredForPushNotifications {
-        //print("userAlreadyRegisteredForPushNotifications")
         return false
     } else if userAnsweredForPushNotifications {
         return false
     } else {
-        //print("ELSE getShowAlertForPermissionPushNotifications")
         return true
     }
 }
@@ -313,10 +306,6 @@ public func registerForNotificationsAndEnterApp(controller: UIViewController) {
             application.registerUserNotificationSettings(settings)
             application.registerForRemoteNotifications()
         }
-        //        alert.addButton("TEST") {
-        //            print("Ceci est un bouton de test")
-        //        }
-        //alert.showCloseButton = false
         alert.showInfo(Public.titleAlertPushNotification, subTitle: Public.subtitleAlertPushNotification)
     }
 }
@@ -361,7 +350,6 @@ public func loadVersionsNotAllowedFromServer() {
     Alamofire.request(.GET, url).validate().responseJSON { response in
         switch response.result {
         case .Success:
-            //print("response = \(response)")
             if let value = response.result.value {
                 let json_full = JSON(value)
                 let json = json_full["json"]
@@ -373,7 +361,6 @@ public func loadVersionsNotAllowedFromServer() {
                 for version in arrayVersionNotAllowedJSON {
                     arrayVersionNotAllowedString.append(String(version.1))
                 }
-                //print("arrayVersionNotAllowed:  \(arrayVersionNotAllowedString)")
                 if !checkIfVersionNumberIsAllowed(arrayVersionNotAllowedString) {
                     alertViewApplicationTooOld(msg)
                 }

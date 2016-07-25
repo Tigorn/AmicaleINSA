@@ -21,7 +21,6 @@ import MBProgressHUD
 
 
 class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, MenuControllerDelegate, ImagePickerDelegate,JSQMessagesViewControllerScrollingDelegate {
-    //, JSQMessagesViewControllerScrollingDelegate {
     
     @IBOutlet weak var menuButton: UIBarButtonItem!
     
@@ -37,9 +36,6 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
         return ChatViewController()
     }()
     
-    //    public init(){
-    //
-    //    }
     
     
     required init?(coder aDecoder: NSCoder) {
@@ -48,32 +44,21 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
     
     init() {
         super.init(nibName: nil, bundle: nil)
-        //Do whatever you want here
-        //print("init")
     }
     
     
     var outgoingBubbleImageView: JSQMessagesBubbleImage!
     var incomingBubbleImageView: JSQMessagesBubbleImage!
     
-    /* [Update Firebase]
-     var messageRef: Firebase!
-     */
     var messageRef: FIRDatabaseReference!
-    /* [Update Firebase]
-     var firebaseRef = Firebase(url: Secret.BASE_URL)
-     */
     var firebaseRef = FIRDatabase.database().reference()
-    
     
     var lastTimestamp: NSTimeInterval!
     let LOAD_MORE_MESSAGE_LIMIT  = UInt(60)
     let INITIAL_MESSAGE_LIMIT = UInt(60)
-    /* [Update Firebase]
-     var userIsTypingRef: Firebase!
-     */
     var userIsTypingRef: FIRDatabaseReference!
     private var localTyping = false
+    
     var isTyping: Bool {
         get {
             return localTyping
@@ -87,19 +72,13 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
     var timer = NSTimer()
     
     let imagePicker = UIImagePickerController()
-    // [Update Firebase]
-    // var usersTypingQuery: FQuery!
     var usersTypingQuery: FIRDatabaseQuery!
     
     private func observeTyping() {
         let typingIndicatorRef = FirebaseManager.firebaseManager.createTypingIndicatorRef()
-        // [Update Firebase]
-        //userIsTypingRef = typingIndicatorRef.childByAppendingPath(senderId)
         userIsTypingRef = typingIndicatorRef.child(senderId)
         userIsTypingRef.onDisconnectRemoveValue()
         usersTypingQuery = typingIndicatorRef.queryOrderedByValue().queryEqualToValue(true)
-        // [Update Firebase]
-        //usersTypingQuery.observeEventType(.Value) { (data: FDataSnapshot!) in
         usersTypingQuery.observeEventType(.Value) { (data: FIRDataSnapshot!) in
             print("number users typing: \(data.childrenCount)")
             if data.childrenCount == 1 && self.isTyping {
@@ -111,15 +90,6 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
             }
         }
     }
-    
-    
-    //    func initActivityIndicator() {
-    //        myActivityIndicator = UIActivityIndicatorView(frame: CGRectMake(0,0, 50, 50)) as UIActivityIndicatorView
-    //        myActivityIndicator.center = CGPoint(x: UIScreen.mainScreen().bounds.width/2, y: UIScreen.mainScreen().bounds.height/2)
-    //        myActivityIndicator.hidesWhenStopped = true
-    //        myActivityIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.Gray
-    //        view.addSubview(myActivityIndicator)
-    //    }
     
     func initActivityIndicator() {
         let myActivityIndicatorHUD = MBProgressHUD.showHUDAddedTo(self.navigationController?.view, animated: true)
@@ -143,9 +113,6 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
             menuButton.target = self.revealViewController()
             menuButton.action = #selector(SWRevealViewController.revealToggle(_:))
             self.view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
-            //let pan = self.revealViewController().panGestureRecognizer()
-            //pan.addTarget(self, action: #selector(ChatViewController.dismissKeyboard))
-            //self.view.addGestureRecognizer(pan)
         }
         initChat()
         initActivityIndicator()
@@ -159,17 +126,8 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
         collectionView!.collectionViewLayout.outgoingAvatarViewSize = CGSizeZero
         
         messageRef = FirebaseManager.firebaseManager.createMessageRef()
-        // #Test: before: automaticallyScrollsToMostRecentMessage = false, and no scrollToBottomAnimated
-        //automaticallyScrollsToMostRecentMessage = true
-        //self.scrollToBottomAnimated(true)
-        
-        
-        
-        /* [JSQMESSAGE] Ceci est le code avant de faire la MAJ JSQMessage*/
-        //automaticallyScrollsToMostRecentMessage = false
         
         automaticallyAdjustsScrollViewInsets = true
-        //Configuration.doneButtonTitle = "Send"
         
         collectionView!.addInfiniteScrollingWithActionHandler( { () -> Void in
             self.loadMoreMessages()
@@ -182,51 +140,18 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
         self.inputToolbar?.contentView?.leftBarButtonItemWidth = 30
     }
     
-    // [Update firebase]
-    //    func initChat(){
-    //        firebaseRef.authAnonymouslyWithCompletionBlock { (error, authData) in
-    //            if error != nil {
-    //                print("Error connection Firebase Anonymous \(error.description)");
-    //            }
-    //            if authData != nil {
-    ////                print("authData: \(authData)")
-    ////                let activeUsersRef = FirebaseManager.firebaseManager.createActiveUsersRef()
-    ////                let singleUserRef = activeUsersRef.childByAppendingPath(self.senderId)
-    ////                let value = "\(self.senderDisplayName)"
-    ////                singleUserRef.setValue(value)
-    ////                singleUserRef.onDisconnectRemoveValue()
-    //            } else {
-    //                print("in else authData == nil")
-    //            }
-    //        }
-    //    }
     
-    func initChat(){
-//        FIRAuth.auth()!.signInAnonymouslyWithCompletion() { (user, error) in
-//            if let error = error {
-//                print("Sign in failed:", error.localizedDescription)
-//            } else {
-//                print ("Signed in with uid:", user!.uid)
-//            }
-//        }
-    }
+    func initChat(){}
     
     
     private func observeActiveUsers() {
-        //print("in observeActiveUsers")
         let activeUsersRef = FirebaseManager.firebaseManager.createActiveUsersRef()
-        // [Firebase update]
-        //let singleUserRef = activeUsersRef.childByAppendingPath(self.senderId)
         let singleUserRef = activeUsersRef.child(self.senderId)
         var value = "\(self.senderDisplayName)"
         singleUserRef.onDisconnectRemoveValue()
-        // [update firebase]
-        //activeUsersRef.observeEventType(.Value, withBlock: { (snapshot: FDataSnapshot!) in
         activeUsersRef.observeEventType(.Value, withBlock: { (snapshot: FIRDataSnapshot!) in
-            //value = "\(self.senderDisplayName)"
             value = getUsernameChat()
             print("in observeActiveUsers, setValue, value: \(value)")
-            //singleUserRef.onDisconnectRemoveValue()
             singleUserRef.setValue(value)
             var count = 0
             if snapshot.exists() {
@@ -299,7 +224,6 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
                 } else {
                     titleChat += "👁"
                 }
-                
                 print("count users: \(count)")
                 self.title = titleChat
             }
@@ -354,12 +278,10 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
     
     func messageAlreadyPresent(id: String, senderDisplayName: String, media: JSQPhotoMediaItem, date: NSDate) -> Bool {
         let msg = "\(id)\(senderDisplayName)\(date)"
-        //print("msg.date = \(date)")
         var msgToCompare = ""
         for message in messages {
             if message.isMediaMessage == true {
                 msgToCompare = "\(message.senderId)\(message.senderDisplayName)\(message.date)"
-                //print("messgae.date = \(message.date)")
                 if msgToCompare == msg {
                     return true
                 }
@@ -381,12 +303,10 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
     private func observeMessages() {
         var SwiftSpinnerAlreadyHidden = false
         var index = 0;
-        //myActivityIndicator.startAnimating()
         let messagesQuery = messageRef.queryLimitedToLast(INITIAL_MESSAGE_LIMIT)
         messagesQuery.observeEventType(.ChildAdded) { (snapshot: FIRDataSnapshot!) in
             if !SwiftSpinnerAlreadyHidden {
                 SwiftSpinnerAlreadyHidden = true
-                //MBProgressHUD.hideAllHUDsForView(self.appDelegate.window, animated: true)
                 MBProgressHUD.hideAllHUDsForView(self.navigationController?.view, animated: true)
             }
             var idString = "errorId"
@@ -532,9 +452,6 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
             } else {
                 self.collectionView!.infiniteScrollingView.stopAnimating()
             }
-            /* [JSQMESSAGE] Ceci est le code avant de faire la MAJ JSQMessage*/
-            //self.automaticallyScrollsToMostRecentMessage = false
-            //self.scrollToBottomAnimated(false)
             self.finishReceivingMessageAnimated(false)
             self.collectionView!.layoutIfNeeded()
             self.collectionView!.contentOffset = CGPointMake(0, self.collectionView!.contentSize.height - oldBottomOffset)
@@ -550,7 +467,6 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
     }
     
     func handleIdleEvent(timer: NSTimer) {
-        // do whatever you want when idle after certain period of time
         print("TIMERRRR 2")
         self.collectionView!.infiniteScrollingView.stopAnimating()
     }
@@ -591,11 +507,6 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
     override func collectionView(collectionView: JSQMessagesCollectionView!,
                                  messageBubbleImageDataForItemAtIndexPath indexPath: NSIndexPath!) -> JSQMessageBubbleImageDataSource! {
         let message = messages[indexPath.item]
-        //        if message.senderDisplayName == senderDisplayName {
-        //            return outgoingBubbleImageView
-        //        } else {
-        //            return incomingBubbleImageView
-        //        }
         if message.senderId == senderId {
             return outgoingBubbleImageView
         } else {
@@ -616,10 +527,6 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
                 cell.textView!.linkTextAttributes = [NSForegroundColorAttributeName:UIColor.blueColor(), NSUnderlineColorAttributeName: UIColor.blueColor(), NSUnderlineStyleAttributeName: NSUnderlineStyle.StyleSingle.rawValue]
                 cell.textView!.textColor = UIColor.blackColor()
             }
-        } else {
-            //cell.mediaView.layer.borderColor = UIColor.blackColor().CGColor
-            //cell.mediaView.layer.borderWidth = CGFloat(10)
-            //cell.mediaView?.contentMode = .ScaleAspectFill
         }
         return cell
     }
@@ -659,18 +566,13 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
     override func collectionView(collectionView: JSQMessagesCollectionView!, attributedTextForMessageBubbleTopLabelAtIndexPath indexPath: NSIndexPath!) -> NSAttributedString!
     {
         let message = messages[indexPath.item];
-        /*[]*/
         /*Ceci est pour savoir si je dois afficher le pseudo si c'est moi qui envoi
-         Commenter si je veux que oui
-         */
+         Commenter si je veux que oui */
         if(message.senderId == self.senderId){
             return nil;
         }
         if(indexPath.row - 1 > 0){
             let prevMessage = messages[indexPath.row-1];
-            //            if(prevMessage.senderId == message.senderId){
-            //                return nil;
-            //            }
             if(prevMessage.senderDisplayName == message.senderDisplayName){
                 return nil;
             }
@@ -692,18 +594,8 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
         if(currentMessage.senderId == self.senderId){
             return 0.0
         }
-        //        if(indexPath.item - 1 >= 0){
-        //            let previousMessage = self.messages[indexPath.item - 1]
-        //            print("preview senderId = \(previousMessage.senderId)")
-        //            print("current senderId = \(currentMessage.senderId)")
-        //            if(previousMessage.senderId == currentMessage.senderId){
-        //                return 0.0
-        //            }
-        //        }
         if(indexPath.item - 1 >= 0){
             let previousMessage = self.messages[indexPath.item - 1]
-            //print("previous senderDisplayName = \(previousMessage.senderDisplayName)")
-            //print("current senderDisplayName = \(currentMessage.senderDisplayName)")
             if(previousMessage.senderDisplayName == currentMessage.senderDisplayName){
                 return 0.0
             }
@@ -731,7 +623,6 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
     
     override func collectionView(collectionView: UICollectionView,
                                  numberOfItemsInSection section: Int) -> Int {
-        //print("numberOfItemsInSection = \(messages.count)")
         return messages.count
     }
     
@@ -765,16 +656,6 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
         JSQSystemSoundPlayer.jsq_playMessageSentSound()
         finishSendingMessage()
     }
-    
-    //    func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : AnyObject]) {
-    //        let pickedImage = info[UIImagePickerControllerOriginalImage] as? UIImage
-    //        let imageData = pickedImage?.mediumQualityJPEGNSData
-    //        let base64String: NSString!
-    //        base64String = imageData?.base64EncodedStringWithOptions(.Encoding64CharacterLineLength)
-    //        picker.dismissViewControllerAnimated(true, completion: nil)
-    //        FirebaseManager.firebaseManager.sendMessage("", senderId: senderId, senderDisplayName: senderDisplayName, date: NSDate(), image: base64String, isMedia: true)
-    //        finishSendingMessage()
-    //    }
     
     func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : AnyObject]) {
         print("in imagePickerController didFinishPickingMediaWithInfo")
@@ -821,7 +702,6 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
         let imageChatRef = FirebaseManager().createStorageRefChat(imageName)
         let base64String: NSString!
         base64String = imageData.base64EncodedStringWithOptions(.Encoding64CharacterLineLength)
-        //FirebaseManager().sendMessage("", senderId: self.senderId, senderDisplayName: self.senderDisplayName, date: NSDate(), image: base64String, isMedia: true)
         self.finishSendingMessage()
         dismissViewControllerAnimated(true, completion: nil)
         
@@ -888,16 +768,13 @@ override func collectionView(collectionView: JSQMessagesCollectionView!, didTapM
 
 override func viewWillAppear(animated: Bool) {
     super.viewWillAppear(animated)
-    //print("In viewWillAppear ChatVC")
 }
 
 func shouldScrollToNewlyReceivedMessageAtIndexPath(indexPath: NSIndexPath!) -> Bool {
-    //print("in delegate shouldScrollToNewlyReceivedMessageAtIndexPath \(self.isLastCellVisible)")
     return self.isLastCellVisible
 }
 
 func shouldScrollToLastMessageAtStartup() -> Bool {
-    //print("shouldScrollToLastMessageAtStartup")
     return true
 }
 

@@ -71,25 +71,10 @@ class WashINSATableViewController: UITableViewController {
         self.refreshControl?.addTarget(self, action: #selector(WashINSATableViewController.refresh(_:)), forControlEvents: UIControlEvents.ValueChanged)
         
         loadInfoInMachinesDB()
-        
-        
-        
-        
-        //        refreshView = BreakOutToRefreshView(scrollView: tableView)
-        //        refreshView.delegate = self
-        //        tableView.addSubview(refreshView)
-        
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-        
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem()
     }
     
-    func refresh(sender:AnyObject)
-    {
+    func refresh(sender:AnyObject) {
         loadInfoInMachinesDB()
-        //timer = NSTimer.scheduledTimerWithTimeInterval(10, target: self, selector: #selector(WashINSATableViewController.endRefresh), userInfo: nil, repeats: true)
     }
     
     func endRefresh(){
@@ -116,8 +101,6 @@ class WashINSATableViewController: UITableViewController {
     }
     
     func initUI(){
-        //initActivityIndicator()
-        //tableView.allowsSelection = false
     }
     
     func loadInfoInMachinesDB(){
@@ -341,7 +324,6 @@ class WashINSATableViewController: UITableViewController {
                     print("compris's button tapped")
                     self.tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Left)
                 }
-                //alert.showCloseButton = false
                 alert.showInfo("Alarme laverie", subTitle: "Vous allez recevoir une notification dans \(remainingTime) \(minuteString) pour vous rappeler que vous devez aller chercher votre linge !")
             }
             alarm.backgroundColor = UIColor.redColor()
@@ -382,9 +364,7 @@ class WashINSATableViewController: UITableViewController {
         return false
     }
     
-    override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
-        // you need to implement this method too or you can't swipe to display the actions
-    }
+    override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {}
     
     override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         switch section {
@@ -424,54 +404,4 @@ class WashINSATableViewController: UITableViewController {
             return false
         }
     }
-    
-    
-    /*
-     // Override to support editing the table view.
-     override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
-     if editingStyle == .Delete {
-     // Delete the row from the data source
-     tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
-     } else if editingStyle == .Insert {
-     // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-     }
-     }
-     */
-    
-    /*
-     // Override to support rearranging the table view.
-     override func tableView(tableView: UITableView, moveRowAtIndexPath fromIndexPath: NSIndexPath, toIndexPath: NSIndexPath) {
-     
-     }
-     */
-    
-    /*
-     // Override to support conditional rearranging of the table view.
-     override func tableView(tableView: UITableView, canMoveRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-     // Return false if you do not want the item to be re-orderable.
-     return true
-     }
-     */
-    
-    
-    // MARK: - Navigation
-    
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    //     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-    //        let detailVC = segue.destinationViewController as! WashINSADetailsViewController
-    //
-    //        if let indexPath = self.tableView.indexPathForSelectedRow {
-    //            let row = Int(indexPath.row)
-    //            var indexInArray = row
-    //            if indexPath.section == 1 {
-    //                indexInArray += 3
-    //            }
-    //            detailVC.machineInfo.type = "\(machines[indexInArray].numberMachine) \(machines[indexInArray].type)"
-    //            detailVC.machineInfo.avancement = machines[indexInArray].avancement
-    //            detailVC.machineInfo.startTime = machines[indexInArray].startTime
-    //            detailVC.machineInfo.endTime = machines[indexInArray].endTime
-    //            print("avancement[row] = \(machines[indexInArray].avancement)")
-    //        }
-    //
-    //     }
 }

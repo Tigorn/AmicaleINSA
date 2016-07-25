@@ -30,9 +30,6 @@ class PostTableViewController: UITableViewController {
     
     
     var posts = [post]()
-    
-    // [firebase update]
-    //var postRef: Firebase!
     var postRef: FIRDatabaseReference!
     var lastTimestamp: NSTimeInterval!
     var lastTimestampReverse: NSTimeInterval!
@@ -81,7 +78,6 @@ class PostTableViewController: UITableViewController {
     
     
     func segueToSettingsIfNeeded(){
-        //print("bool segueToSettingsIfNeeded, getBeenToSettingsOnce = \(getBeenToSettingsOnce())")
         if !getBeenToSettingsOnce() {
             self.performSegueWithIdentifier(Public.segueBeenToSettingsOnce, sender: self)
         }
@@ -109,17 +105,10 @@ class PostTableViewController: UITableViewController {
     func obversePosts(){
         initActivityIndicator()
         var SwiftSpinnerAlreadyHidden = false
-        //print("In observePosts first line, SwiftSpinnerAlreadyHidden: \(SwiftSpinnerAlreadyHidden)")
-        
         let postQuery = postRef.queryLimitedToLast(INITIAL_POST_LIMIT)
-        // [Firebase update]
-        //postQuery.observeEventType(.ChildAdded) { (snapshot: FDataSnapshot!) in
         postQuery.observeEventType(.ChildAdded) { (snapshot: FIRDataSnapshot!) in
             if !SwiftSpinnerAlreadyHidden {
-                //print("inside SwiftSpinnerAlreadyHidden")
                 SwiftSpinnerAlreadyHidden = true
-                //MBProgressHUD.hideAllHUDsForView(self.navigationController?.view, animated: true)
-                
                 MBProgressHUD.hideAllHUDsForView(self.view, animated: true)
             }
             var titleString = ""
@@ -175,15 +164,12 @@ class PostTableViewController: UITableViewController {
                             print("Error: \(error)")
                             // Uh-oh, an error occurred!
                         } else {
-                            //print("I download image from firebase reference, title: \(titleString)")
                             let image = UIImage(data: data!)
                             self.addPostBeginning(titleString, description: descriptionString, date: dateString, author: authorString, imagePresents: true, image: image, timestamp: dateTimestampInterval)
                             self.tableView.reloadData()
                         }
                     }
                 } else {
-                    
-                    //print("image present")
                     let base64EncodedString = imageDataString
                     if let imageData = NSData(base64EncodedString: base64EncodedString,
                                               options: NSDataBase64DecodingOptions.IgnoreUnknownCharacters) {
@@ -196,7 +182,6 @@ class PostTableViewController: UITableViewController {
                 }
             } else {
                 self.addPostBeginning(titleString, description: descriptionString, date: dateString, author: authorString, imagePresents: false, image: nil, timestamp: dateTimestampInterval)
-                //print("image no present")
             }
             
             self.tableView.reloadData()
@@ -243,7 +228,6 @@ class PostTableViewController: UITableViewController {
             let dateTimestampInterval = snapshot.value!["timestamp"] as! NSTimeInterval
             if (self.shouldUpdateLastTimestamp(dateTimestampInterval)){
                 self.lastTimestamp = dateTimestampInterval
-                //print("---------------> in lastTimeStamp update : title = \(titleString)")
             }
             let dateTimestampInverseInterval = snapshot.value!["timestampInverse"] as! NSTimeInterval
             self.lastTimestampReverse = dateTimestampInverseInterval
@@ -251,9 +235,7 @@ class PostTableViewController: UITableViewController {
             print("index: \(index) LOAD_MORE_POST_LIMIT: \(self.LOAD_MORE_POST_LIMIT)")
             self.printMessage(titleString, description: descriptionString, timestamp: dateTimestampInterval, date: dateString)
             if index <= (self.LOAD_MORE_POST_LIMIT+self.LOAD_MORE_POST_LIMIT) {
-                //print("index = \(index), self.LOAD_MORE_POST_LIMIT = \(self.LOAD_MORE_POST_LIMIT)")
                 if imagePresentsBool {
-                    //print("image present")
                     let base64EncodedString = imageDataString
                     if let imageData = NSData(base64EncodedString: base64EncodedString,
                                               options: NSDataBase64DecodingOptions.IgnoreUnknownCharacters) {
@@ -294,24 +276,18 @@ class PostTableViewController: UITableViewController {
     }
     
     func addPostAppend(title: String, description: String, date: String, author: String, imagePresents: Bool, image: UIImage?, timestamp: NSTimeInterval) {
-        //print("------------------------------------------------------------------")
         if self.postAlreadyPresent(timestamp, titleDescription: "\(title)\(description)") == false{
             self.posts.append(post(title: title, description: description, date: date, author: author, imagePresents: imagePresents, image: image, timestamp: timestamp))
         } else {
             print("/!\\ le post est déjà présent !!")
         }
-        //print("D'add dans mon array [append]")
-        //print("title = \(title), description = \(description) timestamp = \(timestamp)")
-        //print("------------------------------------------------------------------")
     }
     
     func addPostBeginning(title: String, description: String, date: String, author: String, imagePresents: Bool, image: UIImage?, timestamp: NSTimeInterval) {
         self.posts.insert(post(title: title, description: description, date: date, author: author, imagePresents: imagePresents, image: image, timestamp: timestamp), atIndex: 0)
-        //print("Array of posts BEFORE sorting: \(self.posts)")
         self.posts.sortInPlace({
             return ($0.timestamp.distanceTo($1.timestamp) < 0)
         })
-        //print("Array of posts AFTER sorting: \(self.posts)")
     }
     
     func postAlreadyPresent(timestampPost: NSTimeInterval, titleDescription: String) -> Bool {
@@ -328,12 +304,10 @@ class PostTableViewController: UITableViewController {
     func resetTimer() {
         timer.invalidate()
         let nextTimer = NSTimer.scheduledTimerWithTimeInterval(4.0, target: self, selector: #selector(PostTableViewController.handleIdleEvent(_:)), userInfo: nil, repeats: false)
-        //print("TIMERRRR 1")
         timer = nextTimer
     }
     
     func handleIdleEvent(timer: NSTimer) {
-        //print("TIMERRRR 2")
         self.tableView.finishInfiniteScroll()
     }
     
@@ -348,21 +322,11 @@ class PostTableViewController: UITableViewController {
     override func viewDidAppear(animated: Bool) {
         tableView.reloadData()
         registerForNotificationsAndEnterApp(self)
-        //        let alreadyRegisteredForPushNotifications = getRegisterForPushNotifications()
-        //        if !alreadyRegisteredForPushNotifications {
-        //            print("Show popup for push notifications")
-        //            registerForNotificationsAndEnterApp(self)
-        //        } else {
-        //            print("Already registered for push notifications")
-        //        }
-        //initActivityIndicator()
     }
     
     // MARK: - Table view data source
     
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
-        //print("posts.count = \(posts.count)")
         return posts.count
     }
     
@@ -425,7 +389,6 @@ class PostTableViewController: UITableViewController {
     }
     
     func initActivityIndicator() {
-        //myActivityIndicatorHUD = MBProgressHUD.showHUDAddedTo(self.navigationController?.view, animated: true)
         myActivityIndicatorHUD = MBProgressHUD.showHUDAddedTo(self.view, animated: true)
         myActivityIndicatorHUD.mode = MBProgressHUDMode.Indeterminate
         myActivityIndicatorHUD.labelText = "Loading..."
@@ -436,10 +399,7 @@ class PostTableViewController: UITableViewController {
     
     func tapToCancel(){
         print("cancel tap")
-        //MBProgressHUD.hide(myActivityIndicatorHUD)
-        //MBProgressHUD.hideAllHUDsForView(self.navigationController?.view, animated: true)
         MBProgressHUD.hideAllHUDsForView(self.view, animated: true)
-        //myActivityIndicator.hidden = true
     }
     
     func createPhotoArray(image: UIImage) -> ([Photo], Int) {
@@ -478,51 +438,5 @@ class PostTableViewController: UITableViewController {
             print("Problem with the tag when I click on an image")
         }
     }
-    
-    
-    /*
-     // Override to support conditional editing of the table view.
-     override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-     // Return false if you do not want the specified item to be editable.
-     return true
-     }
-     */
-    
-    /*
-     // Override to support editing the table view.
-     override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
-     if editingStyle == .Delete {
-     // Delete the row from the data source
-     tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
-     } else if editingStyle == .Insert {
-     // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-     }
-     }
-     */
-    
-    /*
-     // Override to support rearranging the table view.
-     override func tableView(tableView: UITableView, moveRowAtIndexPath fromIndexPath: NSIndexPath, toIndexPath: NSIndexPath) {
-     
-     }
-     */
-    
-    /*
-     // Override to support conditional rearranging of the table view.
-     override func tableView(tableView: UITableView, canMoveRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-     // Return false if you do not want the item to be re-orderable.
-     return true
-     }
-     */
-    
-    /*
-     // MARK: - Navigation
-     
-     // In a storyboard-based application, you will often want to do a little preparation before navigation
-     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-     // Get the new view controller using segue.destinationViewController.
-     // Pass the selected object to the new view controller.
-     }
-     */
     
 }
