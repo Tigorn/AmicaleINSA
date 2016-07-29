@@ -263,10 +263,19 @@ class WashINSATableViewController: UITableViewController {
                 cell.numberMachineLabel.backgroundColor = UIColor.redColor()
                 cell.startEndTimeLabel.text = ""
             } else if machines[indexInArray].available.containsString("En cours d'utilisation") {
+                let remainingTime = machines[indexInArray].remainingTime
                 cell.availabilityMachineLabel.text = machines[indexInArray].available
-                cell.availableInTimeMachineLabel.text = "Disponible dans \(machines[indexInArray].remainingTime) min"
+                cell.availableInTimeMachineLabel.text = "Disponible dans \(remainingTime) min"
                 cell.numberMachineLabel.backgroundColor = UIColor.redColor()
                 cell.startEndTimeLabel.text = "\(machines[indexInArray].startTime) - \(machines[indexInArray].endTime)"
+                if let minute = Int(remainingTime) {
+                    if minute == 0 {
+                        cell.availabilityMachineLabel.text = machines[indexInArray].available
+                        cell.startEndTimeLabel.text = ""
+                        cell.availableInTimeMachineLabel.text = messageMachineDone
+                        cell.numberMachineLabel.backgroundColor = UIColor.yellowColor()
+                    }
+                }
             }
             if alreadyNotificationForMachine(indexInArray) {
                 cell.reservedMachineCircularLabel.backgroundColor = UIColor.redColor()
@@ -297,7 +306,6 @@ class WashINSATableViewController: UITableViewController {
             indexInArray += 3
         }
         let remainingTime = machines[indexInArray].remainingTime
-        var minuteString = "minutes"
         var alarm: UITableViewRowAction!
         if alreadyNotificationForMachine(indexInArray) {
             alarm = UITableViewRowAction(style: .Normal, title: "Unset\nAlarm") { action, index in
@@ -309,27 +317,49 @@ class WashINSATableViewController: UITableViewController {
             alarm.backgroundColor = UIColor.redColor()
         } else {
             alarm = UITableViewRowAction(style: .Normal, title: "Set\nAlarm") { action, index in
-                print("alarm button tapped")
                 if let minute = Int(remainingTime) {
-                    if minute < 2 {
-                        minuteString = "minute"
-                    }
-                    sendLocalNotificationWashingMachine(minute, numeroMachine: indexInArray)
+                    self.createAndShowAlarmAlert(minute, indexInArray: indexInArray, remainingTimeString: remainingTime, indexPath: indexPath)
                 }
-                let appearance = SCLAlertView.SCLAppearance(
-                    showCloseButton: false
-                )
-                let alert = SCLAlertView(appearance: appearance)
-                alert.addButton("Compris !") {
-                    print("compris's button tapped")
-                    self.tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Left)
-                }
-                alert.showInfo("Alarme laverie", subTitle: "Vous allez recevoir une notification dans \(remainingTime) \(minuteString) pour vous rappeler que vous devez aller chercher votre linge !")
             }
             alarm.backgroundColor = UIColor.redColor()
         }
         return [alarm]
     }
+    
+    func createAndShowAlarmAlert(minute: Int, indexInArray: Int, remainingTimeString: String, indexPath: NSIndexPath) {
+        let appearance = SCLAlertView.SCLAppearance(
+            showCloseButton: false,
+            kTitleFont: UIFont(name: "HelveticaNeue-Bold", size: 18)!,
+            kTextFont: UIFont(name: "HelveticaNeue", size: 16)!,
+            kButtonFont: UIFont(name: "HelveticaNeue", size: 16)!
+        )
+        let alert = SCLAlertView(appearance: appearance)
+        alert.addButton("à l'heure") {
+            print("compris's button tapped")
+            sendLocalNotificationWashingMachine(minute, numeroMachine: indexInArray)
+            self.tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Left)
+        }
+        if minute > 5 {
+            alert.addButton("5 minutes avant") {
+                print("compris's button tapped")
+                sendLocalNotificationWashingMachine(minute-5, numeroMachine: indexInArray)
+                self.tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Left)
+            }
+        }
+        if minute > 10 {
+            alert.addButton("10 minutes avant") {
+                print("compris's button tapped")
+                sendLocalNotificationWashingMachine(minute-10, numeroMachine: indexInArray)
+                self.tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Left)
+            }
+        }
+        alert.addButton("Annuler") {
+            print("cancal's button tapped")
+            self.tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.None)
+        }
+        alert.showInfo("Disponible dans \(remainingTimeString) min", subTitle: "Je veux être alerté")
+    }
+    
     
     func cancelNotificationForMachine(machineNumber:Int) {
         print("canceled notification for machine \(machineNumber+1)")

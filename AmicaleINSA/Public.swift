@@ -311,6 +311,7 @@ public func registerForNotificationsAndEnterApp(controller: UIViewController) {
 }
 
 public func sendLocalNotificationWashingMachine(time: Int, numeroMachine: Int) {
+    print("An alert will be sent in \(time) minutes")
     let notification = UILocalNotification()
     notification.fireDate = NSDate(timeIntervalSinceNow: Double(time*60))
     notification.alertBody = "Vite, ton linge est prêt !!"
