@@ -118,18 +118,39 @@ class SettingsTableViewController: UITableViewController, UITextFieldDelegate, I
     
     /* Image Picker methodes delegate */
     
-    func wrapperDidPress(images: [UIImage]) {
+//    func wrapperDidPress(images: [UIImage]) {
+//        print("wrapperDidPress")
+//    }
+    
+    func wrapperDidPress(imagePicker: ImagePickerController, images: [UIImage]) {
         print("wrapperDidPress")
     }
     
-    func doneButtonDidPress(images: [UIImage]) {
-        let pickedImage = images[0]
-        profileImageView.image = pickedImage
-        setProfilPicture(pickedImage)
+    func doneButtonDidPress(imagePicker: ImagePickerController, images: [UIImage]) {
+        print("DoneButtonDiDPress")
+        if let pickedImage = UIImage(data: images[0].lowestQualityJPEGNSData) {
+            profileImageView.image = pickedImage
+            setProfilPicture(pickedImage)
+        } else {
+            profileImageView.image = UIImage(named: "defaultPic")!
+            setProfilPicture(UIImage(named: "defaultPic")!)
+        }
         dismissViewControllerAnimated(true, completion: nil)
     }
     
-    func cancelButtonDidPress() {
+//    func doneButtonDidPress(images: [UIImage]) {
+//        //let pickedImage = images[0].imageRotatedByDegrees(90, flip: false)
+//        let pickedImage = images[0]
+//        profileImageView.image = pickedImage
+//        setProfilPicture(pickedImage)
+//        dismissViewControllerAnimated(true, completion: nil)
+//    }
+    
+//    func cancelButtonDidPress() {
+//        print("cancel button pressed")
+//    }
+    
+    func cancelButtonDidPress(imagePicker: ImagePickerController) {
         print("cancel button pressed")
     }
     
@@ -168,7 +189,11 @@ class SettingsTableViewController: UITableViewController, UITextFieldDelegate, I
     /* MBProgressHUD */
     
     func savedMBProgressHUDAction(){
-        savedMBProgressHUD = MBProgressHUD.showHUDAddedTo(self.view, animated: true)
+        if let superView = self.view.superview {
+            savedMBProgressHUD = MBProgressHUD.showHUDAddedTo(superView, animated: true)
+        } else {
+            savedMBProgressHUD = MBProgressHUD.showHUDAddedTo(self.view, animated: true)
+        }
         savedMBProgressHUD.customView = UIImageView(image: UIImage(named: "37x-Checkmark.png"))
         savedMBProgressHUD.mode = MBProgressHUDMode.CustomView
         savedMBProgressHUD.labelText = "Saved!"

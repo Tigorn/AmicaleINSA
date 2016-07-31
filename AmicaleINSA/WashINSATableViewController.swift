@@ -336,20 +336,20 @@ class WashINSATableViewController: UITableViewController {
         let alert = SCLAlertView(appearance: appearance)
         alert.addButton("à l'heure") {
             print("compris's button tapped")
-            sendLocalNotificationWashingMachine(minute, numeroMachine: indexInArray)
+            sendLocalNotificationWashingMachine(minute, numeroMachine: indexInArray, numberOfMinutesBeforeTheEndOfTheMachine: 0)
             self.tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Left)
         }
         if minute > 5 {
             alert.addButton("5 minutes avant") {
                 print("compris's button tapped")
-                sendLocalNotificationWashingMachine(minute-5, numeroMachine: indexInArray)
+                sendLocalNotificationWashingMachine(minute, numeroMachine: indexInArray, numberOfMinutesBeforeTheEndOfTheMachine: 5)
                 self.tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Left)
             }
         }
         if minute > 10 {
             alert.addButton("10 minutes avant") {
                 print("compris's button tapped")
-                sendLocalNotificationWashingMachine(minute-10, numeroMachine: indexInArray)
+                sendLocalNotificationWashingMachine(minute, numeroMachine: indexInArray, numberOfMinutesBeforeTheEndOfTheMachine: 10)
                 self.tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Left)
             }
         }
@@ -378,12 +378,12 @@ class WashINSATableViewController: UITableViewController {
     
     func alreadyNotificationForMachine(machineNumber: Int) -> Bool {
         let app:UIApplication = UIApplication.sharedApplication()
+        print("Local Notifications: \(app.scheduledLocalNotifications!)")
         for oneEvent in app.scheduledLocalNotifications! {
             let notification = oneEvent as UILocalNotification
             if let userInfoCurrent = notification.userInfo as? [String:Int] {
                 if let number = userInfoCurrent["numero_machine"] {
                     if number == machineNumber {
-                        //app.cancelLocalNotification(notification)
                         print("machine number: \(machineNumber+1) exists for notification")
                         return true
                     }

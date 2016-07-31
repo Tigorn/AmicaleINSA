@@ -690,11 +690,11 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
         self.presentViewController(imagePickerController, animated: true, completion: nil)
     }
     
-    func wrapperDidPress(images: [UIImage]) {
+    func wrapperDidPress(imagePicker: ImagePickerController, images: [UIImage]) {
         print("wrapperDidPress")
     }
     
-    func doneButtonDidPress(images: [UIImage]) {
+    func doneButtonDidPress(imagePicker: ImagePickerController, images: [UIImage]) {
         print("done button did press")
         let pickedImage = images[0]
         let imageData = pickedImage.lowQualityJPEGNSData
@@ -717,10 +717,10 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
             }
         }
     }
-
-func cancelButtonDidPress() {
-    print("cancel button pressed")
-}
+    
+    func cancelButtonDidPress(imagePicker: ImagePickerController) {
+        print("cancel button pressed")
+    }
 
 func createPhotoArray(image: UIImage) -> ([Photo], Int) {
     var arrayPhoto = [Photo]()

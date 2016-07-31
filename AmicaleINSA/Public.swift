@@ -184,9 +184,13 @@ public func setYearSpeGroupPlanningExpress(yearSpeGroup:String){
  */
 
 public func setProfilPicture(image : UIImage){
+    print("setProfilePicture in")
     NSUserDefaults.standardUserDefaults().setObject(UIImagePNGRepresentation(image), forKey: Public.profilePicture)
+    print("setProfilePicture in 2")
     NSUserDefaults.standardUserDefaults().setBool(true, forKey: Public.profilePictureIsSet)
+    print("setProfilePicture in 3")
     NSUserDefaults.standardUserDefaults().synchronize()
+    print("setProfilePicture out")
 }
 
 public func getProfilPicture() -> UIImage {
@@ -310,14 +314,31 @@ public func registerForNotificationsAndEnterApp(controller: UIViewController) {
     }
 }
 
-public func sendLocalNotificationWashingMachine(time: Int, numeroMachine: Int) {
-    print("An alert will be sent in \(time) minutes")
+public func sendLocalNotificationWashingMachine(time: Int, numeroMachine: Int, numberOfMinutesBeforeTheEndOfTheMachine: Int){
+    print("An alert will be sent in \(time-numberOfMinutesBeforeTheEndOfTheMachine) minutes")
+    let timeFireDate = Double((time-numberOfMinutesBeforeTheEndOfTheMachine)*60)
+    var alertBody = "Vite, ton linge est prêt !!"
+    if numberOfMinutesBeforeTheEndOfTheMachine == 5 {
+        alertBody = "Ton linge sera prêt dans 5 minutes !"
+    } else if numberOfMinutesBeforeTheEndOfTheMachine == 10 {
+        alertBody = "Commence à te préparer, tu dois être à la laverie dans 10 minutes !"
+    }
+    let notification = UILocalNotification()
+    notification.fireDate = NSDate(timeIntervalSinceNow: timeFireDate)
+    notification.alertBody = alertBody
+    notification.alertAction = "récupérer ton linge !"
+    notification.userInfo = ["numero_machine": numeroMachine, "alert": true]
+    notification.soundName = UILocalNotificationDefaultSoundName
+    UIApplication.sharedApplication().scheduleLocalNotification(notification)
+}
+
+public func setLocalNotificationWithoutAlertWashingMachine(time: Int, numeroMachine: Int) {
+    print("Set a local notification without alert, in \(time) minutes")
     let notification = UILocalNotification()
     notification.fireDate = NSDate(timeIntervalSinceNow: Double(time*60))
-    notification.alertBody = "Vite, ton linge est prêt !!"
-    notification.alertAction = "récupérer ton linge !"
-    notification.userInfo = ["numero_machine": numeroMachine]
-    notification.soundName = UILocalNotificationDefaultSoundName
+    notification.alertBody = nil
+    notification.alertAction = nil
+    notification.userInfo = ["numero_machine": numeroMachine, "alert": false]
     UIApplication.sharedApplication().scheduleLocalNotification(notification)
 }
 

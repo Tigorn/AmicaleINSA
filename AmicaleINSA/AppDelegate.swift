@@ -42,10 +42,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func application(application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: NSData) {
         let installation = PFInstallation.currentInstallation()
-        installation.badge = 0
-        installation.setDeviceTokenFromData(deviceToken)
-        installation.channels = ["global"]
-        installation.saveInBackground()
+        installation!.badge = 0
+        installation!.setDeviceTokenFromData(deviceToken)
+        installation!.channels = ["global"]
+        installation!.saveInBackground()
     }
 
     func application(application: UIApplication, didReceiveRemoteNotification userInfo: [NSObject : AnyObject]) {
@@ -71,8 +71,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
         UIApplication.sharedApplication().applicationIconBadgeNumber = 0
         let installation = PFInstallation.currentInstallation()
-        installation.badge = 0
-        installation.saveInBackground()
+        installation!.badge = 0
+        installation!.saveInBackground()
     }
 
     func applicationWillTerminate(application: UIApplication) {
