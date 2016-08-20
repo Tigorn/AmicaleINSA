@@ -53,11 +53,6 @@ class FirebaseManager {
         if (chatVC.shouldUpdateLastTimestamp(dateTimestamp)){
             chatVC.lastTimestamp = dateTimestamp
         }
-        let imageData = UIImagePNGRepresentation(UIImage(named: "Update_your_app")!)
-        var base64StringImageUpdateYourApp = ""
-        if isMedia {
-            base64StringImageUpdateYourApp = imageData!.base64EncodedStringWithOptions(.Encoding64CharacterLineLength)
-        }
         let dateString = String(date)
         let itemRef = BASE_REF.child("messages").childByAutoId()
         let messageItem = [ // 2
@@ -66,10 +61,9 @@ class FirebaseManager {
             "senderDisplayName": senderDisplayName,
             "date": dateString,
             "dateTimestamp": dateTimestamp,
-            "isMedia": isMedia,
+            "isMedia": false,
             "hashValue": "\(senderId)\(dateTimestamp)".md5(),
-            "imageURL": imageURL,
-            "image": base64StringImageUpdateYourApp
+            "imageURL": imageURL
         ]
         itemRef.setValue(messageItem)
         

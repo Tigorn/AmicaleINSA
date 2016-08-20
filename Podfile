@@ -18,7 +18,7 @@ target 'AmicaleINSA' do
     pod 'NYTPhotoViewer', '~> 1.1.0'
     pod 'ALCameraViewController'
     #pod 'ImagePicker'
-    pod 'ImagePicker', :git => 'https://github.com/hyperoslo/ImagePicker.git', :branch => 'fix/rotation'
+    pod 'ImagePicker', :git => 'https://github.com/hyperoslo/ImagePicker.git'
 #    pod 'SwiftSpinner', :git => 'https://github.com/icanzilb/SwiftSpinner.git'
     pod 'SwiftSpinner'
     pod 'Fuzi', '~> 0.3.0'

@@ -312,7 +312,7 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
             var idString = "errorId"
             var textString = "errorMessage"
             var senderDisplayNameString = "error senderDisplayName"
-            var isMediaBool = false
+            var imageURLString = ""
             if let id = snapshot.value!["senderId"] as? String {
                 idString = id
             }
@@ -324,45 +324,30 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
             if let senderDisplayName = snapshot.value!["senderDisplayName"] as? String {
                 senderDisplayNameString = senderDisplayName
             }
-            if let isMedia = snapshot.value!["isMedia"] as? Bool {
-                isMediaBool = isMedia
-            }
             let dateTimestampInterval = snapshot.value!["dateTimestamp"] as! NSTimeInterval
             if (self.shouldUpdateLastTimestamp(dateTimestampInterval)){
                 self.lastTimestamp = dateTimestampInterval
+            }
+            if let imageURL = snapshot.value!["imageURL"] as? String {
+                imageURLString = imageURL
             }
             let date = NSDate(timeIntervalSince1970: dateTimestampInterval)
             let hashValue = "\(idString)\(date)\(senderDisplayNameString)".md5()
             let canAdd = self.shouldAddInArray(hashValue)
             if canAdd {
-                if isMediaBool {
-                    if let imageURL = snapshot.value!["imageURL"] as? String {
-                        let httpsReferenceImage = FIRStorage.storage().referenceForURL(imageURL)
-                        httpsReferenceImage.dataWithMaxSize(3 * 1024 * 1024) { (data, error) -> Void in
-                            if (error != nil) {
-                                print("Error downloading image from httpsReferenceImage firebase")
-                                // Uh-oh, an error occurred!
-                            } else {
-                                print("I download image from firebase reference")
-                                let image = UIImage(data: data!)
-                                let mediaMessageData: JSQPhotoMediaItem = JSQPhotoMediaItem(image: image)
-                                self.addMessage(idString, media: mediaMessageData, senderDisplayName: senderDisplayNameString, date: date)
-                                index = self.finishReceivingAsyncMessage(index)
-                            }
+                if imageURLString != "" {
+                    let httpsReferenceImage = FIRStorage.storage().referenceForURL(imageURLString)
+                    httpsReferenceImage.dataWithMaxSize(3 * 1024 * 1024) { (data, error) -> Void in
+                        if (error != nil) {
+                            print("Error downloading image from httpsReferenceImage firebase")
+                        } else {
+                            print("I download image from firebase reference")
+                            let image = UIImage(data: data!)
+                            let mediaMessageData: JSQPhotoMediaItem = JSQPhotoMediaItem(image: image)
+                            self.addMessage(idString, media: mediaMessageData, senderDisplayName: senderDisplayNameString, date: date)
+                            index = self.finishReceivingAsyncMessage(index)
                         }
-                    } else {
-                        index = self.finishReceivingAsyncMessage(index)
-                        print("Image without imageURL!")
                     }
-                    /* else {
-                        print("Download image with base64 string")
-                        let base64EncodedString = snapshot.value!["image"] as! String
-                        let imageData = NSData(base64EncodedString: base64EncodedString,
-                                           options: NSDataBase64DecodingOptions.IgnoreUnknownCharacters)
-                        let mediaMessageData: JSQPhotoMediaItem = JSQPhotoMediaItem(image: UIImage(data: imageData!))
-                        self.addMessage(idString, media: mediaMessageData, senderDisplayName: senderDisplayNameString, date: date)
-                        index = self.finishReceivingAsyncMessage(index)
-                    } */
                 } else {
                     self.addMessage(idString, text: textString, senderDisplayName: senderDisplayNameString, date: date)
                     index = self.finishReceivingAsyncMessage(index)
@@ -438,37 +423,31 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
             let text = snapshot.value!["text"] as! String
             let senderDisplayName = snapshot.value!["senderDisplayName"] as! String
             let dateTimestampInterval = snapshot.value!["dateTimestamp"] as! NSTimeInterval
-            let isMedia = snapshot.value!["isMedia"] as! Bool
+            var imageURLString = ""
+            if let imageURL = snapshot.value!["imageURL"] as? String {
+                imageURLString = imageURL
+            }
             if (self.shouldUpdateLastTimestamp(dateTimestampInterval)){
                 self.lastTimestamp = dateTimestampInterval
             }
             let date = NSDate(timeIntervalSince1970: dateTimestampInterval)
-            index += 1
             if index < Int(self.LOAD_MORE_MESSAGE_LIMIT) {
-                if isMedia {
-                    if let imageURL = snapshot.value!["imageURL"] as? String {
-                        let httpsReferenceImage = FIRStorage.storage().referenceForURL(imageURL)
-                        httpsReferenceImage.dataWithMaxSize(3 * 1024 * 1024) { (data, error) -> Void in
-                            if (error != nil) {
-                                print("Error downloading image from httpsReferenceImage firebase")
-                            } else {
-                                print("I download image from firebase reference")
-                                let image = UIImage(data: data!)
-                                let mediaMessageData: JSQPhotoMediaItem = JSQPhotoMediaItem(image: image)
-                                self.addMessage(id, media: mediaMessageData, senderDisplayName: senderDisplayName, date: date)
-                                index = self.finishReceivingAsyncMessage(index)
-                            }
+                if imageURLString != "" {
+                    let httpsReferenceImage = FIRStorage.storage().referenceForURL(imageURLString)
+                    httpsReferenceImage.dataWithMaxSize(3 * 1024 * 1024) { (data, error) -> Void in
+                        if (error != nil) {
+                            print("Error downloading image from httpsReferenceImage firebase")
+                        } else {
+                            print("I download image from firebase reference")
+                            let image = UIImage(data: data!)
+                            let mediaMessageData: JSQPhotoMediaItem = JSQPhotoMediaItem(image: image)
+                            self.addMessage(id, media: mediaMessageData, senderDisplayName: senderDisplayName, date: date)
+                            index = self.finishReceivingAsyncMessage(index)
                         }
-                    } else {
-                        index = self.finishReceivingAsyncMessage(index)
-                        print("Image without imageURL!")
                     }
-                    /*let base64EncodedString = snapshot.value!["image"] as! String
-                    let imageData = NSData(base64EncodedString: base64EncodedString,
-                                           options: NSDataBase64DecodingOptions.IgnoreUnknownCharacters)
-                    let mediaMessageData: JSQPhotoMediaItem = JSQPhotoMediaItem(image: UIImage(data: imageData!))
-                    self.addMessage(id, media: mediaMessageData, senderDisplayName: senderDisplayName, date: date)*/
-                } else {
+                }
+                else {
+                    index += 1
                     self.addMessage(id, text: text, senderDisplayName: senderDisplayName, date: date)
                 }
             } else {
@@ -743,61 +722,61 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
     func cancelButtonDidPress(imagePicker: ImagePickerController) {
         print("cancel button pressed")
     }
-
-func createPhotoArray(image: UIImage) -> ([Photo], Int) {
-    var arrayPhoto = [Photo]()
-    var index = 0
-    var tag = -1
-    for message in messages {
-        
-        if message.isMediaMessage {
-            if let imageItem = message.media as? JSQPhotoMediaItem {
-                arrayPhoto.append(Photo(photo: imageItem.image))
-                if imageItem.image == image {
-                    tag = index
+    
+    func createPhotoArray(image: UIImage) -> ([Photo], Int) {
+        var arrayPhoto = [Photo]()
+        var index = 0
+        var tag = -1
+        for message in messages {
+            
+            if message.isMediaMessage {
+                if let imageItem = message.media as? JSQPhotoMediaItem {
+                    arrayPhoto.append(Photo(photo: imageItem.image))
+                    if imageItem.image == image {
+                        tag = index
+                    }
+                    index += 1
                 }
-                index += 1
             }
         }
+        return (arrayPhoto, tag)
     }
-    return (arrayPhoto, tag)
-}
-
-override func collectionView(collectionView: JSQMessagesCollectionView!, didTapMessageBubbleAtIndexPath indexPath: NSIndexPath!) {
-    let message = self.messages[indexPath.row]
-    if let imageItem = message.media as? JSQPhotoMediaItem {
-        let image = imageItem.image
-        let photo = Photo(photo: image!)
-        let photos = createPhotoArray(image)
-        let tagIndexPhotoInArray = photos.1
-        if tagIndexPhotoInArray != -1 {
-            print("Tag calc = \(tagIndexPhotoInArray)")
-            let viewer = NYTPhotosViewController(photos: photos.0, initialPhoto: photos.0[tagIndexPhotoInArray])
-            presentViewController(viewer, animated: true, completion: nil)
+    
+    override func collectionView(collectionView: JSQMessagesCollectionView!, didTapMessageBubbleAtIndexPath indexPath: NSIndexPath!) {
+        let message = self.messages[indexPath.row]
+        if let imageItem = message.media as? JSQPhotoMediaItem {
+            let image = imageItem.image
+            let photo = Photo(photo: image!)
+            let photos = createPhotoArray(image)
+            let tagIndexPhotoInArray = photos.1
+            if tagIndexPhotoInArray != -1 {
+                print("Tag calc = \(tagIndexPhotoInArray)")
+                let viewer = NYTPhotosViewController(photos: photos.0, initialPhoto: photos.0[tagIndexPhotoInArray])
+                presentViewController(viewer, animated: true, completion: nil)
+            } else {
+                let viewer = NYTPhotosViewController(photos: [photo])
+                presentViewController(viewer, animated: true, completion: nil)
+            }
         } else {
-            let viewer = NYTPhotosViewController(photos: [photo])
-            presentViewController(viewer, animated: true, completion: nil)
+            print("Problem with the image JSQMediaItem when I click on an image on chat")
         }
-    } else {
-        print("Problem with the image JSQMediaItem when I click on an image on chat")
     }
-}
-
-/*[JSQMessage, scroll to bottom]*/
-/*
- Delegate JSQMessage
- */
-
-override func viewWillAppear(animated: Bool) {
-    super.viewWillAppear(animated)
-}
-
-func shouldScrollToNewlyReceivedMessageAtIndexPath(indexPath: NSIndexPath!) -> Bool {
-    return self.isLastCellVisible
-}
-
-func shouldScrollToLastMessageAtStartup() -> Bool {
-    return true
-}
-
+    
+    /*[JSQMessage, scroll to bottom]*/
+    /*
+     Delegate JSQMessage
+     */
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+    }
+    
+    func shouldScrollToNewlyReceivedMessageAtIndexPath(indexPath: NSIndexPath!) -> Bool {
+        return self.isLastCellVisible
+    }
+    
+    func shouldScrollToLastMessageAtStartup() -> Bool {
+        return true
+    }
+    
 }
