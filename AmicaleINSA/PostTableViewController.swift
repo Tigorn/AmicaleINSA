@@ -215,7 +215,8 @@ class PostTableViewController: UITableViewController {
                             print("Error: \(error)")
                         } else {
                             let image = UIImage(data: data!)
-                            self.addPostBeginning(titleString, description: descriptionString, date: dateString, author: authorString, imagePresents: true, image: image, timestamp: dateTimestampInterval)
+                            self.addPostAppend(titleString, description: descriptionString, date: dateString, author: authorString, imagePresents: true, image: image, timestamp: dateTimestampInterval)
+                            //self.addPostBeginning(titleString, description: descriptionString, date: dateString, author: authorString, imagePresents: true, image: image, timestamp: dateTimestampInterval)
                             self.tableView.reloadData()
                         }
                     }
