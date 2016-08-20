@@ -115,7 +115,6 @@ class PostTableViewController: UITableViewController {
             var descriptionString = ""
             var authorString = ""
             var dateString = ""
-            var imagePresentsBool = false
             
             if let title = snapshot.value!.objectForKey("title") as? String {
                 titleString = title
@@ -134,10 +133,6 @@ class PostTableViewController: UITableViewController {
                 dateString = date
             }
             
-            if let imagePresents = snapshot.value!.objectForKey("imagePresents") as? Bool {
-                imagePresentsBool = imagePresents
-            }
-            
             let dateTimestampInterval = snapshot.value!["timestamp"] as! NSTimeInterval
             if (self.shouldUpdateLastTimestamp(dateTimestampInterval)){
                 self.lastTimestamp = dateTimestampInterval
@@ -151,21 +146,17 @@ class PostTableViewController: UITableViewController {
                 imageURLString = imageURL
             }
             
-            if imagePresentsBool {
-                if imageURLString != "" {
-                    let httpsReferenceImage = FIRStorage.storage().referenceForURL(imageURLString)
-                    httpsReferenceImage.dataWithMaxSize(3 * 1024 * 1024) { (data, error) -> Void in
-                        if (error != nil) {
-                            print("Error downloading image from httpsReferenceImage firebase")
-                            print("Error: \(error)")
-                        } else {
-                            let image = UIImage(data: data!)
-                            self.addPostBeginning(titleString, description: descriptionString, date: dateString, author: authorString, imagePresents: true, image: image, timestamp: dateTimestampInterval)
-                            self.tableView.reloadData()
-                        }
+            if imageURLString != "" {
+                let httpsReferenceImage = FIRStorage.storage().referenceForURL(imageURLString)
+                httpsReferenceImage.dataWithMaxSize(3 * 1024 * 1024) { (data, error) -> Void in
+                    if (error != nil) {
+                        print("Error downloading image from httpsReferenceImage firebase")
+                        print("Error: \(error)")
+                    } else {
+                        let image = UIImage(data: data!)
+                        self.addPostBeginning(titleString, description: descriptionString, date: dateString, author: authorString, imagePresents: true, image: image, timestamp: dateTimestampInterval)
+                        self.tableView.reloadData()
                     }
-                } else {
-                    print("image without imageURL")
                 }
             } else {
                 self.addPostBeginning(titleString, description: descriptionString, date: dateString, author: authorString, imagePresents: false, image: nil, timestamp: dateTimestampInterval)
@@ -185,7 +176,6 @@ class PostTableViewController: UITableViewController {
             var descriptionString = ""
             var authorString = ""
             var dateString = ""
-            var imagePresentsBool = false
             
             if let title = snapshot.value!.objectForKey("title") as? String {
                 titleString = title
@@ -203,10 +193,6 @@ class PostTableViewController: UITableViewController {
                 dateString = date
             }
             
-            if let imagePresents = snapshot.value!.objectForKey("imagePresents") as? Bool {
-                imagePresentsBool = imagePresents
-            }
-            
             let dateTimestampInterval = snapshot.value!["timestamp"] as! NSTimeInterval
             if (self.shouldUpdateLastTimestamp(dateTimestampInterval)){
                 self.lastTimestamp = dateTimestampInterval
@@ -221,22 +207,17 @@ class PostTableViewController: UITableViewController {
             print("index: \(index) LOAD_MORE_POST_LIMIT: \(self.LOAD_MORE_POST_LIMIT)")
             self.printMessage(titleString, description: descriptionString, timestamp: dateTimestampInterval, date: dateString)
             if index <= (self.LOAD_MORE_POST_LIMIT+self.LOAD_MORE_POST_LIMIT) {
-                if imagePresentsBool {
-                    if imageURLString != "" {
-                        let httpsReferenceImage = FIRStorage.storage().referenceForURL(imageURLString)
-                        httpsReferenceImage.dataWithMaxSize(3 * 1024 * 1024) { (data, error) -> Void in
-                            if (error != nil) {
-                                print("Error downloading image from httpsReferenceImage firebase")
-                                print("Error: \(error)")
-                                // Uh-oh, an error occurred!
-                            } else {
-                                let image = UIImage(data: data!)
-                                self.addPostBeginning(titleString, description: descriptionString, date: dateString, author: authorString, imagePresents: true, image: image, timestamp: dateTimestampInterval)
-                                self.tableView.reloadData()
-                            }
+                if imageURLString != "" {
+                    let httpsReferenceImage = FIRStorage.storage().referenceForURL(imageURLString)
+                    httpsReferenceImage.dataWithMaxSize(3 * 1024 * 1024) { (data, error) -> Void in
+                        if (error != nil) {
+                            print("Error downloading image from httpsReferenceImage firebase")
+                            print("Error: \(error)")
+                        } else {
+                            let image = UIImage(data: data!)
+                            self.addPostBeginning(titleString, description: descriptionString, date: dateString, author: authorString, imagePresents: true, image: image, timestamp: dateTimestampInterval)
+                            self.tableView.reloadData()
                         }
-                    } else {
-                        print("image without imageURL")
                     }
                 } else {
                     self.addPostAppend(titleString, description: descriptionString, date: dateString, author: authorString, imagePresents: false, image: nil, timestamp: dateTimestampInterval)
