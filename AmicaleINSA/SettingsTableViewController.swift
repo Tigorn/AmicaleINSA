@@ -86,7 +86,6 @@ class SettingsTableViewController: UITableViewController, UITextFieldDelegate, I
     
     func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool {
         guard let text = textField.text else { return true }
-        
         let newLength = text.utf16.count + string.utf16.count - range.length
         return newLength <= LIMITE_USERNAME_LENGTH
     }

@@ -81,7 +81,6 @@ public struct Public {
     // App versions not Allowed
     static let titleAlertVersionNotAllowed = "Attention !"
     static let subtitleAlertVersionNotAllowed = "La version actuelle de l'application risque de ne pas fonctionner correctement, veuillez la mettre à jour."
-    
 }
 
 /*

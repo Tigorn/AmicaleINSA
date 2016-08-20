@@ -351,6 +351,10 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
                             }
                         }
                     } else {
+                        index = self.finishReceivingAsyncMessage(index)
+                        print("Image without imageURL!")
+                    }
+                    /* else {
                         print("Download image with base64 string")
                         let base64EncodedString = snapshot.value!["image"] as! String
                         let imageData = NSData(base64EncodedString: base64EncodedString,
@@ -358,11 +362,12 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
                         let mediaMessageData: JSQPhotoMediaItem = JSQPhotoMediaItem(image: UIImage(data: imageData!))
                         self.addMessage(idString, media: mediaMessageData, senderDisplayName: senderDisplayNameString, date: date)
                         index = self.finishReceivingAsyncMessage(index)
-                    }
+                    } */
                 } else {
                     self.addMessage(idString, text: textString, senderDisplayName: senderDisplayNameString, date: date)
                     index = self.finishReceivingAsyncMessage(index)
                 }
+                print("Je dois en avoir 60, je pense que je vais voir le nombre: 58, et en réalité j'en ai \(index).")
                 self.messagesHashValue += [hashValue]
             }
         }
@@ -382,7 +387,7 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
     
     override func didPressSendButton(button: UIButton!, withMessageText text: String!, senderId: String!,
                                      senderDisplayName: String!, date: NSDate!) {
-        FirebaseManager.firebaseManager.sendMessage(text, senderId: senderId, senderDisplayName: senderDisplayName, date: date, image: "", isMedia: false)
+        FirebaseManager.firebaseManager.sendMessageFirebase2(text, senderId: senderId, senderDisplayName: senderDisplayName, date: date, isMedia: false, imageURL: "")
         finishSendingMessage()
         isTyping = false
     }
@@ -427,7 +432,7 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
     func loadMoreMessages(){
         let oldBottomOffset = self.collectionView!.contentSize.height - self.collectionView!.contentOffset.y
         let messagesQuery = messageRef.queryOrderedByChild("dateTimestamp").queryEndingAtValue(lastTimestamp).queryLimitedToLast(LOAD_MORE_MESSAGE_LIMIT)
-        var index = UInt(0)
+        var index = 0
         messagesQuery.observeEventType(.ChildAdded) { (snapshot: FIRDataSnapshot!) in
             let id = snapshot.value!["senderId"] as! String
             let text = snapshot.value!["text"] as! String
@@ -439,13 +444,30 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
             }
             let date = NSDate(timeIntervalSince1970: dateTimestampInterval)
             index += 1
-            if index < self.LOAD_MORE_MESSAGE_LIMIT {
+            if index < Int(self.LOAD_MORE_MESSAGE_LIMIT) {
                 if isMedia {
-                    let base64EncodedString = snapshot.value!["image"] as! String
+                    if let imageURL = snapshot.value!["imageURL"] as? String {
+                        let httpsReferenceImage = FIRStorage.storage().referenceForURL(imageURL)
+                        httpsReferenceImage.dataWithMaxSize(3 * 1024 * 1024) { (data, error) -> Void in
+                            if (error != nil) {
+                                print("Error downloading image from httpsReferenceImage firebase")
+                            } else {
+                                print("I download image from firebase reference")
+                                let image = UIImage(data: data!)
+                                let mediaMessageData: JSQPhotoMediaItem = JSQPhotoMediaItem(image: image)
+                                self.addMessage(id, media: mediaMessageData, senderDisplayName: senderDisplayName, date: date)
+                                index = self.finishReceivingAsyncMessage(index)
+                            }
+                        }
+                    } else {
+                        index = self.finishReceivingAsyncMessage(index)
+                        print("Image without imageURL!")
+                    }
+                    /*let base64EncodedString = snapshot.value!["image"] as! String
                     let imageData = NSData(base64EncodedString: base64EncodedString,
                                            options: NSDataBase64DecodingOptions.IgnoreUnknownCharacters)
                     let mediaMessageData: JSQPhotoMediaItem = JSQPhotoMediaItem(image: UIImage(data: imageData!))
-                    self.addMessage(id, media: mediaMessageData, senderDisplayName: senderDisplayName, date: date)
+                    self.addMessage(id, media: mediaMessageData, senderDisplayName: senderDisplayName, date: date)*/
                 } else {
                     self.addMessage(id, text: text, senderDisplayName: senderDisplayName, date: date)
                 }
@@ -662,8 +684,8 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
         let pickedImage = info[UIImagePickerControllerOriginalImage] as? UIImage
         let imageData = pickedImage?.mediumQualityJPEGNSData
         let imageChatRef = FirebaseManager().createStorageRefChat((pickedImage?.accessibilityIdentifier!)!)
-        let base64String: NSString!
-        base64String = imageData?.base64EncodedStringWithOptions(.Encoding64CharacterLineLength)
+        // let base64String: NSString!
+        // base64String = imageData?.base64EncodedStringWithOptions(.Encoding64CharacterLineLength)
         picker.dismissViewControllerAnimated(true, completion: nil)
         if let imageData = imageData {
             let _ = imageChatRef.putData(imageData, metadata: nil) { metadata, error in
@@ -674,7 +696,7 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
                     let downloadURL = metadata!.downloadURL
                     let imageURL = downloadURL()!.absoluteString
                     print("imageURL = \(imageURL)")
-                    FirebaseManager.firebaseManager.sendMessageFirebase2("", senderId: self.senderId, senderDisplayName: self.senderDisplayName, date: NSDate(), image: base64String, isMedia: true, imageURL: imageURL)
+                    FirebaseManager.firebaseManager.sendMessageFirebase2("", senderId: self.senderId, senderDisplayName: self.senderDisplayName, date: NSDate(), isMedia: true, imageURL: imageURL)
                 }
             }
         } else {
@@ -700,8 +722,8 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
         let imageData = pickedImage.lowQualityJPEGNSData
         let imageName = "\(self.senderDisplayName)-\(NSDate())"
         let imageChatRef = FirebaseManager().createStorageRefChat(imageName)
-        let base64String: NSString!
-        base64String = imageData.base64EncodedStringWithOptions(.Encoding64CharacterLineLength)
+        // let base64String: NSString!
+        // base64String = imageData.base64EncodedStringWithOptions(.Encoding64CharacterLineLength)
         self.finishSendingMessage()
         dismissViewControllerAnimated(true, completion: nil)
         
@@ -713,7 +735,7 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
                 let downloadURL = metadata!.downloadURL
                 let imageURL = downloadURL()!.absoluteString
                 print("imageURL = \(imageURL)")
-                FirebaseManager.firebaseManager.sendMessageFirebase2("", senderId: self.senderId, senderDisplayName: self.senderDisplayName, date: NSDate(), image: base64String, isMedia: true, imageURL: imageURL)
+                FirebaseManager.firebaseManager.sendMessageFirebase2("", senderId: self.senderId, senderDisplayName: self.senderDisplayName, date: NSDate(), isMedia: true, imageURL: imageURL)
             }
         }
     }

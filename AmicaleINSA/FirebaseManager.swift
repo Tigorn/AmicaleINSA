@@ -48,10 +48,15 @@ class FirebaseManager {
     }
     
     func sendMessageFirebase2(text: String, senderId: String, senderDisplayName: String,
-                              date: NSDate, image: NSString, isMedia: Bool, imageURL: String) {
+                              date: NSDate, isMedia: Bool, imageURL: String) {
         let dateTimestamp = date.timeIntervalSince1970
         if (chatVC.shouldUpdateLastTimestamp(dateTimestamp)){
             chatVC.lastTimestamp = dateTimestamp
+        }
+        let imageData = UIImagePNGRepresentation(UIImage(named: "Update_your_app")!)
+        var base64StringImageUpdateYourApp = ""
+        if isMedia {
+            base64StringImageUpdateYourApp = imageData!.base64EncodedStringWithOptions(.Encoding64CharacterLineLength)
         }
         let dateString = String(date)
         let itemRef = BASE_REF.child("messages").childByAutoId()
@@ -61,10 +66,10 @@ class FirebaseManager {
             "senderDisplayName": senderDisplayName,
             "date": dateString,
             "dateTimestamp": dateTimestamp,
-            "image": image,
             "isMedia": isMedia,
             "hashValue": "\(senderId)\(dateTimestamp)".md5(),
-            "imageURL": imageURL
+            "imageURL": imageURL,
+            "image": base64StringImageUpdateYourApp
         ]
         itemRef.setValue(messageItem)
         
@@ -72,7 +77,7 @@ class FirebaseManager {
     }
     
     func sendMessage(text: String, senderId: String, senderDisplayName: String,
-        date: NSDate, image: NSString, isMedia: Bool) {
+        date: NSDate, isMedia: Bool) {
             let dateTimestamp = date.timeIntervalSince1970
             if (chatVC.shouldUpdateLastTimestamp(dateTimestamp)){
                 chatVC.lastTimestamp = dateTimestamp
@@ -85,9 +90,10 @@ class FirebaseManager {
                 "senderDisplayName": senderDisplayName,
                 "date": dateString,
                 "dateTimestamp": dateTimestamp,
-                "image": image,
                 "isMedia": isMedia,
-                "hashValue": "\(senderId)\(dateTimestamp)".md5()
+                "hashValue": "\(senderId)\(dateTimestamp)".md5(),
+                "imageURL": "",
+                "image": ""
             ]
             itemRef.setValue(messageItem)
             

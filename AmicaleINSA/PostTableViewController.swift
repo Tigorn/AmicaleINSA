@@ -116,7 +116,7 @@ class PostTableViewController: UITableViewController {
             var authorString = ""
             var dateString = ""
             var imagePresentsBool = false
-            var imageDataString = ""
+            // var imageDataString = ""
             
             if let title = snapshot.value!.objectForKey("title") as? String {
                 titleString = title
@@ -138,14 +138,14 @@ class PostTableViewController: UITableViewController {
             if let imagePresents = snapshot.value!.objectForKey("imagePresents") as? Bool {
                 imagePresentsBool = imagePresents
             }
-            
+            /*
             if let imageData = snapshot.value!.objectForKey("imageData") as? String {
                 imageDataString = imageData
             }
             
             if let timestamp = snapshot.value!.objectForKey("timestamp") as? String {
                 imageDataString = timestamp
-            }
+            }*/
             
             let dateTimestampInterval = snapshot.value!["timestamp"] as! NSTimeInterval
             if (self.shouldUpdateLastTimestamp(dateTimestampInterval)){
@@ -170,6 +170,9 @@ class PostTableViewController: UITableViewController {
                         }
                     }
                 } else {
+                    print("image without imageURL")
+                }
+                /*else {
                     let base64EncodedString = imageDataString
                     if let imageData = NSData(base64EncodedString: base64EncodedString,
                                               options: NSDataBase64DecodingOptions.IgnoreUnknownCharacters) {
@@ -179,7 +182,7 @@ class PostTableViewController: UITableViewController {
                         self.addPostBeginning(titleString, description: descriptionString, date: dateString, author: authorString, imagePresents: false, image: nil, timestamp: dateTimestampInterval)
                         print("image no present, imageData bug!")
                     }
-                }
+                } */
             } else {
                 self.addPostBeginning(titleString, description: descriptionString, date: dateString, author: authorString, imagePresents: false, image: nil, timestamp: dateTimestampInterval)
             }
@@ -199,7 +202,7 @@ class PostTableViewController: UITableViewController {
             var authorString = ""
             var dateString = ""
             var imagePresentsBool = false
-            var imageDataString = ""
+            // var imageDataString = ""
             
             if let title = snapshot.value!.objectForKey("title") as? String {
                 titleString = title
@@ -220,10 +223,9 @@ class PostTableViewController: UITableViewController {
             if let imagePresents = snapshot.value!.objectForKey("imagePresents") as? Bool {
                 imagePresentsBool = imagePresents
             }
-            
-            if let imageData = snapshot.value!.objectForKey("imageData") as? String {
+            /* if let imageData = snapshot.value!.objectForKey("imageData") as? String {
                 imageDataString = imageData
-            }
+            }*/
             
             let dateTimestampInterval = snapshot.value!["timestamp"] as! NSTimeInterval
             if (self.shouldUpdateLastTimestamp(dateTimestampInterval)){
@@ -236,6 +238,23 @@ class PostTableViewController: UITableViewController {
             self.printMessage(titleString, description: descriptionString, timestamp: dateTimestampInterval, date: dateString)
             if index <= (self.LOAD_MORE_POST_LIMIT+self.LOAD_MORE_POST_LIMIT) {
                 if imagePresentsBool {
+                    if let imageURL = snapshot.value!["imageURL"] as? String {
+                        let httpsReferenceImage = FIRStorage.storage().referenceForURL(imageURL)
+                        httpsReferenceImage.dataWithMaxSize(3 * 1024 * 1024) { (data, error) -> Void in
+                            if (error != nil) {
+                                print("Error downloading image from httpsReferenceImage firebase")
+                                print("Error: \(error)")
+                                // Uh-oh, an error occurred!
+                            } else {
+                                let image = UIImage(data: data!)
+                                self.addPostBeginning(titleString, description: descriptionString, date: dateString, author: authorString, imagePresents: true, image: image, timestamp: dateTimestampInterval)
+                                self.tableView.reloadData()
+                            }
+                        }
+                    } else {
+                        print("image without imageURL")
+                    }
+                    /*
                     let base64EncodedString = imageDataString
                     if let imageData = NSData(base64EncodedString: base64EncodedString,
                                               options: NSDataBase64DecodingOptions.IgnoreUnknownCharacters) {
@@ -244,7 +263,7 @@ class PostTableViewController: UITableViewController {
                     } else {
                         self.addPostAppend(titleString, description: descriptionString, date: dateString, author: authorString, imagePresents: false, image: nil, timestamp: dateTimestampInterval)
                         print("image no present, imageData bug!")
-                    }
+                    }*/
                 } else {
                     self.addPostAppend(titleString, description: descriptionString, date: dateString, author: authorString, imagePresents: false, image: nil, timestamp: dateTimestampInterval)
                     print("image no present")
