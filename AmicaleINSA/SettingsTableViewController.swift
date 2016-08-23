@@ -41,6 +41,8 @@ class SettingsTableViewController: UITableViewController, UITextFieldDelegate, I
         let defautlRowPickerView = NSUserDefaults.standardUserDefaults().integerForKey(Public.rowPickerViewSettings)
         pickerViewYearsINSA.selectRow(defautlRowPickerView, inComponent: 0, animated: true)
         yearSpeGroupLabel.text = yearsINSA[defautlRowPickerView].0
+        pseudoTextField.addTarget(self, action: #selector(SettingsTableViewController.pseudoDidChange), forControlEvents: .EditingDidBegin)
+        pseudoTextField.addTarget(self, action: #selector(SettingsTableViewController.pseudoChangesFinished), forControlEvents: .EditingDidEnd)
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -90,6 +92,19 @@ class SettingsTableViewController: UITableViewController, UITextFieldDelegate, I
         return newLength <= LIMITE_USERNAME_LENGTH
     }
     
+    func pseudoDidChange() {
+        if showYearsPickerINSAVisible {
+            showYearsPickerINSAVisible = false
+            tableView.beginUpdates()
+            tableView.endUpdates()
+        }
+    }
+    
+    func pseudoChangesFinished() {
+        print("I end editing")
+        //savedMBProgressHUDAction()
+    }
+    
     /* Picture methods */
     
     func profilePictureSelected() {
@@ -115,12 +130,6 @@ class SettingsTableViewController: UITableViewController, UITextFieldDelegate, I
         }
     }
     
-    /* Image Picker methodes delegate */
-    
-//    func wrapperDidPress(images: [UIImage]) {
-//        print("wrapperDidPress")
-//    }
-    
     func wrapperDidPress(imagePicker: ImagePickerController, images: [UIImage]) {
         print("wrapperDidPress")
     }
@@ -136,18 +145,7 @@ class SettingsTableViewController: UITableViewController, UITextFieldDelegate, I
         }
         dismissViewControllerAnimated(true, completion: nil)
     }
-    
-//    func doneButtonDidPress(images: [UIImage]) {
-//        //let pickedImage = images[0].imageRotatedByDegrees(90, flip: false)
-//        let pickedImage = images[0]
-//        profileImageView.image = pickedImage
-//        setProfilPicture(pickedImage)
-//        dismissViewControllerAnimated(true, completion: nil)
-//    }
-    
-//    func cancelButtonDidPress() {
-//        print("cancel button pressed")
-//    }
+
     
     func cancelButtonDidPress(imagePicker: ImagePickerController) {
         print("cancel button pressed")
@@ -177,6 +175,7 @@ class SettingsTableViewController: UITableViewController, UITextFieldDelegate, I
     }
     
     private func toggleShowDateDatepicker () {
+        dismissKeyboard()
         showYearsPickerINSAVisible = !showYearsPickerINSAVisible
         
         tableView.beginUpdates()
