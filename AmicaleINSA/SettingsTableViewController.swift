@@ -55,6 +55,7 @@ class SettingsTableViewController: UITableViewController, UITextFieldDelegate, I
     }
     
     private func initUI() {
+        
         // picture
         let tapOnProfilePicture = UITapGestureRecognizer(target: self, action: #selector(SettingsTableViewController.profilePictureSelected))
         profileImageView.addGestureRecognizer(tapOnProfilePicture)
@@ -62,9 +63,10 @@ class SettingsTableViewController: UITableViewController, UITextFieldDelegate, I
         let colorForBorder = UIColor.blackColor()
         profileImageView.layer.borderColor = colorForBorder.CGColor
         profileImageView.layer.borderWidth = 0.5
+        self.profileImageView.contentMode = .ScaleAspectFill
         profileImageView.layer.cornerRadius = self.profileImageView.frame.size.width / 2
         self.profileImageView.clipsToBounds = true
-        
+ 
         // text field pseudo
         pseudoTextField.text = Public.usernameChat
         // Year spe group
@@ -169,7 +171,7 @@ class SettingsTableViewController: UITableViewController, UITextFieldDelegate, I
         let yearSpeGroupString = yearsINSA[row].0
         yearSpeGroupLabel.text = yearSpeGroupString
         NSUserDefaults.standardUserDefaults().setInteger(row, forKey: Public.rowPickerViewSettings)
-        savedMBProgressHUDAction()
+        //savedMBProgressHUDAction()
         setIDPlanningExpress(idPlanningExpress)
         setYearSpeGroupPlanningExpress(yearSpeGroupString)
     }

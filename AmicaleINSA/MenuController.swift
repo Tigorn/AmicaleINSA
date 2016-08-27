@@ -44,6 +44,7 @@ class MenuController: UITableViewController {
         profileImageView.layer.borderWidth = 0.5
         profileImageView.layer.borderColor =   UIColor.blackColor().CGColor
         profileImageView.clipsToBounds = true
+        self.profileImageView.contentMode = .ScaleAspectFill
         UIGraphicsBeginImageContext(self.topViewMenu.frame.size)
         let image: UIImage = UIImage(named: "redGradient3")!
         image.drawInRect(self.topViewMenu.bounds)
