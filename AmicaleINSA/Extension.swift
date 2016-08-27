@@ -75,11 +75,14 @@ extension UIImage {
     
     var resizedImageClosestTo1000: UIImage {
         var newWidth = size.width
-        while newWidth > 1000 {
+        var newHeight = size.height
+        let limit = CGFloat(1000)
+        print("w: \(newWidth), h: \(newHeight)")
+        while newWidth/2 > limit && newHeight / 2 > limit {
             newWidth /= 2
+            newHeight /= 2
+            print("w: \(newWidth), h: \(newHeight)")
         }
-        let scale = newWidth / size.width
-        let newHeight = size.height * scale
         UIGraphicsBeginImageContext(CGSizeMake(newWidth, newHeight))
         drawInRect(CGRectMake(0, 0, newWidth, newHeight))
         let newImage = UIGraphicsGetImageFromCurrentImageContext()

@@ -332,7 +332,7 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
                 imageURLString = imageURL
             }
             let date = NSDate(timeIntervalSince1970: dateTimestampInterval)
-            let hashValue = "\(idString)\(date)\(senderDisplayNameString)".md5()
+            let hashValue = "\(idString)\(date)\(senderDisplayNameString)\(dateTimestampInterval)".md5()
             let canAdd = self.shouldAddInArray(hashValue)
             if canAdd {
                 if imageURLString != "" {
@@ -342,7 +342,7 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
                             print("Error downloading image from httpsReferenceImage firebase")
                         } else {
                             print("I download image from firebase reference")
-                            let image = UIImage(data: data!)
+                            let image = UIImage(data: data!)?.resizedImageClosestTo1000
                             let mediaMessageData: JSQPhotoMediaItem = JSQPhotoMediaItem(image: image)
                             self.addMessage(idString, media: mediaMessageData, senderDisplayName: senderDisplayNameString, date: date)
                             index = self.finishReceivingAsyncMessage(index)
@@ -352,8 +352,11 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
                     self.addMessage(idString, text: textString, senderDisplayName: senderDisplayNameString, date: date)
                     index = self.finishReceivingAsyncMessage(index)
                 }
-                print("Je dois en avoir 60, je pense que je vais voir le nombre: 58, et en réalité j'en ai \(index).")
+                print("Je dois en avoir 60, et en réalité j'en ai \(index).")
                 self.messagesHashValue += [hashValue]
+            } else {
+                print("I cannot add the message, PROBLEM!")
+                print("Timestamp qui cause problème est: \(dateTimestampInterval), data: \(date)")
             }
         }
     }
