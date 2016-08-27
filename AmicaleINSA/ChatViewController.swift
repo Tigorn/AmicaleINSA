@@ -341,7 +341,7 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
                         if (error != nil) {
                             print("Error downloading image from httpsReferenceImage firebase")
                         } else {
-                            print("I download image from firebase reference")
+                            //print("I download image from firebase reference")
                             let image = UIImage(data: data!)?.resizedImageClosestTo1000
                             let mediaMessageData: JSQPhotoMediaItem = JSQPhotoMediaItem(image: image)
                             self.addMessage(idString, media: mediaMessageData, senderDisplayName: senderDisplayNameString, date: date)
@@ -408,7 +408,8 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
                 let previousMessage = messages[index-1]
                 if let _ = previousMessage.date {
                     let timeInterval = Int(message.date.timeIntervalSinceDate(previousMessage.date))
-                    let shouldDisplay: Bool = timeInterval >= 3600
+                    let shouldDisplay: Bool = timeInterval >= 20*60
+                    print("Dois-je afficher la date? ==> \(shouldDisplay)")
                     return shouldDisplay
                 }
             }
@@ -441,7 +442,7 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
                         if (error != nil) {
                             print("Error downloading image from httpsReferenceImage firebase")
                         } else {
-                            print("I download image from firebase reference")
+                            //print("I download image from firebase reference")
                             let image = UIImage(data: data!)
                             let mediaMessageData: JSQPhotoMediaItem = JSQPhotoMediaItem(image: image)
                             self.addMessage(id, media: mediaMessageData, senderDisplayName: senderDisplayName, date: date)
@@ -577,7 +578,8 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
         }
         if(indexPath.row - 1 > 0){
             let prevMessage = messages[indexPath.row-1];
-            if(prevMessage.senderDisplayName == message.senderDisplayName){
+            if(prevMessage.senderDisplayName == message.senderDisplayName && prevMessage.senderId == message.senderId){
+                //print("message.senderId \(message.senderId), message.DN: \(message.senderDisplayName)")
                 return nil;
             }
         }
@@ -600,7 +602,7 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
         }
         if(indexPath.item - 1 >= 0){
             let previousMessage = self.messages[indexPath.item - 1]
-            if(previousMessage.senderDisplayName == currentMessage.senderDisplayName){
+            if(previousMessage.senderDisplayName == currentMessage.senderDisplayName && previousMessage.senderId == currentMessage.senderId){
                 return 0.0
             }
         }

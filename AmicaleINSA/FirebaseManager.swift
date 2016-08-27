@@ -53,13 +53,11 @@ class FirebaseManager {
         if (chatVC.shouldUpdateLastTimestamp(dateTimestamp)){
             chatVC.lastTimestamp = dateTimestamp
         }
-        let dateString = String(date)
         let itemRef = BASE_REF.child("messages").childByAutoId()
         let messageItem = [ // 2
             "text": text,
             "senderId": senderId,
             "senderDisplayName": senderDisplayName,
-            "date": dateString,
             "dateTimestamp": dateTimestamp,
             "isMedia": false,
             "hashValue": "\(senderId)\(dateTimestamp)".md5(),

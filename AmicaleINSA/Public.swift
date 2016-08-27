@@ -138,7 +138,11 @@ public func getUsernameChat() -> String {
     if let username = NSUserDefaults.standardUserDefaults().stringForKey(Public.usernameChat) {
         return username
     } else {
-        return "invite\(Int(arc4random_uniform(UInt32(2500))))"
+        var randomNumber = Int(arc4random_uniform(UInt32(10000)))
+        if randomNumber % 2 == 1 {
+            randomNumber += 1
+        }
+        return "invite\(randomNumber)"
     }
 }
 

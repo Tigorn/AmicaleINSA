@@ -20,7 +20,7 @@ class SettingsTableViewController: UITableViewController, UITextFieldDelegate, I
     @IBOutlet weak var pickerViewYearsINSA: UIPickerView!
     @IBOutlet weak var yearSpeGroupLabel: UILabel!
     
-    let LIMITE_USERNAME_LENGTH = 12
+    let LIMITE_USERNAME_LENGTH = 14
     let yearsINSA: [(String, String)] = getYearsINSAPlanning()
     var savedMBProgressHUD = MBProgressHUD()
     private var showYearsPickerINSAVisible = false

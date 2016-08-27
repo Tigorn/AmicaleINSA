@@ -77,7 +77,7 @@ extension UIImage {
         var newWidth = size.width
         var newHeight = size.height
         let limit = CGFloat(1000)
-        print("w: \(newWidth), h: \(newHeight)")
+        //print("w: \(newWidth), h: \(newHeight)")
         while newWidth/2 > limit && newHeight / 2 > limit {
             newWidth /= 2
             newHeight /= 2
