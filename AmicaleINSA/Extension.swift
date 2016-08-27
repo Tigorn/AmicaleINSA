@@ -72,6 +72,21 @@ extension UIImage {
         UIGraphicsEndImageContext()
         return result
     }
+    
+    var resizedImageClosestTo1000: UIImage {
+        var newWidth = size.width
+        while newWidth > 1000 {
+            newWidth /= 2
+        }
+        let scale = newWidth / size.width
+        let newHeight = size.height * scale
+        UIGraphicsBeginImageContext(CGSizeMake(newWidth, newHeight))
+        drawInRect(CGRectMake(0, 0, newWidth, newHeight))
+        let newImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        
+        return newImage
+    }
 }
 
 extension NSDate {

@@ -542,7 +542,7 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
      True: senderDisplayName différent du current, donc je dois mettre un espace et afficher le nom
      False: senderDisplayName égale au current, je mets pas d'espace et j'affiche pas le nom
      */
-    func lastMessageFromSendeDisplayNameAndOutComming(senderDisplayName: String) -> Bool {
+    func lastMessageFromSenderDisplayNameAndOutComming(senderDisplayName: String) -> Bool {
         var i = 0;
         for message in messages {
             /* ce qui veut dire que j'ai envoyé le message */
@@ -635,55 +635,6 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
             UIColor.jsq_messageBubbleLightGrayColor())
     }
     
-    
-    func sendToFirebase(text: String, senderId: String, senderDisplayName: String, date: NSDate, image: NSString, isMedia: Bool) {
-        let dateTimestamp = date.timeIntervalSince1970
-        if (shouldUpdateLastTimestamp(dateTimestamp)) {
-            lastTimestamp = dateTimestamp
-        }
-        let dateString = String(date)
-        let itemRef = messageRef.childByAutoId()
-        let messageItem = [
-            "text": text,
-            "senderId": senderId,
-            "senderDisplayName": senderDisplayName,
-            "date": dateString,
-            "dateTimestamp": dateTimestamp,
-            "image": image,
-            "isMedia": isMedia,
-            "hashValue": "\(senderId)\(dateTimestamp)".md5()
-        ]
-        itemRef.setValue(messageItem)
-        JSQSystemSoundPlayer.jsq_playMessageSentSound()
-        finishSendingMessage()
-    }
-    
-    func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : AnyObject]) {
-        print("in imagePickerController didFinishPickingMediaWithInfo")
-        let pickedImage = info[UIImagePickerControllerOriginalImage] as? UIImage
-        let imageData = pickedImage?.mediumQualityJPEGNSData
-        let imageChatRef = FirebaseManager().createStorageRefChat((pickedImage?.accessibilityIdentifier!)!)
-        // let base64String: NSString!
-        // base64String = imageData?.base64EncodedStringWithOptions(.Encoding64CharacterLineLength)
-        picker.dismissViewControllerAnimated(true, completion: nil)
-        if let imageData = imageData {
-            let _ = imageChatRef.putData(imageData, metadata: nil) { metadata, error in
-                if (error != nil) {
-                    print("Error with imageData uploadTask [send image in Chat]")
-                } else {
-                    // Metadata contains file metadata such as size, content-type, and download URL.
-                    let downloadURL = metadata!.downloadURL
-                    let imageURL = downloadURL()!.absoluteString
-                    print("imageURL = \(imageURL)")
-                    FirebaseManager.firebaseManager.sendMessageFirebase2("", senderId: self.senderId, senderDisplayName: self.senderDisplayName, date: NSDate(), isMedia: true, imageURL: imageURL)
-                }
-            }
-        } else {
-            print("Error with imageData didFinishPickingMediaWithInfo [send image in Chat]")
-        }
-        finishSendingMessage()
-    }
-    
     override func didPressAccessoryButton(sender: UIButton!) {
         let imagePickerController = ImagePickerController()
         imagePickerController.imageLimit = 1
@@ -697,12 +648,10 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
     
     func doneButtonDidPress(imagePicker: ImagePickerController, images: [UIImage]) {
         print("done button did press")
-        let pickedImage = images[0]
+        let pickedImage = images[0].resizedImageClosestTo1000
         let imageData = pickedImage.lowQualityJPEGNSData
         let imageName = "\(self.senderDisplayName)-\(NSDate())"
         let imageChatRef = FirebaseManager().createStorageRefChat(imageName)
-        // let base64String: NSString!
-        // base64String = imageData.base64EncodedStringWithOptions(.Encoding64CharacterLineLength)
         self.finishSendingMessage()
         dismissViewControllerAnimated(true, completion: nil)
         

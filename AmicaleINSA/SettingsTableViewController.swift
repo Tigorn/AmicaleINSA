@@ -140,7 +140,7 @@ class SettingsTableViewController: UITableViewController, UITextFieldDelegate, I
         print("DoneButtonDiDPress")
         if let pickedImage = UIImage(data: images[0].lowestQualityJPEGNSData) {
             profileImageView.image = pickedImage
-            setProfilPicture(pickedImage)
+            setProfilPicture(pickedImage.resizedImageClosestTo1000)
         } else {
             profileImageView.image = UIImage(named: "defaultPic")!
             setProfilPicture(UIImage(named: "defaultPic")!)
