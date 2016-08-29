@@ -46,7 +46,6 @@ class PostTableViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        print("First line viewDidLoad")
         if self.revealViewController() != nil {
             menuButton.target = self.revealViewController()
             menuButton.action = #selector(SWRevealViewController.revealToggle(_:))
@@ -108,7 +107,8 @@ class PostTableViewController: UITableViewController {
         postQuery.observeEventType(.Value) { (snapshots: FIRDataSnapshot!) in
             let numberOfPosts = Int(snapshots.childrenCount)
             var currentNumberOfPosts = 0
-            print("I download \(numberOfPosts) posts")
+            _printTitle("Download Posts", location: "PostTableVC.observePosts()")
+            _printElement("I download \(numberOfPosts) post(s)")
             for snapshot in snapshots.children {
                 var titleString = ""
                 var descriptionString = ""
@@ -117,7 +117,7 @@ class PostTableViewController: UITableViewController {
                 
                 if let title = snapshot.value!.objectForKey("title") as? String {
                     titleString = title
-                    print("Title: \(titleString)")
+                    _printElement("Title: \(titleString)")
                 }
                 
                 if let description = snapshot.value!.objectForKey("description") as? String {
@@ -154,7 +154,8 @@ class PostTableViewController: UITableViewController {
                         } else {
                             currentNumberOfPosts += 1
                             if currentNumberOfPosts == numberOfPosts {
-                                print("I have all my posts")
+                                _printElement("I have all my post(s)")
+                                _printFullLineStars()
                                 MBProgressHUD.hideAllHUDsForView(self.view, animated: true)
                             }
                             let image = UIImage(data: data!)

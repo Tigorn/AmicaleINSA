@@ -81,6 +81,10 @@ public struct Public {
     // App versions not Allowed
     static let titleAlertVersionNotAllowed = "Attention !"
     static let subtitleAlertVersionNotAllowed = "La version actuelle de l'application risque de ne pas fonctionner correctement, veuillez la mettre à jour."
+    
+    // logging
+    static let LOGGING_stars_full = "****************************************************************************"
+    static let LOGGING_whiteSpace_beforeTitle = "                      "
 }
 
 /*
@@ -360,8 +364,8 @@ public func getVersionNumberApp() -> String {
 
 public func checkIfVersionNumberIsAllowed(versionsNumberNotAllowed: [String]) -> Bool {
     let versionNumberApp = getVersionNumberApp()
-    print("Current Version: \(versionNumberApp)")
-    print("-----------------------------")
+    _printElement("Current Version: \(versionNumberApp)")
+    _printFullLineStars()
     if versionsNumberNotAllowed.contains(versionNumberApp) {
         return false
     } else {
@@ -397,8 +401,9 @@ public func loadVersionsNotAllowedFromServer() {
                 for version in arrayVersionNotAllowedJSON {
                     arrayVersionNotAllowedString.append(String(version.1))
                 }
-                print("-----------------------------")
-                print("Version not allowed: \(arrayVersionNotAllowedString)")
+                _printTitle("Checking Version Application", location: "Public.loadVersionsNotAllowedFromServer()")
+                _printElement("Version not allowed received from my VPN Server:")
+                _printElement("\(arrayVersionNotAllowedString)")
                 if !checkIfVersionNumberIsAllowed(arrayVersionNotAllowedString) {
                     alertViewApplicationTooOld(msg)
                 }
@@ -518,5 +523,26 @@ public func stringNotWhiteSpaceAndNotEmpty(str: String) -> Bool {
         return true
     }
     return false
+}
+
+/*
+    Logging
+*/
+
+func _printTitle(text: String, location: String) {
+    print(Public.LOGGING_stars_full)
+    print(Public.LOGGING_whiteSpace_beforeTitle + "Title: " + text)
+    print((Public.LOGGING_whiteSpace_beforeTitle + "Location: " + location))
+    print(Public.LOGGING_stars_full)
+}
+
+func _printFullLineStars() {
+    print(Public.LOGGING_stars_full)
+    print("")
+    print("")
+}
+
+func _printElement(element: String) {
+    print("- \(element)")
 }
 
