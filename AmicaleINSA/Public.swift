@@ -101,7 +101,13 @@ public func removeNSUserDefault(){
 
 public func initApp() {
     if (NSUserDefaults.standardUserDefaults().boolForKey(Public.usernameChatRegistred) ==  false) {
-        let usernameChat = "invite\(Int(arc4random_uniform(UInt32(2500))))"
+        var randomNumber = Int(arc4random_uniform(UInt32(10000)))
+        print("randomNumber = \(randomNumber)")
+        if randomNumber % 2 == 1 {
+            randomNumber += 1
+        }
+        print("randomNumber = \(randomNumber)")
+        let usernameChat = "invite\(randomNumber)"
         NSUserDefaults.standardUserDefaults().setObject(usernameChat, forKey: Public.usernameChat)
         NSUserDefaults.standardUserDefaults().setBool(true, forKey: Public.usernameChatRegistred)
     }
@@ -136,12 +142,15 @@ public func setUsernameChat(username: String) {
 
 public func getUsernameChat() -> String {
     if let username = NSUserDefaults.standardUserDefaults().stringForKey(Public.usernameChat) {
+        print("username already set in NSUserDefaults")
         return username
     } else {
         var randomNumber = Int(arc4random_uniform(UInt32(10000)))
+        print("randomNumber = \(randomNumber)")
         if randomNumber % 2 == 1 {
             randomNumber += 1
         }
+        print("randomNumber = \(randomNumber)")
         return "invite\(randomNumber)"
     }
 }
@@ -351,6 +360,8 @@ public func getVersionNumberApp() -> String {
 
 public func checkIfVersionNumberIsAllowed(versionsNumberNotAllowed: [String]) -> Bool {
     let versionNumberApp = getVersionNumberApp()
+    print("Current Version: \(versionNumberApp)")
+    print("-----------------------------")
     if versionsNumberNotAllowed.contains(versionNumberApp) {
         return false
     } else {
@@ -386,6 +397,8 @@ public func loadVersionsNotAllowedFromServer() {
                 for version in arrayVersionNotAllowedJSON {
                     arrayVersionNotAllowedString.append(String(version.1))
                 }
+                print("-----------------------------")
+                print("Version not allowed: \(arrayVersionNotAllowedString)")
                 if !checkIfVersionNumberIsAllowed(arrayVersionNotAllowedString) {
                     alertViewApplicationTooOld(msg)
                 }

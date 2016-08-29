@@ -91,10 +91,17 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
         }
     }
     
-    func initActivityIndicator() {
+    func initActivityIndicatorMessages() {
         let myActivityIndicatorHUD = MBProgressHUD.showHUDAddedTo(self.navigationController?.view, animated: true)
         myActivityIndicatorHUD.mode = MBProgressHUDMode.Indeterminate
-        myActivityIndicatorHUD.labelText = "Loading..."
+        myActivityIndicatorHUD.labelText = "Loading messages..."
+        myActivityIndicatorHUD.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(ChatViewController.tapToCancel)))
+    }
+    
+    func initActivityIndicatorPictures() {
+        let myActivityIndicatorHUD = MBProgressHUD.showHUDAddedTo(self.navigationController?.view, animated: true)
+        myActivityIndicatorHUD.mode = MBProgressHUDMode.Indeterminate
+        myActivityIndicatorHUD.labelText = "Loading pictures..."
         myActivityIndicatorHUD.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(ChatViewController.tapToCancel)))
     }
     
@@ -115,7 +122,7 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
             self.view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
         }
         initChat()
-        initActivityIndicator()
+        initActivityIndicatorMessages()
         collectionView.infiniteScrollIndicatorView = CustomInfiniteIndicator(frame: CGRectMake(0, 0, 24, 24))
         /*[JSQMessage, scroll to bottom]*/
         self.scrollingDelegate = self
@@ -308,6 +315,7 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
             if !SwiftSpinnerAlreadyHidden {
                 SwiftSpinnerAlreadyHidden = true
                 MBProgressHUD.hideAllHUDsForView(self.navigationController?.view, animated: true)
+                self.initActivityIndicatorPictures()
             }
             var idString = "errorId"
             var textString = "errorMessage"
@@ -365,6 +373,7 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
         self.finishReceivingMessage()
         if UInt(index+1) == self.INITIAL_MESSAGE_LIMIT {
             self.scrollToBottomAnimated(true)
+            MBProgressHUD.hideAllHUDsForView(self.navigationController?.view, animated: true)
         }
         return index+1
     }
@@ -409,7 +418,6 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
                 if let _ = previousMessage.date {
                     let timeInterval = Int(message.date.timeIntervalSinceDate(previousMessage.date))
                     let shouldDisplay: Bool = timeInterval >= 20*60
-                    print("Dois-je afficher la date? ==> \(shouldDisplay)")
                     return shouldDisplay
                 }
             }
