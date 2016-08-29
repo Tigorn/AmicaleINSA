@@ -13,6 +13,8 @@ import MBProgressHUD
 
 class SettingsTableViewController: UITableViewController, UITextFieldDelegate, ImagePickerDelegate, UIPickerViewDataSource, UIPickerViewDelegate, MenuControllerDelegate {
     
+    let LOG = true
+    
     @IBOutlet weak var menuButton: UIBarButtonItem!
     
     @IBOutlet weak var pseudoTextField: UITextField!
@@ -103,7 +105,9 @@ class SettingsTableViewController: UITableViewController, UITextFieldDelegate, I
     }
     
     func pseudoChangesFinished() {
-        print("I end editing")
+        _log_Title("Settings Pseudo", location: "SettingsTVC.pseudoChangesFinished()", shouldLog: LOG)
+        _log_Element("I end editing the pseudo", shouldLog: LOG)
+        _log_FullLineStars(LOG)
         //savedMBProgressHUDAction()
     }
     
@@ -120,7 +124,6 @@ class SettingsTableViewController: UITableViewController, UITextFieldDelegate, I
     /* Done button */
     
     @IBAction func doneButtonAction(sender: AnyObject) {
-        print("doneButtonAction clicked")
         let pseudo = pseudoTextField.text!
         if stringNotWhiteSpaceAndNotEmpty(pseudo) {
             setUsernameChat(pseudoTextField.text!)
@@ -223,7 +226,9 @@ class SettingsTableViewController: UITableViewController, UITextFieldDelegate, I
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         if indexPath.section == 2 && indexPath.row == 0 {
-            print("Clicked on Picker")
+            _log_Title("Picker", location: "SettingsTVC.didSelectRowAtIndexPath()", shouldLog: LOG)
+            _log_Element("Clicked on Picker", shouldLog: LOG)
+            _log_FullLineStars(LOG)
             toggleShowDateDatepicker()
         }
         

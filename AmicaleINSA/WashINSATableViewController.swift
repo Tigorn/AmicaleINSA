@@ -20,7 +20,7 @@ class WashINSATableViewController: UITableViewController {
     @IBOutlet weak var menuButton: UIBarButtonItem!
     var myActivityIndicator: UIActivityIndicatorView!
     
-    
+    let LOG = false
     
     var machines = [machine]()
     
@@ -112,7 +112,9 @@ class WashINSATableViewController: UITableViewController {
         Alamofire.request(.GET, url).validate().responseJSON { response in
             switch response.result {
             case .Success:
-                print("response = \(response)")
+                _log_Title("WashINSA", location: "WashINSA.loadInfoInMachinesDB()", shouldLog: self.LOG)
+                _log_Element("Response: \(response)", shouldLog: self.LOG)
+                _log_FullLineStars(self.LOG)
                 if let value = response.result.value {
                     let json_full = JSON(value)
                     let errorCode = json_full["errorCode"].int
@@ -121,11 +123,12 @@ class WashINSATableViewController: UITableViewController {
                     }
                     if errorCode != -1 {
                         let json = json_full["json"]
+                        _log_Title("WashINSA", location: "WashINSA.loadInfoInMachinesDB()", shouldLog: self.LOG)
                         for (key,subJson):(String, JSON) in json {
-                            print("key = \(key), subJson = \(subJson)")
+                            _log_Element("Key: \(key)", shouldLog: self.LOG)
+                            _log_Element("SubJson: \(subJson)", shouldLog: self.LOG)
                             if let machine = subJson["machine"].int {
                                 self.machines[indexMachine].numberMachine = "n° \(machine)"
-                                print("number machine = \(machine)")
                             }
                             if let available = subJson["available"].string {
                                 self.machines[indexMachine].available = available
@@ -144,6 +147,7 @@ class WashINSATableViewController: UITableViewController {
                             }
                             indexMachine += 1
                         }
+                        _log_FullLineStars(self.LOG)
                         self.dataLoaded = true
                         self.tableView.reloadData()
                         SwiftSpinner.hide()
@@ -351,8 +355,9 @@ class WashINSATableViewController: UITableViewController {
     }
     
     func alreadyNotificationForMachine(machineNumber: Int) -> Bool {
+        _log_Title("WashINSA Notification", location: "WashINSA.alreadyNotificationForMachine()", shouldLog: self.LOG)
         let app:UIApplication = UIApplication.sharedApplication()
-        print("Local Notifications: \(app.scheduledLocalNotifications!)")
+        _log_Element("Local Notifications: \(app.scheduledLocalNotifications!)", shouldLog: self.LOG)
         for oneEvent in app.scheduledLocalNotifications! {
             let notification = oneEvent as UILocalNotification
             if let userInfoCurrent = notification.userInfo as? [String:Int] {
@@ -364,7 +369,8 @@ class WashINSATableViewController: UITableViewController {
                 }
             }
         }
-        print("machine number: \(machineNumber+1) does not exist for notification")
+        _log_Element("Machine number: \(machineNumber+1) does not exist in notification list", shouldLog: self.LOG)
+        _log_FullLineStars(self.LOG)
         return false
     }
     
