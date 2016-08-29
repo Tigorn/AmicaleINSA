@@ -104,65 +104,75 @@ class PostTableViewController: UITableViewController {
     
     func obversePosts(){
         initActivityIndicator()
-        var SwiftSpinnerAlreadyHidden = false
         let postQuery = postRef.queryLimitedToLast(INITIAL_POST_LIMIT)
-        postQuery.observeEventType(.ChildAdded) { (snapshot: FIRDataSnapshot!) in
-            if !SwiftSpinnerAlreadyHidden {
-                SwiftSpinnerAlreadyHidden = true
-                MBProgressHUD.hideAllHUDsForView(self.view, animated: true)
-            }
-            var titleString = ""
-            var descriptionString = ""
-            var authorString = ""
-            var dateString = ""
-            
-            if let title = snapshot.value!.objectForKey("title") as? String {
-                titleString = title
-                print("Title: \(titleString)")
-            }
-            
-            if let description = snapshot.value!.objectForKey("description") as? String {
-                descriptionString = description
-            }
-            
-            if let author = snapshot.value!.objectForKey("author") as? String {
-                authorString = author
-            }
-            
-            if let date = snapshot.value!.objectForKey("date") as? String {
-                dateString = date
-            }
-            
-            let dateTimestampInterval = snapshot.value!["timestamp"] as! NSTimeInterval
-            if (self.shouldUpdateLastTimestamp(dateTimestampInterval)){
-                self.lastTimestamp = dateTimestampInterval
-            }
-            
-            let dateTimestampInverseInterval = snapshot.value!["timestampInverse"] as! NSTimeInterval
-            self.lastTimestampReverse = dateTimestampInverseInterval
-            
-            var imageURLString = ""
-            if let imageURL = snapshot.value!["imageURL"] as? String {
-                imageURLString = imageURL
-            }
-            
-            if imageURLString != "" {
-                let httpsReferenceImage = FIRStorage.storage().referenceForURL(imageURLString)
-                httpsReferenceImage.dataWithMaxSize(3 * 1024 * 1024) { (data, error) -> Void in
-                    if (error != nil) {
-                        print("Error downloading image from httpsReferenceImage firebase")
-                        print("Error: \(error)")
-                    } else {
-                        let image = UIImage(data: data!)
-                        self.addPostBeginning(titleString, description: descriptionString, date: dateString, author: authorString, imagePresents: true, image: image, timestamp: dateTimestampInterval)
-                        self.tableView.reloadData()
-                    }
+        postQuery.observeEventType(.Value) { (snapshots: FIRDataSnapshot!) in
+            let numberOfPosts = Int(snapshots.childrenCount)
+            var currentNumberOfPosts = 0
+            print("I download \(numberOfPosts) posts")
+            for snapshot in snapshots.children {
+                var titleString = ""
+                var descriptionString = ""
+                var authorString = ""
+                var dateString = ""
+                
+                if let title = snapshot.value!.objectForKey("title") as? String {
+                    titleString = title
+                    print("Title: \(titleString)")
                 }
-            } else {
-                self.addPostBeginning(titleString, description: descriptionString, date: dateString, author: authorString, imagePresents: false, image: nil, timestamp: dateTimestampInterval)
+                
+                if let description = snapshot.value!.objectForKey("description") as? String {
+                    descriptionString = description
+                }
+                
+                if let author = snapshot.value!.objectForKey("author") as? String {
+                    authorString = author
+                }
+                
+                if let date = snapshot.value!.objectForKey("date") as? String {
+                    dateString = date
+                }
+                
+                let dateTimestampInterval = snapshot.value!["timestamp"] as! NSTimeInterval
+                if (self.shouldUpdateLastTimestamp(dateTimestampInterval)){
+                    self.lastTimestamp = dateTimestampInterval
+                }
+                
+                let dateTimestampInverseInterval = snapshot.value!["timestampInverse"] as! NSTimeInterval
+                self.lastTimestampReverse = dateTimestampInverseInterval
+                
+                var imageURLString = ""
+                if let imageURL = snapshot.value!["imageURL"] as? String {
+                    imageURLString = imageURL
+                }
+                
+                if imageURLString != "" {
+                    let httpsReferenceImage = FIRStorage.storage().referenceForURL(imageURLString)
+                    httpsReferenceImage.dataWithMaxSize(3 * 1024 * 1024) { (data, error) -> Void in
+                        if (error != nil) {
+                            print("Error downloading image from httpsReferenceImage firebase")
+                            print("Error: \(error)")
+                        } else {
+                            currentNumberOfPosts += 1
+                            if currentNumberOfPosts == numberOfPosts {
+                                print("I have all my posts")
+                                MBProgressHUD.hideAllHUDsForView(self.view, animated: true)
+                            }
+                            let image = UIImage(data: data!)
+                            self.addPostBeginning(titleString, description: descriptionString, date: dateString, author: authorString, imagePresents: true, image: image, timestamp: dateTimestampInterval)
+                            self.tableView.reloadData()
+                        }
+                    }
+                } else {
+                    currentNumberOfPosts += 1
+                    if currentNumberOfPosts == numberOfPosts {
+                        print("I have all my posts")
+                        MBProgressHUD.hideAllHUDsForView(self.view, animated: true)
+                    }
+                    self.addPostBeginning(titleString, description: descriptionString, date: dateString, author: authorString, imagePresents: false, image: nil, timestamp: dateTimestampInterval)
+                }
+                
+                self.tableView.reloadData()
             }
-            
-            self.tableView.reloadData()
         }
     }
     
@@ -172,6 +182,7 @@ class PostTableViewController: UITableViewController {
         let postQuery = postRef.queryOrderedByChild("timestampInverse").queryStartingAtValue(lastTimestampReverse).queryLimitedToFirst(LOAD_MORE_POST_LIMIT+LOAD_MORE_POST_LIMIT)
         var index = UInt(0)
         postQuery.observeEventType(.ChildAdded) { (snapshot: FIRDataSnapshot!) in
+            print("I download \(snapshot.childrenCount) more posts")
             var titleString = ""
             var descriptionString = ""
             var authorString = ""
@@ -251,7 +262,7 @@ class PostTableViewController: UITableViewController {
     }
     
     func addPostAppend(title: String, description: String, date: String, author: String, imagePresents: Bool, image: UIImage?, timestamp: NSTimeInterval) {
-        if self.postAlreadyPresent(timestamp, titleDescription: "\(title)\(description)") == false{
+        if self.postAlreadyPresent(timestamp, titleDescription: "\(title)\(description)") == false {
             self.posts.append(post(title: title, description: description, date: date, author: author, imagePresents: imagePresents, image: image, timestamp: timestamp))
         } else {
             print("/!\\ le post est déjà présent !!")
@@ -259,10 +270,14 @@ class PostTableViewController: UITableViewController {
     }
     
     func addPostBeginning(title: String, description: String, date: String, author: String, imagePresents: Bool, image: UIImage?, timestamp: NSTimeInterval) {
-        self.posts.insert(post(title: title, description: description, date: date, author: author, imagePresents: imagePresents, image: image, timestamp: timestamp), atIndex: 0)
-        self.posts.sortInPlace({
-            return ($0.timestamp.distanceTo($1.timestamp) < 0)
-        })
+        if self.postAlreadyPresent(timestamp, titleDescription: "\(title)\(description)") == false {
+            self.posts.insert(post(title: title, description: description, date: date, author: author, imagePresents: imagePresents, image: image, timestamp: timestamp), atIndex: 0)
+            self.posts.sortInPlace({
+                return ($0.timestamp.distanceTo($1.timestamp) < 0)
+            })
+        } else {
+            print("ObservePost: post already present!!")
+        }
     }
     
     func postAlreadyPresent(timestampPost: NSTimeInterval, titleDescription: String) -> Bool {
