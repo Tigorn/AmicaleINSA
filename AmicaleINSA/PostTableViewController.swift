@@ -15,6 +15,8 @@ import UIScrollView_InfiniteScroll
 
 class PostTableViewController: UITableViewController {
     
+    let LOG = true
+    
     let INITIAL_POST_LIMIT = UInt(8)
     let LOAD_MORE_POST_LIMIT  = UInt(8)
     
@@ -107,8 +109,8 @@ class PostTableViewController: UITableViewController {
         postQuery.observeEventType(.Value) { (snapshots: FIRDataSnapshot!) in
             let numberOfPosts = Int(snapshots.childrenCount)
             var currentNumberOfPosts = 0
-            _printTitle("Download Posts", location: "PostTableVC.observePosts()")
-            _printElement("I download \(numberOfPosts) post(s)")
+            _log_Title("Downloading Posts", location: "PostTableVC.observePosts()", shouldLog: self.LOG)
+            _log_Element("I download \(numberOfPosts) post(s)", shouldLog: self.LOG)
             for snapshot in snapshots.children {
                 var titleString = ""
                 var descriptionString = ""
@@ -117,7 +119,7 @@ class PostTableViewController: UITableViewController {
                 
                 if let title = snapshot.value!.objectForKey("title") as? String {
                     titleString = title
-                    _printElement("Title: \(titleString)")
+                    _log_Element("Title: \(titleString)", shouldLog: self.LOG)
                 }
                 
                 if let description = snapshot.value!.objectForKey("description") as? String {
@@ -154,8 +156,8 @@ class PostTableViewController: UITableViewController {
                         } else {
                             currentNumberOfPosts += 1
                             if currentNumberOfPosts == numberOfPosts {
-                                _printElement("I have all my post(s)")
-                                _printFullLineStars()
+                                _log_Element("I have all my post(s)", shouldLog: self.LOG)
+                                _log_FullLineStars(self.LOG)
                                 MBProgressHUD.hideAllHUDsForView(self.view, animated: true)
                             }
                             let image = UIImage(data: data!)
@@ -418,7 +420,6 @@ class PostTableViewController: UITableViewController {
             let photos = createPhotoArray(image!)
             let tagIndexPhotoInArray = photos.1
             if tagIndexPhotoInArray != -1 {
-                print("Tag calc = \(tagIndexPhotoInArray)")
                 let viewer = NYTPhotosViewController(photos: photos.0, initialPhoto: photos.0[tagIndexPhotoInArray])
                 presentViewController(viewer, animated: true, completion: nil)
             } else {

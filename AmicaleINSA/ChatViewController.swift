@@ -36,7 +36,7 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
         return ChatViewController()
     }()
     
-    
+    let LOG = true
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -80,7 +80,9 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
         userIsTypingRef.onDisconnectRemoveValue()
         usersTypingQuery = typingIndicatorRef.queryOrderedByValue().queryEqualToValue(true)
         usersTypingQuery.observeEventType(.Value) { (data: FIRDataSnapshot!) in
-            print("number users typing: \(data.childrenCount)")
+            _log_Title("User Typing", location: "ChatVC.observeTyping()", shouldLog: false)
+            _log_Element("Number Users Typing: \(data.childrenCount)", shouldLog: false)
+            _log_FullLineStars(false)
             if data.childrenCount == 1 && self.isTyping {
                 return
             }
@@ -115,7 +117,6 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        print("In viewDidLoad ChatVC")
         if self.revealViewController() != nil {
             menuButton.target = self.revealViewController()
             menuButton.action = #selector(SWRevealViewController.revealToggle(_:))
@@ -158,7 +159,6 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
         singleUserRef.onDisconnectRemoveValue()
         activeUsersRef.observeEventType(.Value, withBlock: { (snapshot: FIRDataSnapshot!) in
             value = getUsernameChat()
-            print("in observeActiveUsers, setValue, value: \(value)")
             singleUserRef.setValue(value)
             var count = 0
             if snapshot.exists() {
@@ -231,7 +231,6 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
                 } else {
                     titleChat += "👁"
                 }
-                print("count users: \(count)")
                 self.title = titleChat
             }
         })
@@ -308,6 +307,7 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
     }
     
     private func observeMessages() {
+        _log_Title("Count Messages", location: "ChatVC.observeMessages", shouldLog: LOG)
         var SwiftSpinnerAlreadyHidden = false
         var index = 0;
         let messagesQuery = messageRef.queryLimitedToLast(INITIAL_MESSAGE_LIMIT)
@@ -354,13 +354,13 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
                             let mediaMessageData: JSQPhotoMediaItem = JSQPhotoMediaItem(image: image)
                             self.addMessage(idString, media: mediaMessageData, senderDisplayName: senderDisplayNameString, date: date)
                             index = self.finishReceivingAsyncMessage(index)
+                            _log_Element("Should have \(self.INITIAL_MESSAGE_LIMIT) messages, have: \(index)", shouldLog: self.LOG)
                         }
                     }
                 } else {
                     self.addMessage(idString, text: textString, senderDisplayName: senderDisplayNameString, date: date)
                     index = self.finishReceivingAsyncMessage(index)
                 }
-                print("Je dois en avoir 60, et en réalité j'en ai \(index).")
                 self.messagesHashValue += [hashValue]
             } else {
                 print("I cannot add the message, PROBLEM!")
@@ -391,7 +391,6 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
-        print("viewDidAppear")
         observeMessages()
         observeTyping()
         observeActiveUsers()

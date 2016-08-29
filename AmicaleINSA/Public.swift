@@ -84,7 +84,8 @@ public struct Public {
     
     // logging
     static let LOGGING_stars_full = "****************************************************************************"
-    static let LOGGING_whiteSpace_beforeTitle = "                      "
+    static let LOGGING_whiteSpace_beforeTitle = ""
+    static let LOGGING_LOG = true
 }
 
 /*
@@ -146,7 +147,6 @@ public func setUsernameChat(username: String) {
 
 public func getUsernameChat() -> String {
     if let username = NSUserDefaults.standardUserDefaults().stringForKey(Public.usernameChat) {
-        print("username already set in NSUserDefaults")
         return username
     } else {
         var randomNumber = Int(arc4random_uniform(UInt32(10000)))
@@ -364,8 +364,9 @@ public func getVersionNumberApp() -> String {
 
 public func checkIfVersionNumberIsAllowed(versionsNumberNotAllowed: [String]) -> Bool {
     let versionNumberApp = getVersionNumberApp()
-    _printElement("Current Version: \(versionNumberApp)")
-    _printFullLineStars()
+    let LOG = true
+    _log_Element("Current Version: \(versionNumberApp)", shouldLog: LOG)
+    _log_FullLineStars(LOG)
     if versionsNumberNotAllowed.contains(versionNumberApp) {
         return false
     } else {
@@ -385,6 +386,7 @@ public func alertViewApplicationTooOld(message : String) {
 }
 
 public func loadVersionsNotAllowedFromServer() {
+    let LOG = true
     var msg = ""
     let url = Public.urlVersionsNotAllowed
     Alamofire.request(.GET, url).validate().responseJSON { response in
@@ -401,9 +403,9 @@ public func loadVersionsNotAllowedFromServer() {
                 for version in arrayVersionNotAllowedJSON {
                     arrayVersionNotAllowedString.append(String(version.1))
                 }
-                _printTitle("Checking Version Application", location: "Public.loadVersionsNotAllowedFromServer()")
-                _printElement("Version not allowed received from my VPN Server:")
-                _printElement("\(arrayVersionNotAllowedString)")
+                _log_Title("Checking Version Application", location: "Public.loadVersionsNotAllowedFromServer()", shouldLog: LOG)
+                _log_Element("Version not allowed received from my VPN Server:", shouldLog: LOG)
+                _log_Element("\(arrayVersionNotAllowedString)", shouldLog: LOG)
                 if !checkIfVersionNumberIsAllowed(arrayVersionNotAllowedString) {
                     alertViewApplicationTooOld(msg)
                 }
@@ -529,20 +531,26 @@ public func stringNotWhiteSpaceAndNotEmpty(str: String) -> Bool {
     Logging
 */
 
-func _printTitle(text: String, location: String) {
-    print(Public.LOGGING_stars_full)
-    print(Public.LOGGING_whiteSpace_beforeTitle + "Title: " + text)
-    print((Public.LOGGING_whiteSpace_beforeTitle + "Location: " + location))
-    print(Public.LOGGING_stars_full)
+func _log_Title(text: String, location: String, shouldLog: Bool) {
+    if shouldLog {
+        print(Public.LOGGING_stars_full)
+        print(Public.LOGGING_whiteSpace_beforeTitle + "Title: " + text)
+        print((Public.LOGGING_whiteSpace_beforeTitle + "Location: " + location))
+        print(Public.LOGGING_stars_full)
+    }
 }
 
-func _printFullLineStars() {
-    print(Public.LOGGING_stars_full)
-    print("")
-    print("")
+func _log_FullLineStars(shouldLog: Bool) {
+    if shouldLog {
+        print(Public.LOGGING_stars_full)
+        print("")
+        print("")
+    }
 }
 
-func _printElement(element: String) {
-    print("- \(element)")
+func _log_Element(element: String, shouldLog: Bool) {
+    if shouldLog {
+        print("- \(element)")
+    }
 }
 
