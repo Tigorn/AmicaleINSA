@@ -36,7 +36,7 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
         return ChatViewController()
     }()
     
-    let LOG = true
+    let LOG = false
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -58,6 +58,8 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
     let INITIAL_MESSAGE_LIMIT = UInt(60)
     var userIsTypingRef: FIRDatabaseReference!
     private var localTyping = false
+    
+    let timeIntervalBetweenMessages = 20*60
     
     var isTyping: Bool {
         get {
@@ -112,6 +114,11 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
         MBProgressHUD.hideAllHUDsForView(self.navigationController?.view, animated: true)
     }
     
+    func initObservers() {
+        observeMessages()
+        observeTyping()
+        observeActiveUsers()
+    }
     
     
     
@@ -146,6 +153,9 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
         self.inputToolbar?.contentView?.leftBarButtonItem?.imageView?.contentMode = UIViewContentMode.ScaleAspectFit
         
         self.inputToolbar?.contentView?.leftBarButtonItemWidth = 30
+        
+        // test pour voir si ça résout le bug d'appeler plusieurs fois observeMessages() quand j'envoie une image
+        initObservers()
     }
     
     
@@ -312,6 +322,7 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
         let messagesQuery = messageRef.queryLimitedToLast(INITIAL_MESSAGE_LIMIT)
         messagesQuery.observeEventType(.ChildAdded) { (snapshot: FIRDataSnapshot!) in
             if !SwiftSpinnerAlreadyHidden {
+                print("Et je repasse par là")
                 SwiftSpinnerAlreadyHidden = true
                 MBProgressHUD.hideAllHUDsForView(self.navigationController?.view, animated: true)
                 self.initActivityIndicatorPictures()
@@ -390,9 +401,9 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
-        observeMessages()
-        observeTyping()
-        observeActiveUsers()
+//        //observeMessages()
+//        observeTyping()
+//        observeActiveUsers()
     }
     
     
@@ -415,7 +426,7 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
                 let previousMessage = messages[index-1]
                 if let _ = previousMessage.date {
                     let timeInterval = Int(message.date.timeIntervalSinceDate(previousMessage.date))
-                    let shouldDisplay: Bool = timeInterval >= 20*60
+                    let shouldDisplay: Bool = timeInterval >= timeIntervalBetweenMessages
                     return shouldDisplay
                 }
             }
@@ -576,6 +587,8 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
      */
     override func collectionView(collectionView: JSQMessagesCollectionView!, attributedTextForMessageBubbleTopLabelAtIndexPath indexPath: NSIndexPath!) -> NSAttributedString!
     {
+        let LOG = false
+        _log_Title("Should display name sender", location: "ChatVC.attributedTextForMessageBubbleTopLabelAtIndexPath()", shouldLog: LOG)
         let message = messages[indexPath.item];
         /*Ceci est pour savoir si je dois afficher le pseudo si c'est moi qui envoi
          Commenter si je veux que oui */
@@ -584,7 +597,12 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
         }
         if(indexPath.row - 1 > 0){
             let prevMessage = messages[indexPath.row-1];
-            if(prevMessage.senderDisplayName == message.senderDisplayName && prevMessage.senderId == message.senderId){
+            let timeInterval = Int(message.date.timeIntervalSinceDate(prevMessage.date))
+            let shouldDisplayNameSender: Bool = timeInterval < timeIntervalBetweenMessages
+            _log_Element("message content: \(message.text)", shouldLog: LOG)
+            _log_Element("timeInterval: \(timeInterval)", shouldLog: LOG)
+            _log_Element("shouldDisplay name sender: \(shouldDisplayNameSender)", shouldLog: LOG)
+            if prevMessage.senderDisplayName == message.senderDisplayName && prevMessage.senderId == message.senderId && shouldDisplayNameSender {
                 //print("message.senderId \(message.senderId), message.DN: \(message.senderDisplayName)")
                 return nil;
             }
@@ -597,7 +615,7 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
      */
     
     override func collectionView(collectionView: JSQMessagesCollectionView!, layout collectionViewLayout: JSQMessagesCollectionViewFlowLayout!, heightForMessageBubbleTopLabelAtIndexPath indexPath: NSIndexPath!) -> CGFloat {
-        
+        let LOG = false
         let currentMessage = self.messages[indexPath.item]
         
         /*Ceci est pour savoir si je dois afficher le pseudo si c'est moi qui envoi
@@ -608,7 +626,12 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
         }
         if(indexPath.item - 1 >= 0){
             let previousMessage = self.messages[indexPath.item - 1]
-            if(previousMessage.senderDisplayName == currentMessage.senderDisplayName && previousMessage.senderId == currentMessage.senderId){
+            let timeInterval = Int(currentMessage.date.timeIntervalSinceDate(previousMessage.date))
+            let shouldLetSpaceToDisplaySomething: Bool = timeInterval < 20*60
+            _log_Element("message content: \(currentMessage.text)", shouldLog: LOG)
+            _log_Element("timeInterval: \(timeInterval)", shouldLog: LOG)
+            _log_Element("shouldDisplay name sender: \(shouldLetSpaceToDisplaySomething)", shouldLog: LOG)
+            if(previousMessage.senderDisplayName == currentMessage.senderDisplayName && previousMessage.senderId == currentMessage.senderId && shouldLetSpaceToDisplaySomething){
                 return 0.0
             }
         }
