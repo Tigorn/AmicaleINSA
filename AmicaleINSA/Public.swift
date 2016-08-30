@@ -527,6 +527,11 @@ public func stringNotWhiteSpaceAndNotEmpty(str: String) -> Bool {
     return false
 }
 
+public func escapeTextRemovingFirstWhiteSpace(str: String) -> String {
+    let whitespaceSet = NSCharacterSet.whitespaceCharacterSet()
+    return str.stringByTrimmingCharactersInSet(whitespaceSet)
+}
+
 /*
     Logging
 */

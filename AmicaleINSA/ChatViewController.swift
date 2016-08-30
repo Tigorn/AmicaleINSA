@@ -288,7 +288,6 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
         return false
     }
     
-    
     private func observeMessages() {
         _log_Title("Count Messages", location: "ChatVC.observeMessages", shouldLog: LOG)
         var SwiftSpinnerAlreadyHidden = false
@@ -296,33 +295,25 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
         let messagesQuery = messageRef.queryLimitedToLast(INITIAL_MESSAGE_LIMIT)
         messagesQuery.observeEventType(.ChildAdded) { (snapshot: FIRDataSnapshot!) in
             if !SwiftSpinnerAlreadyHidden {
-                //print("Et je repasse par là")
                 SwiftSpinnerAlreadyHidden = true
                 MBProgressHUD.hideAllHUDsForView(self.navigationController?.view, animated: true)
                 self.initActivityIndicatorPictures()
             }
-            var idString = "errorId"
-            var textString = "errorMessage"
-            var senderDisplayNameString = "error senderDisplayName"
+    
+            guard let idString = snapshot.value!["senderId"] as? String else {return}
+            guard let textString = snapshot.value!["text"] as? String else {return}
+            guard let senderDisplayNameString = snapshot.value!["senderDisplayName"] as? String else {return}
+            guard let dateTimestampInterval = snapshot.value!["dateTimestamp"] as? NSTimeInterval else {return}
+            
             var imageURLString = ""
-            if let id = snapshot.value!["senderId"] as? String {
-                idString = id
-            }
-            
-            if let text = snapshot.value!["text"] as? String {
-                textString = text
-            }
-            
-            if let senderDisplayName = snapshot.value!["senderDisplayName"] as? String {
-                senderDisplayNameString = senderDisplayName
-            }
-            let dateTimestampInterval = snapshot.value!["dateTimestamp"] as! NSTimeInterval
-            if (self.shouldUpdateLastTimestamp(dateTimestampInterval)){
-                self.lastTimestamp = dateTimestampInterval
-            }
             if let imageURL = snapshot.value!["imageURL"] as? String {
                 imageURLString = imageURL
             }
+            
+            if (self.shouldUpdateLastTimestamp(dateTimestampInterval)){
+                self.lastTimestamp = dateTimestampInterval
+            }
+            
             let date = NSDate(timeIntervalSince1970: dateTimestampInterval)
             let hashValue = "\(idString)\(date)\(senderDisplayNameString)\(dateTimestampInterval)".md5()
             let canAdd = self.shouldAddInArray(hashValue)
@@ -352,6 +343,7 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
             }
         }
     }
+
     
     func finishReceivingAsyncMessage(index: Int, isInitialLoading: Bool, isLoadMoreLoading: Bool) -> Int {
         self.finishReceivingMessage()
@@ -377,9 +369,6 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
-//        //observeMessages()
-//        observeTyping()
-//        observeActiveUsers()
     }
     
     
@@ -416,19 +405,22 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
         let messagesQuery = messageRef.queryOrderedByChild("dateTimestamp").queryEndingAtValue(lastTimestamp).queryLimitedToLast(LOAD_MORE_MESSAGE_LIMIT)
         var index = 0
         messagesQuery.observeEventType(.ChildAdded) { (snapshot: FIRDataSnapshot!) in
-            let id = snapshot.value!["senderId"] as! String
-            let text = snapshot.value!["text"] as! String
-            let senderDisplayName = snapshot.value!["senderDisplayName"] as! String
-            let dateTimestampInterval = snapshot.value!["dateTimestamp"] as! NSTimeInterval
+            
+            guard let id = snapshot.value!["senderId"] as? String else {return}
+            guard let text = snapshot.value!["text"] as? String else {return}
+            guard let senderDisplayName = snapshot.value!["senderDisplayName"] as? String else {return}
+            guard let dateTimestampInterval = snapshot.value!["dateTimestamp"] as? NSTimeInterval else {return}
             var imageURLString = ""
             if let imageURL = snapshot.value!["imageURL"] as? String {
                 imageURLString = imageURL
             }
+            
             if (self.shouldUpdateLastTimestamp(dateTimestampInterval)){
                 self.lastTimestamp = dateTimestampInterval
             }
+            
             let date = NSDate(timeIntervalSince1970: dateTimestampInterval)
-            //print("index: \(index), load_more_message_limit: \(Int(self.LOAD_MORE_MESSAGE_LIMIT))")
+            
             if index < Int(self.LOAD_MORE_MESSAGE_LIMIT) {
                 if imageURLString != "" {
                     let httpsReferenceImage = FIRStorage.storage().referenceForURL(imageURLString)
@@ -436,7 +428,6 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
                         if (error != nil) {
                             print("Error downloading image from httpsReferenceImage firebase")
                         } else {
-                            //print("I download image from firebase reference")
                             let image = UIImage(data: data!)
                             let mediaMessageData: JSQPhotoMediaItem = JSQPhotoMediaItem(image: image)
                             self.addMessage(id, media: mediaMessageData, senderDisplayName: senderDisplayName, date: date, isLoadMoreLoading: true)
@@ -579,7 +570,6 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
     */
     override func collectionView(collectionView: JSQMessagesCollectionView!,
                                  avatarImageDataForItemAtIndexPath indexPath: NSIndexPath!) -> JSQMessageAvatarImageDataSource! {
-        print("indexPath = \(indexPath.item)")
         if shouldDisplayAvatar {
             let currentMessage = messages[indexPath.item]
             //let initial = String(currentMessage.senderDisplayName.characters.first!)

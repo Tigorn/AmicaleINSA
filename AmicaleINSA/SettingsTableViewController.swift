@@ -81,9 +81,11 @@ class SettingsTableViewController: UITableViewController, UITextFieldDelegate, I
     /* Delegate textField */
     
     func textFieldShouldReturn(textField: UITextField) -> Bool {
-        let pseudo = pseudoTextField.text!
+        guard var pseudo = pseudoTextField.text else {return false}
+        pseudo = pseudo.trim()
         if stringNotWhiteSpaceAndNotEmpty(pseudo) {
-            setUsernameChat(pseudoTextField.text!)
+            print("Pseudo: \(pseudo)")
+            setUsernameChat(pseudo)
             savedMBProgressHUDAction()
             view.endEditing(true)
         }
@@ -125,9 +127,11 @@ class SettingsTableViewController: UITableViewController, UITextFieldDelegate, I
     /* Done button */
     
     @IBAction func doneButtonAction(sender: AnyObject) {
-        let pseudo = pseudoTextField.text!
+        guard var pseudo = pseudoTextField.text else {return}
+        pseudo = pseudo.trim()
+        print("Pseudo done: \(pseudo)")
         if stringNotWhiteSpaceAndNotEmpty(pseudo) {
-            setUsernameChat(pseudoTextField.text!)
+            setUsernameChat(pseudo)
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
             let frontNavigationController = storyboard.instantiateViewControllerWithIdentifier("PostViewController")
             let rearNavifationController = storyboard.instantiateViewControllerWithIdentifier("menuViewController")
@@ -209,17 +213,19 @@ class SettingsTableViewController: UITableViewController, UITextFieldDelegate, I
     /* Keyboard delegate */
     
     func dismissKeyboard() {
-        let pseudo = pseudoTextField.text!
+        guard var pseudo = pseudoTextField.text else {return}
+        pseudo = pseudo.trim()
         if stringNotWhiteSpaceAndNotEmpty(pseudo) {
-            setUsernameChat(pseudoTextField.text!)
+            setUsernameChat(pseudo)
             view.endEditing(true)
         }
     }
     
     func dismissKeyboardFromMenu(ViewController: MenuController) {
-        let pseudo = pseudoTextField.text!
+        guard var pseudo = pseudoTextField.text else {return}
+        pseudo = pseudo.trim()
         if stringNotWhiteSpaceAndNotEmpty(pseudo) {
-            setUsernameChat(pseudoTextField.text!)
+            setUsernameChat(pseudo)
         }
         print("I end editing(true)")
         view.endEditing(true)
