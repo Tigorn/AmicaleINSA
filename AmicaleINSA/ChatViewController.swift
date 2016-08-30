@@ -24,7 +24,7 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
     
     @IBOutlet weak var menuButton: UIBarButtonItem!
     
-    var myActivityIndicator: UIActivityIndicatorView!
+    // var myActivityIndicator: UIActivityIndicatorView!
     var myActivityIndicatorHUD = MBProgressHUD()
     
     var messages = [JSQMessage]()
@@ -37,6 +37,7 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
     }()
     
     let LOG = false
+    let shouldDisplayAvatar = true
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -137,8 +138,14 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
         
         title = "Chat"
         setupBubbles()
-        collectionView!.collectionViewLayout.incomingAvatarViewSize = CGSizeZero
-        collectionView!.collectionViewLayout.outgoingAvatarViewSize = CGSizeZero
+        
+        if shouldDisplayAvatar {
+            // collectionView!.collectionViewLayout.incomingAvatarViewSize = CGSizeZero
+            collectionView!.collectionViewLayout.outgoingAvatarViewSize = CGSizeZero
+        } else {
+            collectionView!.collectionViewLayout.incomingAvatarViewSize = CGSizeZero
+            collectionView!.collectionViewLayout.outgoingAvatarViewSize = CGSizeZero
+        }
         
         messageRef = FirebaseManager.firebaseManager.createMessageRef()
         
@@ -267,16 +274,6 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
     }
     
     
-    func addMessage(id: String, text: String, senderDisplayName: String, date: NSDate) {
-        if messageAlreadyPresent(id, senderDisplayName:senderDisplayName, text: text, date: date) == false {
-            let msg = JSQMessage(senderId: id, senderDisplayName: senderDisplayName, date: date, text: text)
-            messages.append(msg)
-            messages.sortInPlace({
-                return ($0.date.compare($1.date) == NSComparisonResult.OrderedAscending)
-            })
-        }
-    }
-    
     func messageAlreadyPresent(id: String, senderDisplayName: String, text: String, date: NSDate) -> Bool {
         let msg = "\(id)\(senderDisplayName)\(text)\(date)"
         var msgToCompare = ""
@@ -291,29 +288,6 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
         return false
     }
     
-    func messageAlreadyPresent(id: String, senderDisplayName: String, media: JSQPhotoMediaItem, date: NSDate) -> Bool {
-        let msg = "\(id)\(senderDisplayName)\(date)"
-        var msgToCompare = ""
-        for message in messages {
-            if message.isMediaMessage == true {
-                msgToCompare = "\(message.senderId)\(message.senderDisplayName)\(message.date)"
-                if msgToCompare == msg {
-                    return true
-                }
-            }
-        }
-        return false
-    }
-    
-    func addMessage(id: String, media: JSQPhotoMediaItem, senderDisplayName: String, date: NSDate) {
-        if messageAlreadyPresent(id, senderDisplayName: senderDisplayName, media: media, date: date) == false {
-            let msg = JSQMessage(senderId: id, senderDisplayName: senderDisplayName, date: date, media: media)
-            messages.append(msg)
-            messages.sortInPlace({
-                return ($0.date.compare($1.date) == NSComparisonResult.OrderedAscending)
-            })
-        }
-    }
     
     private func observeMessages() {
         _log_Title("Count Messages", location: "ChatVC.observeMessages", shouldLog: LOG)
@@ -322,7 +296,7 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
         let messagesQuery = messageRef.queryLimitedToLast(INITIAL_MESSAGE_LIMIT)
         messagesQuery.observeEventType(.ChildAdded) { (snapshot: FIRDataSnapshot!) in
             if !SwiftSpinnerAlreadyHidden {
-                print("Et je repasse par là")
+                //print("Et je repasse par là")
                 SwiftSpinnerAlreadyHidden = true
                 MBProgressHUD.hideAllHUDsForView(self.navigationController?.view, animated: true)
                 self.initActivityIndicatorPictures()
@@ -362,14 +336,14 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
                             //print("I download image from firebase reference")
                             let image = UIImage(data: data!)?.resizedImageClosestTo1000
                             let mediaMessageData: JSQPhotoMediaItem = JSQPhotoMediaItem(image: image)
-                            self.addMessage(idString, media: mediaMessageData, senderDisplayName: senderDisplayNameString, date: date)
-                            index = self.finishReceivingAsyncMessage(index)
+                            self.addMessage(idString, media: mediaMessageData, senderDisplayName: senderDisplayNameString, date: date, isLoadMoreLoading: false)
+                            index = self.finishReceivingAsyncMessage(index, isInitialLoading: true, isLoadMoreLoading: false)
                             _log_Element("Should have \(self.INITIAL_MESSAGE_LIMIT) messages, have: \(index)", shouldLog: self.LOG)
                         }
                     }
                 } else {
-                    self.addMessage(idString, text: textString, senderDisplayName: senderDisplayNameString, date: date)
-                    index = self.finishReceivingAsyncMessage(index)
+                    self.addMessage(idString, text: textString, senderDisplayName: senderDisplayNameString, date: date, isLoadMoreLoading: false)
+                    index = self.finishReceivingAsyncMessage(index, isInitialLoading: true, isLoadMoreLoading: false)
                 }
                 self.messagesHashValue += [hashValue]
             } else {
@@ -379,11 +353,13 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
         }
     }
     
-    func finishReceivingAsyncMessage(index: Int) -> Int {
+    func finishReceivingAsyncMessage(index: Int, isInitialLoading: Bool, isLoadMoreLoading: Bool) -> Int {
         self.finishReceivingMessage()
-        if UInt(index+1) == self.INITIAL_MESSAGE_LIMIT {
+        if UInt(index+1) == self.INITIAL_MESSAGE_LIMIT && isInitialLoading {
             self.scrollToBottomAnimated(true)
             MBProgressHUD.hideAllHUDsForView(self.navigationController?.view, animated: true)
+        } else if UInt(index+1) == LOAD_MORE_MESSAGE_LIMIT && isLoadMoreLoading {
+            self.collectionView!.infiniteScrollingView.stopAnimating()
         }
         return index+1
     }
@@ -452,6 +428,7 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
                 self.lastTimestamp = dateTimestampInterval
             }
             let date = NSDate(timeIntervalSince1970: dateTimestampInterval)
+            //print("index: \(index), load_more_message_limit: \(Int(self.LOAD_MORE_MESSAGE_LIMIT))")
             if index < Int(self.LOAD_MORE_MESSAGE_LIMIT) {
                 if imageURLString != "" {
                     let httpsReferenceImage = FIRStorage.storage().referenceForURL(imageURLString)
@@ -462,16 +439,18 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
                             //print("I download image from firebase reference")
                             let image = UIImage(data: data!)
                             let mediaMessageData: JSQPhotoMediaItem = JSQPhotoMediaItem(image: image)
-                            self.addMessage(id, media: mediaMessageData, senderDisplayName: senderDisplayName, date: date)
-                            index = self.finishReceivingAsyncMessage(index)
+                            self.addMessage(id, media: mediaMessageData, senderDisplayName: senderDisplayName, date: date, isLoadMoreLoading: true)
+                            index = self.finishReceivingAsyncMessage(index, isInitialLoading: false, isLoadMoreLoading: true)
+                            print("index: \(index), load_more_message_limit: \(Int(self.LOAD_MORE_MESSAGE_LIMIT))")
                         }
                     }
                 }
                 else {
                     index += 1
-                    self.addMessage(id, text: text, senderDisplayName: senderDisplayName, date: date)
+                    self.addMessage(id, text: text, senderDisplayName: senderDisplayName, date: date, isLoadMoreLoading: true)
                 }
             } else {
+                print("I stop animating the loading indicator")
                 self.collectionView!.infiniteScrollingView.stopAnimating()
             }
             self.finishReceivingMessageAnimated(false)
@@ -503,6 +482,48 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
         messages.sortInPlace({
             return ($0.date.compare($1.date) == NSComparisonResult.OrderedAscending)
         })
+    }
+    
+    func addMessage(id: String, text: String, senderDisplayName: String, date: NSDate, isLoadMoreLoading: Bool) {
+        if messageAlreadyPresent(id, senderDisplayName:senderDisplayName, text: text, date: date) == false {
+            let msg = JSQMessage(senderId: id, senderDisplayName: senderDisplayName, date: date, text: text)
+            if isLoadMoreLoading {
+                messages.insert(msg, atIndex: 0)
+            } else {
+                messages.append(msg)
+            }
+            messages.sortInPlace({
+                return ($0.date.compare($1.date) == NSComparisonResult.OrderedAscending)
+            })
+        }
+    }
+    
+    func addMessage(id: String, media: JSQPhotoMediaItem, senderDisplayName: String, date: NSDate, isLoadMoreLoading: Bool) {
+        if messageAlreadyPresent(id, senderDisplayName: senderDisplayName, media: media, date: date) == false {
+            let msg = JSQMessage(senderId: id, senderDisplayName: senderDisplayName, date: date, media: media)
+            if isLoadMoreLoading {
+                messages.insert(msg, atIndex: 0)
+            } else {
+                messages.append(msg)
+            }
+            messages.sortInPlace({
+                return ($0.date.compare($1.date) == NSComparisonResult.OrderedAscending)
+            })
+        }
+    }
+    
+    func messageAlreadyPresent(id: String, senderDisplayName: String, media: JSQPhotoMediaItem, date: NSDate) -> Bool {
+        let msg = "\(id)\(senderDisplayName)\(date)"
+        var msgToCompare = ""
+        for message in messages {
+            if message.isMediaMessage == true {
+                msgToCompare = "\(message.senderId)\(message.senderDisplayName)\(message.date)"
+                if msgToCompare == msg {
+                    return true
+                }
+            }
+        }
+        return false
     }
     
     override func collectionView(collectionView: JSQMessagesCollectionView!, header headerView: JSQMessagesLoadEarlierHeaderView!, didTapLoadEarlierMessagesButton sender: UIButton!) {
@@ -553,9 +574,47 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
         return cell
     }
     
+    /* 
+     Display an Avatar 
+    */
     override func collectionView(collectionView: JSQMessagesCollectionView!,
                                  avatarImageDataForItemAtIndexPath indexPath: NSIndexPath!) -> JSQMessageAvatarImageDataSource! {
-        return nil
+        print("indexPath = \(indexPath.item)")
+        if shouldDisplayAvatar {
+            let currentMessage = messages[indexPath.item]
+            //let initial = String(currentMessage.senderDisplayName.characters.first!)
+            let senderDisplayNameCurrentMessage = currentMessage.senderDisplayName
+            var initial = String(senderDisplayNameCurrentMessage[senderDisplayNameCurrentMessage.startIndex])
+            if senderDisplayNameCurrentMessage.characters.count >= 2 {
+                initial = senderDisplayNameCurrentMessage[senderDisplayNameCurrentMessage.startIndex...senderDisplayNameCurrentMessage.startIndex.advancedBy(1)]
+            }
+            // si c'est le dernier de la liste, j'affiche l'avatar
+            if indexPath.item == messages.count-1 {
+                return JSQMessagesAvatarImageFactory.avatarImageWithUserInitials(initial, backgroundColor: UIColor.jsq_messageBubbleLightGrayColor(), textColor: UIColor(white: 0.60, alpha: 1.0), font: UIFont.systemFontOfSize(14), diameter: UInt(kJSQMessagesCollectionViewAvatarSizeDefault))
+            }
+            let nextMessage = messages[indexPath.item+1]
+            if currentMessage.senderId == nextMessage.senderId && currentMessage.senderDisplayName == nextMessage.senderDisplayName {
+                return JSQMessagesAvatarImageFactory.avatarImageWithUserInitials("", backgroundColor: UIColor.whiteColor(), textColor: UIColor.whiteColor(), font: UIFont.systemFontOfSize(14), diameter: UInt(kJSQMessagesCollectionViewAvatarSizeDefault))
+            } else {
+                return JSQMessagesAvatarImageFactory.avatarImageWithUserInitials(initial, backgroundColor: UIColor.jsq_messageBubbleLightGrayColor(), textColor: UIColor(white: 0.60, alpha: 1.0), font: UIFont.systemFontOfSize(14), diameter: UInt(kJSQMessagesCollectionViewAvatarSizeDefault))
+            }
+        } else {
+            return nil
+        }
+        // return JSQMessagesAvatarImageFactory.avatarImageWithUserInitials("AP", backgroundColor: UIColor.jsq_messageBubbleLightGrayColor(), textColor: UIColor(white: 0.60, alpha: 1.0), font: UIFont.systemFontOfSize(14), diameter: UInt(kJSQMessagesCollectionViewAvatarSizeDefault))
+    }
+    
+    func getInitials(name: String) -> String {
+        return name.characters.split { token in
+            return token == " "
+            }
+            .map { String($0) }
+            .map { word in
+                return word[word.startIndex]
+            }
+            .reduce("") { accIn, firstCharacter in
+                return "\(accIn)\(firstCharacter)"
+        }
     }
     
     /*

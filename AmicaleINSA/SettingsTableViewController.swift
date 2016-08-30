@@ -13,7 +13,7 @@ import MBProgressHUD
 
 class SettingsTableViewController: UITableViewController, UITextFieldDelegate, ImagePickerDelegate, UIPickerViewDataSource, UIPickerViewDelegate, MenuControllerDelegate {
     
-    let LOG = true
+    let LOG = false
     
     @IBOutlet weak var menuButton: UIBarButtonItem!
     
@@ -93,6 +93,7 @@ class SettingsTableViewController: UITableViewController, UITextFieldDelegate, I
     func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool {
         guard let text = textField.text else { return true }
         let newLength = text.utf16.count + string.utf16.count - range.length
+        print("newLength: \(newLength)")
         return newLength <= LIMITE_USERNAME_LENGTH
     }
     
