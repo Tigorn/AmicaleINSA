@@ -160,7 +160,7 @@ class PostTableViewController: UITableViewController {
                                 _log_FullLineStars(self.LOG)
                                 MBProgressHUD.hideAllHUDsForView(self.view, animated: true)
                             }
-                            let image = UIImage(data: data!)
+                            let image = UIImage(data: data!)?.resizedImageClosestTo1000
                             self.addPostBeginning(titleString, description: descriptionString, date: dateString, author: authorString, imagePresents: true, image: image, timestamp: dateTimestampInterval)
                             self.tableView.reloadData()
                         }
@@ -228,9 +228,8 @@ class PostTableViewController: UITableViewController {
                             print("Error downloading image from httpsReferenceImage firebase")
                             print("Error: \(error)")
                         } else {
-                            let image = UIImage(data: data!)
+                            let image = UIImage(data: data!)?.resizedImageClosestTo1000
                             self.addPostAppend(titleString, description: descriptionString, date: dateString, author: authorString, imagePresents: true, image: image, timestamp: dateTimestampInterval)
-                            //self.addPostBeginning(titleString, description: descriptionString, date: dateString, author: authorString, imagePresents: true, image: image, timestamp: dateTimestampInterval)
                             self.tableView.reloadData()
                         }
                     }
@@ -267,6 +266,9 @@ class PostTableViewController: UITableViewController {
     func addPostAppend(title: String, description: String, date: String, author: String, imagePresents: Bool, image: UIImage?, timestamp: NSTimeInterval) {
         if self.postAlreadyPresent(timestamp, titleDescription: "\(title)\(description)") == false {
             self.posts.append(post(title: title, description: description, date: date, author: author, imagePresents: imagePresents, image: image, timestamp: timestamp))
+            self.posts.sortInPlace({
+                return ($0.timestamp.distanceTo($1.timestamp) < 0)
+            })
         } else {
             print("/!\\ le post est déjà présent !!")
         }

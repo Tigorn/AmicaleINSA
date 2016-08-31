@@ -404,7 +404,7 @@ public func loadVersionsNotAllowedFromServer() {
                     arrayVersionNotAllowedString.append(String(version.1))
                 }
                 _log_Title("Checking Version Application", location: "Public.loadVersionsNotAllowedFromServer()", shouldLog: LOG)
-                _log_Element("Version not allowed received from my VPN Server:", shouldLog: LOG)
+                _log_Element("Version not allowed received from my VPS Server:", shouldLog: LOG)
                 _log_Element("\(arrayVersionNotAllowedString)", shouldLog: LOG)
                 if !checkIfVersionNumberIsAllowed(arrayVersionNotAllowedString) {
                     alertViewApplicationTooOld(msg)

@@ -606,7 +606,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 1;
 			shellPath = /bin/sh;
-			shellScript = "# Replace this path with the path to the key you just downloaded\nJSON_FILE=~/Source/Amicale/AmicaleINSA_update_firebase2/amicale-5065783525a3.json\n\n# Replace this with the GOOGLE_APP_ID from your GoogleService-Info.plist file\nGOOGLE_APP_ID=1:301365828536:ios:ea5751efe39b0652\n\ndefaults write com.google.SymbolUpload version -integer 1   # creates file if it does not exist\nJSON=$(cat \"${JSON_FILE}\")\n/usr/bin/plutil -replace \"app_${GOOGLE_APP_ID//:/_}\" -json \"${JSON}\" \"$HOME/Library/Preferences/com.google.SymbolUpload.plist\"\n\"${PODS_ROOT}\"/FirebaseCrash/upload-sym";
+			shellScript = "# Replace this path with the path to the key you just downloaded\n#JSON_FILE=~/Source/Amicale/AmicaleINSA_update_firebase2/amicale-5065783525a3.json\n\n# Replace this with the GOOGLE_APP_ID from your GoogleService-Info.plist file\n\nGOOGLE_APP_ID=1:301365828536:ios:ea5751efe39b0652\n\"${PODS_ROOT}\"/FirebaseCrash/upload-sym \"/Users/arthurpapailhau/Source/Amicale/AmicaleINSA_update_firebase2/amicale-5065783525a3.json\"\n\n#defaults write com.google.SymbolUpload version -integer 1   # creates file if it does not exist\n#JSON=$(cat \"${JSON_FILE}\")\n#/usr/bin/plutil -replace \"app_${GOOGLE_APP_ID//:/_}\" -json \"${JSON}\" \"$HOME/Library/Preferences/com.google.SymbolUpload.plist\"\n#\"${PODS_ROOT}\"/FirebaseCrash/upload-sym";
 		};
 		99E6B214F7946234D2AC47BD /* 📦 Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;

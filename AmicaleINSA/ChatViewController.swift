@@ -91,6 +91,7 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
             }
             self.showTypingIndicator = data.childrenCount > 0
             if self.showTypingIndicator && self.isLastCellVisible {
+                //print("Je scroll tout bottom car last cell visible and showTypingIndicator")
                 self.scrollToBottomAnimated(true)
             }
         }
@@ -251,12 +252,6 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
                 self.title = titleChat
             }
         })
-    }
-    
-    
-    
-    func testSelector(){
-        print("testSelector")
     }
     
     func dismissKeyboard(){
@@ -428,7 +423,7 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
                         if (error != nil) {
                             print("Error downloading image from httpsReferenceImage firebase")
                         } else {
-                            let image = UIImage(data: data!)
+                            let image = UIImage(data: data!)?.resizedImageClosestTo1000
                             let mediaMessageData: JSQPhotoMediaItem = JSQPhotoMediaItem(image: image)
                             self.addMessage(id, media: mediaMessageData, senderDisplayName: senderDisplayName, date: date, isLoadMoreLoading: true)
                             index = self.finishReceivingAsyncMessage(index, isInitialLoading: false, isLoadMoreLoading: true)
@@ -664,6 +659,7 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
      */
     
     override func collectionView(collectionView: JSQMessagesCollectionView!, layout collectionViewLayout: JSQMessagesCollectionViewFlowLayout!, heightForMessageBubbleTopLabelAtIndexPath indexPath: NSIndexPath!) -> CGFloat {
+        //print("isLastCellVisible: \(self.isLastCellVisible)")
         let LOG = false
         let currentMessage = self.messages[indexPath.item]
         
@@ -779,7 +775,7 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
         if let imageItem = message.media as? JSQPhotoMediaItem {
             let image = imageItem.image
             let photo = Photo(photo: image!)
-            let photos = createPhotoArray(image)
+            let photos = createPhotoArray(image!)
             let tagIndexPhotoInArray = photos.1
             if tagIndexPhotoInArray != -1 {
                 print("Tag calc = \(tagIndexPhotoInArray)")
@@ -804,6 +800,7 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
     }
     
     func shouldScrollToNewlyReceivedMessageAtIndexPath(indexPath: NSIndexPath!) -> Bool {
+        //print("should scroll to botom: \(self.isLastCellVisible)")
         return self.isLastCellVisible
     }
     
