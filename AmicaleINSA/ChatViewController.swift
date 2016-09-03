@@ -38,7 +38,9 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
     
     let LOG = false
     let shouldDisplayAvatar = true
-    var uuid: String!
+    var uuidHash: String!
+    var isAdminChat = false
+    var listMastersChat = [MasterChat]()
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -73,6 +75,12 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
         }
     }
     
+    struct MasterChat {
+        var username = ""
+        var id = ""
+        var type = "iOS"
+    }
+    
     var timer = NSTimer()
     
     let imagePicker = UIImagePickerController()
@@ -98,9 +106,49 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
         }
     }
     
+    private func setMasterChatiOSHashUUID() {
+        let chatMasterRef = FirebaseManager.firebaseManager.createMasterChatRef()
+        let UsersiOSMasterChatRef = chatMasterRef.child("users")
+        let aMasteriOSMasterChatRef = UsersiOSMasterChatRef.childByAutoId()
+        let IDpapay0iOSMasterChatRef = aMasteriOSMasterChatRef.child("id")
+        let usernamePapay0iOSMasterChatRef = aMasteriOSMasterChatRef.child("username")
+        let typeRef = aMasteriOSMasterChatRef.child("type")
+        IDpapay0iOSMasterChatRef.setValue(uuidHash)
+        usernamePapay0iOSMasterChatRef.setValue("papay0")
+        typeRef.setValue("iOS")
+        print("Je set tout tout tout")
+    }
+    
     private func downloadMasterChatiOSHashUUID() {
         let chatMasterRef = FirebaseManager.firebaseManager.createMasterChatRef()
-        chatMasterRef.child("iOS")
+        chatMasterRef.child("users").observeSingleEventOfType(.Value, withBlock: { (snapshots) in
+            let users = snapshots.children
+            for user in users {
+                guard let usernameMaster = user.value!["username"] as? String else {return}
+                guard let idMaster = user.value!["id"] as? String else {return}
+                let masterChat = MasterChat(username: usernameMaster, id: idMaster, type: "iOS")
+                self.listMastersChat.append(masterChat)
+                if !self.isAdminChat && self.isMasterOfChatiOS(masterChat, currentUsername: self.senderDisplayName, currentHashUUID: self.uuidHash) {
+                    self.isAdminChat = true
+                    print("I am the Master of the iOS Chat App")
+                }
+            }
+        }) { (error) in
+            print(error.localizedDescription)
+        }
+    }
+    
+    func isMasterOfChatiOS(masterChat: MasterChat, currentUsername: String, currentHashUUID: String) -> Bool {
+        return masterChat.username == currentUsername && masterChat.id == currentHashUUID
+    }
+    
+    func isAMasterOfChatApp(listMasters: [MasterChat], senderIdMessage: String, senderDisplayNameMessage: String) -> Bool {
+        for master in listMasters {
+            if master.username == senderDisplayNameMessage && master.id == senderIdMessage {
+                return true
+            }
+        }
+        return false
     }
     
     func initActivityIndicatorMessages() {
@@ -171,7 +219,8 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
         // test pour voir si ça résout le bug d'appeler plusieurs fois observeMessages() quand j'envoie une image
         initObservers()
         
-        uuid = (UIDevice.currentDevice().identifierForVendor!.UUIDString).md5()
+        uuidHash = (UIDevice.currentDevice().identifierForVendor!.UUIDString).md5()
+        // setMasterChatiOSHashUUID()
         downloadMasterChatiOSHashUUID()
     }
     
@@ -592,10 +641,6 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
         return false
     }
     
-    func isMasterOfChatiOS(currentHashUUID: String) -> Bool {
-        return currentHashUUID == ""
-    }
-    
     override func collectionView(collectionView: JSQMessagesCollectionView!, header headerView: JSQMessagesLoadEarlierHeaderView!, didTapLoadEarlierMessagesButton sender: UIButton!) {
         print("didTapLoadEarlierMessagesButton")
         headerView.loadButton?.hidden = false
@@ -653,24 +698,35 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
             let currentMessage = messages[indexPath.item]
             //let initial = String(currentMessage.senderDisplayName.characters.first!)
             let senderDisplayNameCurrentMessage = currentMessage.senderDisplayName
+            let senderIDCurrentMessage = currentMessage.senderId
             var initial = String(senderDisplayNameCurrentMessage[senderDisplayNameCurrentMessage.startIndex])
             if senderDisplayNameCurrentMessage.characters.count >= 2 {
                 initial = senderDisplayNameCurrentMessage[senderDisplayNameCurrentMessage.startIndex...senderDisplayNameCurrentMessage.startIndex.advancedBy(1)]
             }
+            let avatarLightGray = JSQMessagesAvatarImageFactory.avatarImageWithUserInitials(initial, backgroundColor: UIColor.jsq_messageBubbleLightGrayColor(), textColor: UIColor(white: 0.60, alpha: 1.0), font: UIFont.systemFontOfSize(14), diameter: UInt(kJSQMessagesCollectionViewAvatarSizeDefault))
+            let avatarTransparent = JSQMessagesAvatarImageFactory.avatarImageWithUserInitials("", backgroundColor: UIColor.whiteColor(), textColor: UIColor.whiteColor(), font: UIFont.systemFontOfSize(14), diameter: UInt(kJSQMessagesCollectionViewAvatarSizeDefault))
+            let avatarAdmin = JSQMessagesAvatarImageFactory.avatarImageWithUserInitials(initial, backgroundColor: UIColor(red: 0.90, green: 0.1, blue: 0.15, alpha: 0.5), textColor: UIColor.blackColor(), font: UIFont.systemFontOfSize(14), diameter: UInt(kJSQMessagesCollectionViewAvatarSizeDefault))
             // si c'est le dernier de la liste, j'affiche l'avatar
             if indexPath.item == messages.count-1 {
-                return JSQMessagesAvatarImageFactory.avatarImageWithUserInitials(initial, backgroundColor: UIColor.jsq_messageBubbleLightGrayColor(), textColor: UIColor(white: 0.60, alpha: 1.0), font: UIFont.systemFontOfSize(14), diameter: UInt(kJSQMessagesCollectionViewAvatarSizeDefault))
+                if isAMasterOfChatApp(listMastersChat, senderIdMessage: senderIDCurrentMessage, senderDisplayNameMessage: senderDisplayNameCurrentMessage) {
+                    return avatarAdmin
+                } else {
+                    return avatarLightGray
+                }
             }
             let nextMessage = messages[indexPath.item+1]
             if currentMessage.senderId == nextMessage.senderId && currentMessage.senderDisplayName == nextMessage.senderDisplayName {
-                return JSQMessagesAvatarImageFactory.avatarImageWithUserInitials("", backgroundColor: UIColor.whiteColor(), textColor: UIColor.whiteColor(), font: UIFont.systemFontOfSize(14), diameter: UInt(kJSQMessagesCollectionViewAvatarSizeDefault))
+                return avatarTransparent
             } else {
-                return JSQMessagesAvatarImageFactory.avatarImageWithUserInitials(initial, backgroundColor: UIColor.jsq_messageBubbleLightGrayColor(), textColor: UIColor(white: 0.60, alpha: 1.0), font: UIFont.systemFontOfSize(14), diameter: UInt(kJSQMessagesCollectionViewAvatarSizeDefault))
+                if isAMasterOfChatApp(listMastersChat, senderIdMessage: senderIDCurrentMessage, senderDisplayNameMessage: senderDisplayNameCurrentMessage) {
+                    return avatarAdmin
+                } else {
+                    return avatarLightGray
+                }
             }
         } else {
             return nil
         }
-        // return JSQMessagesAvatarImageFactory.avatarImageWithUserInitials("AP", backgroundColor: UIColor.jsq_messageBubbleLightGrayColor(), textColor: UIColor(white: 0.60, alpha: 1.0), font: UIFont.systemFontOfSize(14), diameter: UInt(kJSQMessagesCollectionViewAvatarSizeDefault))
     }
     
     func getInitials(name: String) -> String {
