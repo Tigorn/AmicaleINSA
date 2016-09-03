@@ -12,6 +12,8 @@ import SWRevealViewController
 import Firebase
 import MBProgressHUD
 import UIScrollView_InfiniteScroll
+import FirebaseStorage
+import Kingfisher
 
 class PostTableViewController: UITableViewController {
     
@@ -26,8 +28,8 @@ class PostTableViewController: UITableViewController {
         var date: String
         var author: String
         var imagePresents: Bool
-        var image: UIImage?
         var timestamp: NSTimeInterval
+        var urlImage: String
     }
     
     
@@ -103,10 +105,73 @@ class PostTableViewController: UITableViewController {
         }
     }
     
+//    func obversePosts(){
+//        initActivityIndicator()
+//        let postQuery = postRef.queryLimitedToLast(INITIAL_POST_LIMIT)
+//        postQuery.observeEventType(.Value) { (snapshots: FIRDataSnapshot!) in
+//            let numberOfPosts = Int(snapshots.childrenCount)
+//            var currentNumberOfPosts = 0
+//            _log_Title("Downloading Posts", location: "PostTableVC.observePosts()", shouldLog: self.LOG)
+//            _log_Element("I download \(numberOfPosts) post(s)", shouldLog: self.LOG)
+//            for snapshot in snapshots.children {
+//                
+//                guard let titleString = snapshot.value!["title"] as? String else {return}
+//                guard let descriptionString = snapshot.value!["description"] as? String else {return}
+//                guard let authorString = snapshot.value!["author"] as? String else {return}
+//                guard let dateString = snapshot.value!["date"] as? String else {return}
+//                guard let dateTimestampInterval = snapshot.value!["timestamp"] as? NSTimeInterval else {return}
+//                guard let dateTimestampInverseInterval = snapshot.value!["timestampInverse"] as? NSTimeInterval else {return}
+//            
+//                if (self.shouldUpdateLastTimestamp(dateTimestampInterval)){
+//                    self.lastTimestamp = dateTimestampInterval
+//                }
+//                
+//                self.lastTimestampReverse = dateTimestampInverseInterval
+//                
+//                var imageURLString = ""
+//                if let imageURL = snapshot.value!["imageURL"] as? String {
+//                    imageURLString = imageURL
+//                    print("imageURL: \(imageURLString)")
+//                }
+//                
+//                if imageURLString != "" {
+//                    let httpsReferenceImage = FIRStorage.storage().referenceForURL(imageURLString)
+//                    httpsReferenceImage.dataWithMaxSize(3 * 1024 * 1024) { (data, error) -> Void in
+//                        if (error != nil) {
+//                            print("Error downloading image from httpsReferenceImage firebase")
+//                            print("Error: \(error)")
+//                        } else {
+//                            currentNumberOfPosts += 1
+//                            if currentNumberOfPosts == numberOfPosts {
+//                                _log_Element("I have all my post(s)", shouldLog: self.LOG)
+//                                _log_FullLineStars(self.LOG)
+//                                MBProgressHUD.hideAllHUDsForView(self.view, animated: true)
+//                            }
+//                            let image = UIImage(data: data!)?.resizedImageClosestTo1000
+//                            self.addPostBeginning(titleString, description: descriptionString, date: dateString, author: authorString, imagePresents: true, image: image, timestamp: dateTimestampInterval)
+//                            self.tableView.reloadData()
+//                        }
+//                    }
+//                } else {
+//                    currentNumberOfPosts += 1
+//                    if currentNumberOfPosts == numberOfPosts {
+//                        print("I have all my posts")
+//                        MBProgressHUD.hideAllHUDsForView(self.view, animated: true)
+//                    }
+//                    self.addPostBeginning(titleString, description: descriptionString, date: dateString, author: authorString, imagePresents: false, image: nil, timestamp: dateTimestampInterval)
+//                }
+//                
+//                self.tableView.reloadData()
+//            }
+//        }
+//    }
+
+    
     func obversePosts(){
         initActivityIndicator()
         let postQuery = postRef.queryLimitedToLast(INITIAL_POST_LIMIT)
         postQuery.observeEventType(.Value) { (snapshots: FIRDataSnapshot!) in
+            MBProgressHUD.hideAllHUDsForView(self.view, animated: true)
             let numberOfPosts = Int(snapshots.childrenCount)
             var currentNumberOfPosts = 0
             _log_Title("Downloading Posts", location: "PostTableVC.observePosts()", shouldLog: self.LOG)
@@ -119,7 +184,7 @@ class PostTableViewController: UITableViewController {
                 guard let dateString = snapshot.value!["date"] as? String else {return}
                 guard let dateTimestampInterval = snapshot.value!["timestamp"] as? NSTimeInterval else {return}
                 guard let dateTimestampInverseInterval = snapshot.value!["timestampInverse"] as? NSTimeInterval else {return}
-            
+                
                 if (self.shouldUpdateLastTimestamp(dateTimestampInterval)){
                     self.lastTimestamp = dateTimestampInterval
                 }
@@ -129,41 +194,26 @@ class PostTableViewController: UITableViewController {
                 var imageURLString = ""
                 if let imageURL = snapshot.value!["imageURL"] as? String {
                     imageURLString = imageURL
+                    print("imageURL: \(imageURLString)")
                 }
                 
                 if imageURLString != "" {
-                    let httpsReferenceImage = FIRStorage.storage().referenceForURL(imageURLString)
-                    httpsReferenceImage.dataWithMaxSize(3 * 1024 * 1024) { (data, error) -> Void in
-                        if (error != nil) {
-                            print("Error downloading image from httpsReferenceImage firebase")
-                            print("Error: \(error)")
-                        } else {
-                            currentNumberOfPosts += 1
-                            if currentNumberOfPosts == numberOfPosts {
-                                _log_Element("I have all my post(s)", shouldLog: self.LOG)
-                                _log_FullLineStars(self.LOG)
-                                MBProgressHUD.hideAllHUDsForView(self.view, animated: true)
-                            }
-                            let image = UIImage(data: data!)?.resizedImageClosestTo1000
-                            self.addPostBeginning(titleString, description: descriptionString, date: dateString, author: authorString, imagePresents: true, image: image, timestamp: dateTimestampInterval)
-                            self.tableView.reloadData()
-                        }
-                    }
+                    self.addPostBeginning(titleString, description: descriptionString, date: dateString, author: authorString, imagePresents: true, timestamp: dateTimestampInterval, urlImage: imageURLString)
+                    self.tableView.reloadData()
                 } else {
                     currentNumberOfPosts += 1
                     if currentNumberOfPosts == numberOfPosts {
                         print("I have all my posts")
                         MBProgressHUD.hideAllHUDsForView(self.view, animated: true)
                     }
-                    self.addPostBeginning(titleString, description: descriptionString, date: dateString, author: authorString, imagePresents: false, image: nil, timestamp: dateTimestampInterval)
+                    self.addPostBeginning(titleString, description: descriptionString, date: dateString, author: authorString, imagePresents: false, timestamp: dateTimestampInterval, urlImage: "")
                 }
                 
                 self.tableView.reloadData()
             }
         }
     }
-    
-    
+
     
     func loadMorePosts() {
         let postQuery = postRef.queryOrderedByChild("timestampInverse").queryStartingAtValue(lastTimestampReverse).queryLimitedToFirst(LOAD_MORE_POST_LIMIT+LOAD_MORE_POST_LIMIT)
@@ -192,19 +242,10 @@ class PostTableViewController: UITableViewController {
             self.printMessage(titleString, description: descriptionString, timestamp: dateTimestampInterval, date: dateString)
             if index <= (self.LOAD_MORE_POST_LIMIT+self.LOAD_MORE_POST_LIMIT) {
                 if imageURLString != "" {
-                    let httpsReferenceImage = FIRStorage.storage().referenceForURL(imageURLString)
-                    httpsReferenceImage.dataWithMaxSize(3 * 1024 * 1024) { (data, error) -> Void in
-                        if (error != nil) {
-                            print("Error downloading image from httpsReferenceImage firebase")
-                            print("Error: \(error)")
-                        } else {
-                            let image = UIImage(data: data!)?.resizedImageClosestTo1000
-                            self.addPostAppend(titleString, description: descriptionString, date: dateString, author: authorString, imagePresents: true, image: image, timestamp: dateTimestampInterval)
-                            self.tableView.reloadData()
-                        }
-                    }
+                    self.addPostAppend(titleString, description: descriptionString, date: dateString, author: authorString, imagePresents: true, timestamp: dateTimestampInterval, urlImage: imageURLString)
+                    self.tableView.reloadData()
                 } else {
-                    self.addPostAppend(titleString, description: descriptionString, date: dateString, author: authorString, imagePresents: false, image: nil, timestamp: dateTimestampInterval)
+                    self.addPostAppend(titleString, description: descriptionString, date: dateString, author: authorString, imagePresents: false, timestamp: dateTimestampInterval, urlImage: "")
                     print("image no present")
                 }
                 
@@ -219,6 +260,64 @@ class PostTableViewController: UITableViewController {
         }
         self.resetTimer()
     }
+
+
+    
+    
+//    func loadMorePosts() {
+//        let postQuery = postRef.queryOrderedByChild("timestampInverse").queryStartingAtValue(lastTimestampReverse).queryLimitedToFirst(LOAD_MORE_POST_LIMIT+LOAD_MORE_POST_LIMIT)
+//        var index = UInt(0)
+//        postQuery.observeEventType(.ChildAdded) { (snapshot: FIRDataSnapshot!) in
+//            print("I download \(snapshot.childrenCount) more posts")
+//            
+//            guard let titleString = snapshot.value!["title"] as? String else {return}
+//            guard let descriptionString = snapshot.value!["description"] as? String else {return}
+//            guard let authorString = snapshot.value!["author"] as? String else {return}
+//            guard let dateString = snapshot.value!["date"] as? String else {return}
+//            guard let dateTimestampInterval = snapshot.value!["timestamp"] as? NSTimeInterval else {return}
+//            guard let dateTimestampInverseInterval = snapshot.value!["timestampInverse"] as? NSTimeInterval else {return}
+//            
+//            if (self.shouldUpdateLastTimestamp(dateTimestampInterval)){
+//                self.lastTimestamp = dateTimestampInterval
+//            }
+//            
+//            self.lastTimestampReverse = dateTimestampInverseInterval
+//            index += 1
+//            var imageURLString = ""
+//            if let imageURL = snapshot.value!["imageURL"] as? String {
+//                imageURLString = imageURL
+//            }
+//            print("index: \(index) LOAD_MORE_POST_LIMIT: \(self.LOAD_MORE_POST_LIMIT)")
+//            self.printMessage(titleString, description: descriptionString, timestamp: dateTimestampInterval, date: dateString)
+//            if index <= (self.LOAD_MORE_POST_LIMIT+self.LOAD_MORE_POST_LIMIT) {
+//                if imageURLString != "" {
+//                    let httpsReferenceImage = FIRStorage.storage().referenceForURL(imageURLString)
+//                    httpsReferenceImage.dataWithMaxSize(3 * 1024 * 1024) { (data, error) -> Void in
+//                        if (error != nil) {
+//                            print("Error downloading image from httpsReferenceImage firebase")
+//                            print("Error: \(error)")
+//                        } else {
+//                            let image = UIImage(data: data!)?.resizedImageClosestTo1000
+//                            self.addPostAppend(titleString, description: descriptionString, date: dateString, author: authorString, imagePresents: true, image: image, timestamp: dateTimestampInterval)
+//                            self.tableView.reloadData()
+//                        }
+//                    }
+//                } else {
+//                    self.addPostAppend(titleString, description: descriptionString, date: dateString, author: authorString, imagePresents: false, image: nil, timestamp: dateTimestampInterval)
+//                    print("image no present")
+//                }
+//                
+//                print("title = \(titleString), description = \(descriptionString)")
+//                self.tableView.reloadData()
+//            } else {
+//                print("self.tableView.finishInfiniteScroll()")
+//                self.tableView.finishInfiniteScroll()
+//                self.tableView.reloadData()
+//            }
+//            
+//        }
+//        self.resetTimer()
+//    }
     
     func printMessage(title:String, description: String, timestamp: NSTimeInterval, date: String) {
         print("")
@@ -233,9 +332,9 @@ class PostTableViewController: UITableViewController {
         print("")
     }
     
-    func addPostAppend(title: String, description: String, date: String, author: String, imagePresents: Bool, image: UIImage?, timestamp: NSTimeInterval) {
+    func addPostAppend(title: String, description: String, date: String, author: String, imagePresents: Bool, timestamp: NSTimeInterval, urlImage: String) {
         if self.postAlreadyPresent(timestamp, titleDescription: "\(title)\(description)") == false {
-            self.posts.append(post(title: title, description: description, date: date, author: author, imagePresents: imagePresents, image: image, timestamp: timestamp))
+            self.posts.append(post(title: title, description: description, date: date, author: author, imagePresents: imagePresents, timestamp: timestamp, urlImage: urlImage))
             self.posts.sortInPlace({
                 return ($0.timestamp.distanceTo($1.timestamp) < 0)
             })
@@ -244,9 +343,9 @@ class PostTableViewController: UITableViewController {
         }
     }
     
-    func addPostBeginning(title: String, description: String, date: String, author: String, imagePresents: Bool, image: UIImage?, timestamp: NSTimeInterval) {
+    func addPostBeginning(title: String, description: String, date: String, author: String, imagePresents: Bool, timestamp: NSTimeInterval, urlImage: String) {
         if self.postAlreadyPresent(timestamp, titleDescription: "\(title)\(description)") == false {
-            self.posts.insert(post(title: title, description: description, date: date, author: author, imagePresents: imagePresents, image: image, timestamp: timestamp), atIndex: 0)
+            self.posts.insert(post(title: title, description: description, date: date, author: author, imagePresents: imagePresents, timestamp: timestamp, urlImage: urlImage), atIndex: 0)
             self.posts.sortInPlace({
                 return ($0.timestamp.distanceTo($1.timestamp) < 0)
             })
@@ -322,12 +421,23 @@ class PostTableViewController: UITableViewController {
         
         let section = indexPath.section
         let imagePresents = posts[section].imagePresents
+
         
         if imagePresents {
             let cell = tableView.dequeueReusableCellWithIdentifier("cell_image", forIndexPath: indexPath) as! PostWithImageTableViewCell
             
             let colorForBorder = UIColor.blackColor()
-            cell.postImageView.image = posts[section].image
+            let placeholderImage = UIImage(named: "Amicaloading")
+            cell.postImageView.kf_setImageWithURL(NSURL(string: posts[section].urlImage)!,
+                                                            placeholderImage: placeholderImage,
+                                                            optionsInfo: nil,
+                                                            progressBlock: { (receivedSize, totalSize) -> () in
+                                                                print("Download Progress: \(receivedSize)/\(totalSize)")
+                },
+                                                            completionHandler: { (image, error, cacheType, imageURL) -> () in
+                                                                print("Downloaded and set!")
+                }
+            )
             cell.postImageView.contentMode = .ScaleAspectFill
             cell.postImageView.tag = section
             cell.textPostLabel.text = posts[section].description
@@ -351,6 +461,37 @@ class PostTableViewController: UITableViewController {
             cell.selectionStyle = UITableViewCellSelectionStyle.None
             return cell
         }
+
+        
+        
+//        if imagePresents {
+//            let cell = tableView.dequeueReusableCellWithIdentifier("cell_image", forIndexPath: indexPath) as! PostWithImageTableViewCell
+//            
+//            let colorForBorder = UIColor.blackColor()
+//            cell.postImageView.image = posts[section].image
+//            cell.postImageView.contentMode = .ScaleAspectFill
+//            cell.postImageView.tag = section
+//            cell.textPostLabel.text = posts[section].description
+//            cell.selectionStyle = UITableViewCellSelectionStyle.None
+//            cell.titlePostLabel.text = posts[section].title
+//            
+//            cell.postImageView.layer.cornerRadius = 6.0;
+//            cell.postImageView.layer.borderWidth = 0.5
+//            cell.postImageView.clipsToBounds = true
+//            cell.postImageView.layer.borderColor = colorForBorder.CGColor
+//            
+//            let tapGestureRecognizer = UITapGestureRecognizer(target: self, action:#selector(PostTableViewController.imageTapped(_:)))
+//            cell.postImageView.userInteractionEnabled = true
+//            cell.postImageView.addGestureRecognizer(tapGestureRecognizer)
+//            return cell
+//        } else {
+//            let cell = tableView.dequeueReusableCellWithIdentifier("cell_no_image", forIndexPath: indexPath) as! PostWithoutImageTableViewCell
+//            //cell.textPostLabel.delegate = self
+//            cell.titlePostLabel.text = posts[section].title
+//            cell.textPostLabel.text = posts[section].description
+//            cell.selectionStyle = UITableViewCellSelectionStyle.None
+//            return cell
+//        }
     }
     
     func initActivityIndicator() {
@@ -372,10 +513,11 @@ class PostTableViewController: UITableViewController {
         var index = 0
         var tag = -1
         for post in posts {
-            
             if post.imagePresents {
-                arrayPhoto.append(Photo(photo: post.image!))
-                if post.image! == image {
+                let ImageView = UIImageView()
+                ImageView.kf_setImageWithURL(NSURL(string: post.urlImage))
+                arrayPhoto.append(Photo(photo: ImageView.image!))
+                if ImageView.image == image {
                     tag = index
                 }
                 index += 1
@@ -387,9 +529,16 @@ class PostTableViewController: UITableViewController {
     func imageTapped(img: AnyObject)
     {
         if let tag = img.view?.tag {
-            let image = posts[tag].image
-            let photo = Photo(photo: image!)
-            let photos = createPhotoArray(image!)
+            let ImageView = UIImageView()
+            for post in posts {
+                if post.imagePresents {
+                    ImageView.kf_setImageWithURL(NSURL(string: post.urlImage))
+                    guard let _ = ImageView.image else {return}
+                }
+            }
+            ImageView.kf_setImageWithURL(NSURL(string: posts[tag].urlImage))
+            let photo = Photo(photo: ImageView.image!)
+            let photos = createPhotoArray(ImageView.image!)
             let tagIndexPhotoInArray = photos.1
             if tagIndexPhotoInArray != -1 {
                 let viewer = NYTPhotosViewController(photos: photos.0, initialPhoto: photos.0[tagIndexPhotoInArray])

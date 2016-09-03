@@ -19,6 +19,7 @@ import SWRevealViewController
 import MBProgressHUD
 import Kingfisher
 import Popover
+import FirebaseStorage
 
 
 class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, MenuControllerDelegate, ImagePickerDelegate,JSQMessagesViewControllerScrollingDelegate {
@@ -251,9 +252,9 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
     
     func getHeightPopoverTableView() -> CGFloat {
         /*
-            size header = 28
-            height of 1 cell = 44
-        */
+         size header = 28
+         height of 1 cell = 44
+         */
         return CGFloat(28) + ((connectedUsers.count < 5) ? CGFloat(connectedUsers.count * 44) : CGFloat(175))
     }
     
@@ -379,61 +380,61 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
     }
     
     
-        private func observeMessages() {
-            _log_Title("Count Messages", location: "ChatVC.observeMessages", shouldLog: LOG)
-            var SwiftSpinnerAlreadyHidden = false
-            var index = 0;
-            let messagesQuery = messageRef.queryLimitedToLast(INITIAL_MESSAGE_LIMIT)
-            messagesQuery.observeEventType(.ChildAdded) { (snapshot: FIRDataSnapshot!) in
-                if !SwiftSpinnerAlreadyHidden {
-                    SwiftSpinnerAlreadyHidden = true
-                    MBProgressHUD.hideAllHUDsForView(self.navigationController?.view, animated: true)
-                    self.initActivityIndicatorPictures()
-                }
-    
-                guard let idString = snapshot.value!["senderId"] as? String else {return}
-                guard let textString = snapshot.value!["text"] as? String else {return}
-                guard let senderDisplayNameString = snapshot.value!["senderDisplayName"] as? String else {return}
-                guard let dateTimestampInterval = snapshot.value!["dateTimestamp"] as? NSTimeInterval else {return}
-    
-                var imageURLString = ""
-                if let imageURL = snapshot.value!["imageURL"] as? String {
-                    imageURLString = imageURL
-                }
-    
-                if (self.shouldUpdateLastTimestamp(dateTimestampInterval)){
-                    self.lastTimestamp = dateTimestampInterval
-                }
-    
-                let date = NSDate(timeIntervalSince1970: dateTimestampInterval)
-                let hashValue = "\(idString)\(date)\(senderDisplayNameString)\(dateTimestampInterval)".md5()
-                let canAdd = self.shouldAddInArray(hashValue)
-                if canAdd {
-                    if imageURLString != "" {
-                        let httpsReferenceImage = FIRStorage.storage().referenceForURL(imageURLString)
-                        httpsReferenceImage.dataWithMaxSize(3 * 1024 * 1024) { (data, error) -> Void in
-                            if (error != nil) {
-                                print("Error downloading image from httpsReferenceImage firebase")
-                            } else {
-                                //print("I download image from firebase reference")
-                                let image = UIImage(data: data!)?.resizedImageClosestTo1000
-                                let mediaMessageData: JSQPhotoMediaItem = JSQPhotoMediaItem(image: image)
-                                self.addMessage(idString, media: mediaMessageData, senderDisplayName: senderDisplayNameString, date: date, isLoadMoreLoading: false)
-                                index = self.finishReceivingAsyncMessage(index, isInitialLoading: true, isLoadMoreLoading: false)
-                                _log_Element("Should have \(self.INITIAL_MESSAGE_LIMIT) messages, have: \(index)", shouldLog: self.LOG)
-                            }
+    private func observeMessages() {
+        _log_Title("Count Messages", location: "ChatVC.observeMessages", shouldLog: LOG)
+        var SwiftSpinnerAlreadyHidden = false
+        var index = 0;
+        let messagesQuery = messageRef.queryLimitedToLast(INITIAL_MESSAGE_LIMIT)
+        messagesQuery.observeEventType(.ChildAdded) { (snapshot: FIRDataSnapshot!) in
+            if !SwiftSpinnerAlreadyHidden {
+                SwiftSpinnerAlreadyHidden = true
+                MBProgressHUD.hideAllHUDsForView(self.navigationController?.view, animated: true)
+                self.initActivityIndicatorPictures()
+            }
+            
+            guard let idString = snapshot.value!["senderId"] as? String else {return}
+            guard let textString = snapshot.value!["text"] as? String else {return}
+            guard let senderDisplayNameString = snapshot.value!["senderDisplayName"] as? String else {return}
+            guard let dateTimestampInterval = snapshot.value!["dateTimestamp"] as? NSTimeInterval else {return}
+            
+            var imageURLString = ""
+            if let imageURL = snapshot.value!["imageURL"] as? String {
+                imageURLString = imageURL
+            }
+            
+            if (self.shouldUpdateLastTimestamp(dateTimestampInterval)){
+                self.lastTimestamp = dateTimestampInterval
+            }
+            
+            let date = NSDate(timeIntervalSince1970: dateTimestampInterval)
+            let hashValue = "\(idString)\(date)\(senderDisplayNameString)\(dateTimestampInterval)".md5()
+            let canAdd = self.shouldAddInArray(hashValue)
+            if canAdd {
+                if imageURLString != "" {
+                    let httpsReferenceImage = FIRStorage.storage().referenceForURL(imageURLString)
+                    httpsReferenceImage.dataWithMaxSize(3 * 1024 * 1024) { (data, error) -> Void in
+                        if (error != nil) {
+                            print("Error downloading image from httpsReferenceImage firebase")
+                        } else {
+                            //print("I download image from firebase reference")
+                            let image = UIImage(data: data!)?.resizedImageClosestTo1000
+                            let mediaMessageData: JSQPhotoMediaItem = JSQPhotoMediaItem(image: image)
+                            self.addMessage(idString, media: mediaMessageData, senderDisplayName: senderDisplayNameString, date: date, isLoadMoreLoading: false)
+                            index = self.finishReceivingAsyncMessage(index, isInitialLoading: true, isLoadMoreLoading: false)
+                            _log_Element("Should have \(self.INITIAL_MESSAGE_LIMIT) messages, have: \(index)", shouldLog: self.LOG)
                         }
-                    } else {
-                        self.addMessage(idString, text: textString, senderDisplayName: senderDisplayNameString, date: date, isLoadMoreLoading: false)
-                        index = self.finishReceivingAsyncMessage(index, isInitialLoading: true, isLoadMoreLoading: false)
                     }
-                    self.messagesHashValue += [hashValue]
                 } else {
-                    print("I cannot add the message, PROBLEM!")
-                    print("Timestamp qui cause problème est: \(dateTimestampInterval), data: \(date)")
+                    self.addMessage(idString, text: textString, senderDisplayName: senderDisplayNameString, date: date, isLoadMoreLoading: false)
+                    index = self.finishReceivingAsyncMessage(index, isInitialLoading: true, isLoadMoreLoading: false)
                 }
+                self.messagesHashValue += [hashValue]
+            } else {
+                print("I cannot add the message, PROBLEM!")
+                print("Timestamp qui cause problème est: \(dateTimestampInterval), data: \(date)")
             }
         }
+    }
     
     
     private func observeMessagesWithCache() {
@@ -469,29 +470,7 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
                 if imageURLString != "" {
                     print("imageURLString: \(imageURLString)")
                     imageURLString = "http://www.jqueryscript.net/images/Simplest-Responsive-jQuery-Image-Lightbox-Plugin-simple-lightbox.jpg"
-                    let productImageView = UIImageView()
-                    productImageView.kf_setImageWithURL(NSURL(string: imageURLString)!,
-                                                        placeholderImage: nil,
-                                                        optionsInfo: nil,
-                                                        progressBlock: { (receivedSize, totalSize) -> () in
-                                                            print("Download Progress: \(receivedSize)/\(totalSize)")
-                        },
-                                                        completionHandler: { (image, error, cacheType, imageURL) -> () in
-                                                            print("Downloaded and set!")
-                                                            //let structuredMsg = StructuredMessage()
-                                                            //structuredMsg.price = price
-                                                            //structuredMsg.productName = productName!
-                                                            //structuredMsg.productAttribute = combinedAttribute
-                                                            //structuredMsg.productImage = productImageView.image!
-                                                            //let message = JSQMessage(senderId: sender, displayName: sender, media: structuredMsg)
-                                                            //self.messages += [message]
-                                                            //if !loadHistory{
-                                                            //    self.finishReceivingMessageAnimated(true)
-                                                            //}
-                        }
-                    )
-                
-                
+                    
                 } else {
                     self.addMessage(idString, text: textString, senderDisplayName: senderDisplayNameString, date: date, isLoadMoreLoading: false)
                     index = self.finishReceivingAsyncMessage(index, isInitialLoading: true, isLoadMoreLoading: false)
@@ -503,7 +482,7 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
             }
         }
     }
-
+    
     
     
     func finishReceivingAsyncMessage(index: Int, isInitialLoading: Bool, isLoadMoreLoading: Bool) -> Int {
@@ -726,9 +705,9 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
         return cell
     }
     
-    /* 
-     Display an Avatar 
-    */
+    /*
+     Display an Avatar
+     */
     override func collectionView(collectionView: JSQMessagesCollectionView!,
                                  avatarImageDataForItemAtIndexPath indexPath: NSIndexPath!) -> JSQMessageAvatarImageDataSource! {
         if shouldDisplayAvatar {
@@ -1010,15 +989,15 @@ extension ChatViewController: UITableViewDataSource {
         cell.selectionStyle = .None
         return cell
     }
-
+    
     func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         return "Users"
     }
     
-//    func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-//        let header = UIView()
-//        header.backgroundColor = UIColor.whiteColor()
-//        header.tex
-//        return vw
-//    }
+    //    func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+    //        let header = UIView()
+    //        header.backgroundColor = UIColor.whiteColor()
+    //        header.tex
+    //        return vw
+    //    }
 }
