@@ -42,6 +42,10 @@ class FirebaseManager {
         return BASE_REF.child("posts")
     }
     
+    func createWashingRef() -> FIRDatabaseReference {
+        return BASE_REF.child("washing")
+    }
+    
     // Storage reference
     func createStorageRef() -> FIRStorageReference {
         return storageRef

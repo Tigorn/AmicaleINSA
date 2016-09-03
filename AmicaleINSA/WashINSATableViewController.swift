@@ -14,6 +14,7 @@ import SwiftyJSON
 import Alamofire
 import MBProgressHUD
 import SCLAlertView
+import Firebase
 
 class WashINSATableViewController: UITableViewController {
     
@@ -112,6 +113,7 @@ class WashINSATableViewController: UITableViewController {
         Alamofire.request(.GET, url).validate().responseJSON { response in
             switch response.result {
             case .Success:
+                self.observeCountWashingTotal()
                 _log_Title("WashINSA", location: "WashINSA.loadInfoInMachinesDB()", shouldLog: self.LOG)
                 _log_Element("Response: \(response)", shouldLog: self.LOG)
                 _log_FullLineStars(self.LOG)
@@ -170,6 +172,18 @@ class WashINSATableViewController: UITableViewController {
                 myActivityIndicatorHUD.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(WashINSATableViewController.tapToCancel)))
             }
         }
+    }
+    
+    private func observeCountWashingTotal() {
+        let washingRef = FirebaseManager.firebaseManager.createWashingRef()
+        let numberUsersWashingRef = washingRef.child("numberUsers")
+        numberUsersWashingRef.observeEventType(.Value, withBlock: { (snapshot: FIRDataSnapshot!) in
+            if let count = snapshot.value {
+                self.title = "WashINSA (\(count))"
+            } else {
+                self.title = "WashINSA"
+            }
+        })
     }
     
     
