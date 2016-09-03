@@ -31,6 +31,7 @@ target 'AmicaleINSA' do
     pod 'SCLAlertView'
     pod 'TTTAttributedLabel'
     pod 'JSQSystemSoundPlayer'
+    pod 'Kingfisher', '~> 2.4'
 end
 
 target 'AmicaleINSATests' do

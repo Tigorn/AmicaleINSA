@@ -112,34 +112,18 @@ class PostTableViewController: UITableViewController {
             _log_Title("Downloading Posts", location: "PostTableVC.observePosts()", shouldLog: self.LOG)
             _log_Element("I download \(numberOfPosts) post(s)", shouldLog: self.LOG)
             for snapshot in snapshots.children {
-                var titleString = ""
-                var descriptionString = ""
-                var authorString = ""
-                var dateString = ""
                 
-                if let title = snapshot.value!.objectForKey("title") as? String {
-                    titleString = title
-                    _log_Element("Title: \(titleString)", shouldLog: self.LOG)
-                }
-                
-                if let description = snapshot.value!.objectForKey("description") as? String {
-                    descriptionString = description
-                }
-                
-                if let author = snapshot.value!.objectForKey("author") as? String {
-                    authorString = author
-                }
-                
-                if let date = snapshot.value!.objectForKey("date") as? String {
-                    dateString = date
-                }
-                
-                let dateTimestampInterval = snapshot.value!["timestamp"] as! NSTimeInterval
+                guard let titleString = snapshot.value!["title"] as? String else {return}
+                guard let descriptionString = snapshot.value!["description"] as? String else {return}
+                guard let authorString = snapshot.value!["author"] as? String else {return}
+                guard let dateString = snapshot.value!["date"] as? String else {return}
+                guard let dateTimestampInterval = snapshot.value!["timestamp"] as? NSTimeInterval else {return}
+                guard let dateTimestampInverseInterval = snapshot.value!["timestampInverse"] as? NSTimeInterval else {return}
+            
                 if (self.shouldUpdateLastTimestamp(dateTimestampInterval)){
                     self.lastTimestamp = dateTimestampInterval
                 }
                 
-                let dateTimestampInverseInterval = snapshot.value!["timestampInverse"] as! NSTimeInterval
                 self.lastTimestampReverse = dateTimestampInverseInterval
                 
                 var imageURLString = ""
@@ -186,32 +170,18 @@ class PostTableViewController: UITableViewController {
         var index = UInt(0)
         postQuery.observeEventType(.ChildAdded) { (snapshot: FIRDataSnapshot!) in
             print("I download \(snapshot.childrenCount) more posts")
-            var titleString = ""
-            var descriptionString = ""
-            var authorString = ""
-            var dateString = ""
             
-            if let title = snapshot.value!.objectForKey("title") as? String {
-                titleString = title
-            }
+            guard let titleString = snapshot.value!["title"] as? String else {return}
+            guard let descriptionString = snapshot.value!["description"] as? String else {return}
+            guard let authorString = snapshot.value!["author"] as? String else {return}
+            guard let dateString = snapshot.value!["date"] as? String else {return}
+            guard let dateTimestampInterval = snapshot.value!["timestamp"] as? NSTimeInterval else {return}
+            guard let dateTimestampInverseInterval = snapshot.value!["timestampInverse"] as? NSTimeInterval else {return}
             
-            if let description = snapshot.value!.objectForKey("description") as? String {
-                descriptionString = description
-            }
-            
-            if let author = snapshot.value!.objectForKey("author") as? String {
-                authorString = author
-            }
-            
-            if let date = snapshot.value!.objectForKey("date") as? String {
-                dateString = date
-            }
-            
-            let dateTimestampInterval = snapshot.value!["timestamp"] as! NSTimeInterval
             if (self.shouldUpdateLastTimestamp(dateTimestampInterval)){
                 self.lastTimestamp = dateTimestampInterval
             }
-            let dateTimestampInverseInterval = snapshot.value!["timestampInverse"] as! NSTimeInterval
+            
             self.lastTimestampReverse = dateTimestampInverseInterval
             index += 1
             var imageURLString = ""

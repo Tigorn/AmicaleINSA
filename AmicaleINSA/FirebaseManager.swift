@@ -26,6 +26,10 @@ class FirebaseManager {
         return BASE_REF.child("typingIndicator")
     }
     
+    func createMasterChatRef() -> FIRDatabaseReference {
+        return BASE_REF.child("MasterChat")
+    }
+    
     func createActiveUsersRef() -> FIRDatabaseReference {
         return BASE_REF.child("activeUsers")
     }
@@ -66,30 +70,5 @@ class FirebaseManager {
         itemRef.setValue(messageItem)
         
         JSQSystemSoundPlayer.jsq_playMessageSentSound()
-    }
-    
-    func sendMessage(text: String, senderId: String, senderDisplayName: String,
-        date: NSDate, isMedia: Bool) {
-            let dateTimestamp = date.timeIntervalSince1970
-            if (chatVC.shouldUpdateLastTimestamp(dateTimestamp)){
-                chatVC.lastTimestamp = dateTimestamp
-            }
-            let dateString = String(date)
-        let itemRef = BASE_REF.child("messages").childByAutoId()
-            let messageItem = [ // 2
-                "text": text,
-                "senderId": senderId,
-                "senderDisplayName": senderDisplayName,
-                "date": dateString,
-                "dateTimestamp": dateTimestamp,
-                "isMedia": isMedia,
-                "hashValue": "\(senderId)\(dateTimestamp)".md5(),
-                "imageURL": "",
-                "image": ""
-            ]
-            itemRef.setValue(messageItem)
-            
-            JSQSystemSoundPlayer.jsq_playMessageSentSound()
-    }
-    
+    }    
 }
