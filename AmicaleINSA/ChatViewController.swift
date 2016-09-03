@@ -18,13 +18,20 @@ import ImagePicker
 import SWRevealViewController
 import MBProgressHUD
 import Kingfisher
+import Popover
 
 
 class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, MenuControllerDelegate, ImagePickerDelegate,JSQMessagesViewControllerScrollingDelegate {
     
+    private var popover: Popover!
+    private var connectedUsers = [String]()
+    private var popoverOptions: [PopoverOption] = [
+        .Type(.Down),
+        .BlackOverlayColor(UIColor(white: 0.0, alpha: 0.6))
+    ]
+    
     @IBOutlet weak var menuButton: UIBarButtonItem!
     
-    // var myActivityIndicator: UIActivityIndicatorView!
     var myActivityIndicatorHUD = MBProgressHUD()
     
     var messages = [JSQMessage]()
@@ -222,10 +229,32 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
         uuidHash = (UIDevice.currentDevice().identifierForVendor!.UUIDString).md5()
         // setMasterChatiOSHashUUID()
         downloadMasterChatiOSHashUUID()
+        
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "", style: .Plain, target: self, action: #selector(emojiTitleRightTapped))
     }
     
     
     func initChat(){}
+    
+    func emojiTitleRightTapped() {
+        let width = self.view.frame.width
+        let x_startintPoint = width - (width * 0.084)
+        let y_startintPoint = CGFloat(55)
+        let startPoint = CGPoint(x: x_startintPoint, y: y_startintPoint)
+        let tableView = UITableView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: getHeightPopoverTableView()))
+        tableView.delegate = self
+        tableView.dataSource = self
+        tableView.scrollEnabled = true
+        self.popover = Popover(options: self.popoverOptions, showHandler: nil, dismissHandler: nil)
+        self.popover.show(tableView, point: startPoint)
+    }
+    
+    func getHeightPopoverTableView() -> CGFloat {
+        /*
+            44 = height of 1 cell
+        */
+        return (connectedUsers.count < 5) ? CGFloat(connectedUsers.count * 44) : CGFloat(175)
+    }
     
     
     private func observeActiveUsers() {
@@ -237,77 +266,84 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
             value = getUsernameChat()
             singleUserRef.setValue(value)
             var count = 0
+            self.connectedUsers = []
+            for user in snapshot.children {
+                self.connectedUsers.append(user.value)
+            }
+            self.connectedUsers.sortInPlace()
             if snapshot.exists() {
                 count = Int(snapshot.childrenCount)
-                var titleChat = "Chat (\(count)) "
+                let titleChat = "Chat (\(count)) "
+                var emoTitleChat = ""
                 if count == 1 {
-                    titleChat += "👶"
+                    emoTitleChat = "👶"
                 } else if  count == 2 {
-                    titleChat += "👦"
+                    emoTitleChat = "👦"
                 } else if  count == 3 {
-                    titleChat += "👧"
+                    emoTitleChat = "👧"
                 } else if  count == 4 {
-                    titleChat += "🤗"
+                    emoTitleChat = "🤗"
                 } else if  count == 5 {
-                    titleChat += "🚶"
+                    emoTitleChat = "🚶"
                 } else if  count == 6 {
-                    titleChat += "🍻"
+                    emoTitleChat = "🍻"
                 } else if count <= 7 {
-                    titleChat += "😎"
+                    emoTitleChat = "😎"
                 } else if count <= 10 {
-                    titleChat += "🤓"
+                    emoTitleChat = "🤓"
                 } else if count <= 15 {
-                    titleChat += "😱"
+                    emoTitleChat = "😱"
                 } else if count <= 20 {
-                    titleChat += "😍"
+                    emoTitleChat = "😍"
                 } else if count <= 25 {
-                    titleChat += "🍷"
+                    emoTitleChat = "🍷"
                 } else if count <= 30 {
-                    titleChat += "🐤"
+                    emoTitleChat = "🐤"
                 } else if count <= 35 {
-                    titleChat += "🐙"
+                    emoTitleChat = "🐙"
                 } else if count <= 40 {
-                    titleChat += "🐸"
+                    emoTitleChat = "🐸"
                 } else if count <= 45 {
-                    titleChat += "🐔"
+                    emoTitleChat = "🐔"
                 } else if count <= 50 {
-                    titleChat += "🐌"
+                    emoTitleChat = "🐌"
                 } else if count <= 60 {
-                    titleChat += "🐨"
+                    emoTitleChat = "🐨"
                 } else if count <= 70 {
-                    titleChat += "🐢"
+                    emoTitleChat = "🐢"
                 } else if count <= 80 {
-                    titleChat += "🐳"
+                    emoTitleChat = "🐳"
                 } else if count <= 90 {
-                    titleChat += "🐲"
+                    emoTitleChat = "🐲"
                 } else if count <= 100 {
-                    titleChat += "💥"
+                    emoTitleChat = "💥"
                 } else if count <= 110 {
-                    titleChat += "🌨"
+                    emoTitleChat = "🌨"
                 } else if count <= 120 {
-                    titleChat += "🌩"
+                    emoTitleChat = "🌩"
                 } else if count <= 130 {
-                    titleChat += "⛈"
+                    emoTitleChat = "⛈"
                 } else if count <= 140 {
-                    titleChat += "🌧"
+                    emoTitleChat = "🌧"
                 } else if count <= 150 {
-                    titleChat += "🌦"
+                    emoTitleChat = "🌦"
                 } else if count <= 160 {
-                    titleChat += "🌬"
+                    emoTitleChat = "🌬"
                 } else if count <= 170 {
-                    titleChat += "☁️"
+                    emoTitleChat = "☁️"
                 } else if count <= 180 {
-                    titleChat += "⛅️"
+                    emoTitleChat = "⛅️"
                 } else if count <= 190 {
-                    titleChat += "🌤"
+                    emoTitleChat = "🌤"
                 } else if count <= 195 {
-                    titleChat += "☀️"
+                    emoTitleChat = "☀️"
                 } else if count <= 200 {
-                    titleChat += "🔥"
+                    emoTitleChat = "🔥"
                 } else {
-                    titleChat += "👁"
+                    emoTitleChat = "👁"
                 }
                 self.title = titleChat
+                self.navigationItem.rightBarButtonItem?.title = emoTitleChat
             }
         })
     }
@@ -948,4 +984,25 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
         return true
     }
     
+}
+
+extension ChatViewController: UITableViewDelegate {
+    
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        self.popover.dismiss()
+    }
+}
+
+extension ChatViewController: UITableViewDataSource {
+    
+    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int{
+        return self.connectedUsers.count
+    }
+    
+    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        let cell = UITableViewCell(style: .Default, reuseIdentifier: nil)
+        cell.textLabel?.text = self.connectedUsers[indexPath.row]
+        cell.selectionStyle = .None
+        return cell
+    }
 }
