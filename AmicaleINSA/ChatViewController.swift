@@ -379,175 +379,264 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
     }
     
     
-//    private func observeMessages() {
-//        _log_Title("Count Messages", location: "ChatVC.observeMessages", shouldLog: LOG)
-//        var SwiftSpinnerAlreadyHidden = false
-//        var index = 0;
-//        let messagesQuery = messageRef.queryLimitedToLast(INITIAL_MESSAGE_LIMIT)
-//        messagesQuery.observeEventType(.ChildAdded) { (snapshot: FIRDataSnapshot!) in
-//            if !SwiftSpinnerAlreadyHidden {
-//                SwiftSpinnerAlreadyHidden = true
-//                MBProgressHUD.hideAllHUDsForView(self.navigationController?.view, animated: true)
-//                self.initActivityIndicatorPictures()
-//            }
-//            
-//            guard let idString = snapshot.value!["senderId"] as? String else {return}
-//            guard let textString = snapshot.value!["text"] as? String else {return}
-//            guard let senderDisplayNameString = snapshot.value!["senderDisplayName"] as? String else {return}
-//            guard let dateTimestampInterval = snapshot.value!["dateTimestamp"] as? NSTimeInterval else {return}
-//            
-//            var imageURLString = ""
-//            if let imageURL = snapshot.value!["imageURL"] as? String {
-//                imageURLString = imageURL
-//            }
-//            
-//            if (self.shouldUpdateLastTimestamp(dateTimestampInterval)){
-//                self.lastTimestamp = dateTimestampInterval
-//            }
-//            
-//            let date = NSDate(timeIntervalSince1970: dateTimestampInterval)
-//            let hashValue = "\(idString)\(date)\(senderDisplayNameString)\(dateTimestampInterval)".md5()
-//            let canAdd = self.shouldAddInArray(hashValue)
-//            if canAdd {
-//                if imageURLString != "" {
-//                    let httpsReferenceImage = FIRStorage.storage().referenceForURL(imageURLString)
-//                    httpsReferenceImage.dataWithMaxSize(3 * 1024 * 1024) { (data, error) -> Void in
-//                        if (error != nil) {
-//                            print("Error downloading image from httpsReferenceImage firebase")
-//                        } else {
-//                            //print("I download image from firebase reference")
-//                            let image = UIImage(data: data!)?.resizedImageClosestTo1000
-//                            let mediaMessageData: JSQPhotoMediaItem = JSQPhotoMediaItem(image: image)
-//                            self.addMessage(idString, media: mediaMessageData, senderDisplayName: senderDisplayNameString, date: date, isLoadMoreLoading: false)
-//                            index = self.finishReceivingAsyncMessage(index, isInitialLoading: true, isLoadMoreLoading: false)
-//                            _log_Element("Should have \(self.INITIAL_MESSAGE_LIMIT) messages, have: \(index)", shouldLog: self.LOG)
-//                        }
-//                    }
-//                } else {
-//                    self.addMessage(idString, text: textString, senderDisplayName: senderDisplayNameString, date: date, isLoadMoreLoading: false)
-//                    index = self.finishReceivingAsyncMessage(index, isInitialLoading: true, isLoadMoreLoading: false)
-//                }
-//                self.messagesHashValue += [hashValue]
-//            } else {
-//                print("I cannot add the message, PROBLEM!")
-//                print("Timestamp qui cause problème est: \(dateTimestampInterval), data: \(date)")
-//            }
-//        }
-//    }
-
+    //    private func observeMessages() {
+    //        _log_Title("Count Messages", location: "ChatVC.observeMessages", shouldLog: LOG)
+    //        var SwiftSpinnerAlreadyHidden = false
+    //        var index = 0;
+    //        let messagesQuery = messageRef.queryLimitedToLast(INITIAL_MESSAGE_LIMIT)
+    //        messagesQuery.observeEventType(.ChildAdded) { (snapshot: FIRDataSnapshot!) in
+    //            if !SwiftSpinnerAlreadyHidden {
+    //                SwiftSpinnerAlreadyHidden = true
+    //                MBProgressHUD.hideAllHUDsForView(self.navigationController?.view, animated: true)
+    //                self.initActivityIndicatorPictures()
+    //            }
+    //
+    //            guard let idString = snapshot.value!["senderId"] as? String else {return}
+    //            guard let textString = snapshot.value!["text"] as? String else {return}
+    //            guard let senderDisplayNameString = snapshot.value!["senderDisplayName"] as? String else {return}
+    //            guard let dateTimestampInterval = snapshot.value!["dateTimestamp"] as? NSTimeInterval else {return}
+    //
+    //            var imageURLString = ""
+    //            if let imageURL = snapshot.value!["imageURL"] as? String {
+    //                imageURLString = imageURL
+    //            }
+    //
+    //            if (self.shouldUpdateLastTimestamp(dateTimestampInterval)){
+    //                self.lastTimestamp = dateTimestampInterval
+    //            }
+    //
+    //            let date = NSDate(timeIntervalSince1970: dateTimestampInterval)
+    //            let hashValue = "\(idString)\(date)\(senderDisplayNameString)\(dateTimestampInterval)".md5()
+    //            let canAdd = self.shouldAddInArray(hashValue)
+    //            if canAdd {
+    //                if imageURLString != "" {
+    //                    let httpsReferenceImage = FIRStorage.storage().referenceForURL(imageURLString)
+    //                    httpsReferenceImage.dataWithMaxSize(3 * 1024 * 1024) { (data, error) -> Void in
+    //                        if (error != nil) {
+    //                            print("Error downloading image from httpsReferenceImage firebase")
+    //                        } else {
+    //                            //print("I download image from firebase reference")
+    //                            let image = UIImage(data: data!)?.resizedImageClosestTo1000
+    //                            let mediaMessageData: JSQPhotoMediaItem = JSQPhotoMediaItem(image: image)
+    //                            self.addMessage(idString, media: mediaMessageData, senderDisplayName: senderDisplayNameString, date: date, isLoadMoreLoading: false)
+    //                            index = self.finishReceivingAsyncMessage(index, isInitialLoading: true, isLoadMoreLoading: false)
+    //                            _log_Element("Should have \(self.INITIAL_MESSAGE_LIMIT) messages, have: \(index)", shouldLog: self.LOG)
+    //                        }
+    //                    }
+    //                } else {
+    //                    self.addMessage(idString, text: textString, senderDisplayName: senderDisplayNameString, date: date, isLoadMoreLoading: false)
+    //                    index = self.finishReceivingAsyncMessage(index, isInitialLoading: true, isLoadMoreLoading: false)
+    //                }
+    //                self.messagesHashValue += [hashValue]
+    //            } else {
+    //                print("I cannot add the message, PROBLEM!")
+    //                print("Timestamp qui cause problème est: \(dateTimestampInterval), data: \(date)")
+    //            }
+    //        }
+    //    }
+    
+    
+    //    private func observeMessages() { // working with cache but not for loop...
+    //        _log_Title("Count Messages", location: "ChatVC.observeMessages", shouldLog: LOG)
+    //        var SwiftSpinnerAlreadyHidden = false
+    //        var index = 0;
+    //        let messagesQuery = messageRef.queryLimitedToLast(INITIAL_MESSAGE_LIMIT)
+    //        messagesQuery.observeEventType(.ChildAdded) { (snapshot: FIRDataSnapshot!) in
+    //            if !SwiftSpinnerAlreadyHidden {
+    //                SwiftSpinnerAlreadyHidden = true
+    //                MBProgressHUD.hideAllHUDsForView(self.navigationController?.view, animated: true)
+    //                self.initActivityIndicatorPictures()
+    //            }
+    //
+    //            guard let idString = snapshot.value!["senderId"] as? String else {return}
+    //            guard let textString = snapshot.value!["text"] as? String else {return}
+    //            guard let senderDisplayNameString = snapshot.value!["senderDisplayName"] as? String else {return}
+    //            guard let dateTimestampInterval = snapshot.value!["dateTimestamp"] as? NSTimeInterval else {return}
+    //
+    //            var imageURLString = ""
+    //            if let imageURL = snapshot.value!["imageURL"] as? String {
+    //                imageURLString = imageURL
+    //            }
+    //
+    //            if (self.shouldUpdateLastTimestamp(dateTimestampInterval)){
+    //                self.lastTimestamp = dateTimestampInterval
+    //            }
+    //
+    //            let date = NSDate(timeIntervalSince1970: dateTimestampInterval)
+    //            let hashValue = "\(idString)\(date)\(senderDisplayNameString)\(dateTimestampInterval)".md5()
+    //            let canAdd = self.shouldAddInArray(hashValue)
+    //            if canAdd {
+    //                if imageURLString != "" {
+    //                    let url = NSURL(string: imageURLString)!
+    //                    let imageMedia = AsyncPhotoMediaItem(withURL: url)
+    //                    self.addMessage(idString, media: imageMedia, senderDisplayName: senderDisplayNameString, date: date, isLoadMoreLoading: false)
+    //                    index = self.finishReceivingAsyncMessage(index, isInitialLoading: true, isLoadMoreLoading: false)
+    //                } else {
+    //                    self.addMessage(idString, text: textString, senderDisplayName: senderDisplayNameString, date: date, isLoadMoreLoading: false)
+    //                    index = self.finishReceivingAsyncMessage(index, isInitialLoading: true, isLoadMoreLoading: false)
+    //                }
+    //                self.messagesHashValue += [hashValue]
+    //            } else {
+    //                print("I cannot add the message, PROBLEM!")
+    //                print("Timestamp qui cause problème est: \(dateTimestampInterval), data: \(date)")
+    //            }
+    //        }
+    //    }
     
     private func observeMessages() {
         _log_Title("Count Messages", location: "ChatVC.observeMessages", shouldLog: LOG)
         var SwiftSpinnerAlreadyHidden = false
-        var index = 0;
+        var index = 0
         let messagesQuery = messageRef.queryLimitedToLast(INITIAL_MESSAGE_LIMIT)
-        messagesQuery.observeEventType(.ChildAdded) { (snapshot: FIRDataSnapshot!) in
-            if !SwiftSpinnerAlreadyHidden {
-                SwiftSpinnerAlreadyHidden = true
-                MBProgressHUD.hideAllHUDsForView(self.navigationController?.view, animated: true)
-                self.initActivityIndicatorPictures()
-            }
-            
-            guard let idString = snapshot.value!["senderId"] as? String else {return}
-            guard let textString = snapshot.value!["text"] as? String else {return}
-            guard let senderDisplayNameString = snapshot.value!["senderDisplayName"] as? String else {return}
-            guard let dateTimestampInterval = snapshot.value!["dateTimestamp"] as? NSTimeInterval else {return}
-            
-            var imageURLString = ""
-            if let imageURL = snapshot.value!["imageURL"] as? String {
-                imageURLString = imageURL
-            }
-            
-            if (self.shouldUpdateLastTimestamp(dateTimestampInterval)){
-                self.lastTimestamp = dateTimestampInterval
-            }
-            
-            let date = NSDate(timeIntervalSince1970: dateTimestampInterval)
-            let hashValue = "\(idString)\(date)\(senderDisplayNameString)\(dateTimestampInterval)".md5()
-            let canAdd = self.shouldAddInArray(hashValue)
-            if canAdd {
-                if imageURLString != "" {
-                    let url = NSURL(string: imageURLString)!
-                    let imageMedia = AsyncPhotoMediaItem(withURL: url)
-                    self.addMessage(idString, media: imageMedia, senderDisplayName: senderDisplayNameString, date: date, isLoadMoreLoading: false)
-                    index = self.finishReceivingAsyncMessage(index, isInitialLoading: true, isLoadMoreLoading: false)
-                } else {
-                    self.addMessage(idString, text: textString, senderDisplayName: senderDisplayNameString, date: date, isLoadMoreLoading: false)
-                    index = self.finishReceivingAsyncMessage(index, isInitialLoading: true, isLoadMoreLoading: false)
+        messagesQuery.observeEventType(.Value) { (snapshots: FIRDataSnapshot!) in
+            var limiteLoadMessages = snapshots.childrenCount
+            for message in snapshots.children {
+                index += 1
+                if !SwiftSpinnerAlreadyHidden {
+                    SwiftSpinnerAlreadyHidden = true
+                    MBProgressHUD.hideAllHUDsForView(self.navigationController?.view, animated: true)
+                    self.initActivityIndicatorPictures()
                 }
-                self.messagesHashValue += [hashValue]
-            } else {
-                print("I cannot add the message, PROBLEM!")
-                print("Timestamp qui cause problème est: \(dateTimestampInterval), data: \(date)")
+                
+                guard let idString = message.value!["senderId"] as? String else {return}
+                guard let textString = message.value!["text"] as? String else {return}
+                guard let senderDisplayNameString = message.value!["senderDisplayName"] as? String else {return}
+                guard let dateTimestampInterval = message.value!["dateTimestamp"] as? NSTimeInterval else {return}
+                
+                var imageURLString = ""
+                if let imageURL = message.value!["imageURL"] as? String {
+                    imageURLString = imageURL
+                }
+                
+                if (self.shouldUpdateLastTimestamp(dateTimestampInterval)){
+                    self.lastTimestamp = dateTimestampInterval
+                }
+                
+                let date = NSDate(timeIntervalSince1970: dateTimestampInterval)
+                let hashValue = "\(idString)\(date)\(senderDisplayNameString)\(dateTimestampInterval)".md5()
+                let canAdd = self.shouldAddInArray(hashValue)
+                if canAdd {
+                    if imageURLString != "" {
+                        let url = NSURL(string: imageURLString)!
+                        let imageMedia = AsyncPhotoMediaItem(withURL: url)
+                        self.addMessage(idString, media: imageMedia, senderDisplayName: senderDisplayNameString, date: date, isLoadMoreLoading: false)
+                    } else {
+                        self.addMessage(idString, text: textString, senderDisplayName: senderDisplayNameString, date: date, isLoadMoreLoading: false)
+                    }
+                    self.messagesHashValue += [hashValue]
+                } else {
+                    print("I cannot add the message, PROBLEM!")
+                    print("Timestamp qui cause problème est: \(dateTimestampInterval), data: \(date)")
+                }
+                if UInt(index) == limiteLoadMessages {
+                    self.finishReceivingMessage()
+                    self.scrollToBottomAnimated(true)
+                    MBProgressHUD.hideAllHUDsForView(self.navigationController?.view, animated: true)
+                }
             }
+            
         }
     }
+    
     
     func loadMoreMessages(){
         let oldBottomOffset = self.collectionView!.contentSize.height - self.collectionView!.contentOffset.y
         let messagesQuery = messageRef.queryOrderedByChild("dateTimestamp").queryEndingAtValue(lastTimestamp).queryLimitedToLast(LOAD_MORE_MESSAGE_LIMIT)
         var index = 0
-        messagesQuery.observeEventType(.ChildAdded) { (snapshot: FIRDataSnapshot!) in
-            
-            guard let id = snapshot.value!["senderId"] as? String else {return}
-            guard let text = snapshot.value!["text"] as? String else {return}
-            guard let senderDisplayName = snapshot.value!["senderDisplayName"] as? String else {return}
-            guard let dateTimestampInterval = snapshot.value!["dateTimestamp"] as? NSTimeInterval else {return}
-            var imageURLString = ""
-            if let imageURL = snapshot.value!["imageURL"] as? String {
-                imageURLString = imageURL
-            }
-            
-            if (self.shouldUpdateLastTimestamp(dateTimestampInterval)){
-                self.lastTimestamp = dateTimestampInterval
-            }
-            
-            let date = NSDate(timeIntervalSince1970: dateTimestampInterval)
-            
-            if index < Int(self.LOAD_MORE_MESSAGE_LIMIT) {
+        print("loadMoreMessages ==> 1")
+        messagesQuery.observeEventType(.Value) { (snapshots: FIRDataSnapshot!) in
+            let limiteLoadMore = snapshots.childrenCount
+            print("loadMoreMessages ==> 2")
+            for message in snapshots.children {
+                index += 1
+                print("blocage UI ? \(index)")
+                guard let id = message.value!["senderId"] as? String else {return}
+                guard let text = message.value!["text"] as? String else {return}
+                guard let senderDisplayName = message.value!["senderDisplayName"] as? String else {return}
+                guard let dateTimestampInterval = message.value!["dateTimestamp"] as? NSTimeInterval else {return}
+                var imageURLString = ""
+                if let imageURL = message.value!["imageURL"] as? String {
+                    imageURLString = imageURL
+                }
+                
+                if (self.shouldUpdateLastTimestamp(dateTimestampInterval)){
+                    self.lastTimestamp = dateTimestampInterval
+                }
+                
+                let date = NSDate(timeIntervalSince1970: dateTimestampInterval)
+                
                 if imageURLString != "" {
                     let url = NSURL(string: imageURLString)!
                     let imageMedia = AsyncPhotoMediaItem(withURL: url)
                     self.addMessage(id, media: imageMedia, senderDisplayName: senderDisplayName, date: date, isLoadMoreLoading: true)
-                    index = self.finishReceivingAsyncMessage(index, isInitialLoading: false, isLoadMoreLoading: true)
-
-//                    let httpsReferenceImage = FIRStorage.storage().referenceForURL(imageURLString)
-//                    httpsReferenceImage.dataWithMaxSize(3 * 1024 * 1024) { (data, error) -> Void in
-//                        if (error != nil) {
-//                            print("Error downloading image from httpsReferenceImage firebase")
-//                        } else {
-//                            let image = UIImage(data: data!)?.resizedImageClosestTo1000
-//                            let mediaMessageData: JSQPhotoMediaItem = JSQPhotoMediaItem(image: image)
-//                            self.addMessage(id, media: mediaMessageData, senderDisplayName: senderDisplayName, date: date, isLoadMoreLoading: true)
-//                            index = self.finishReceivingAsyncMessage(index, isInitialLoading: false, isLoadMoreLoading: true)
-//                            print("index: \(index), load_more_message_limit: \(Int(self.LOAD_MORE_MESSAGE_LIMIT))")
-//                        }
-//                    }
                 }
                 else {
-                    index += 1
                     self.addMessage(id, text: text, senderDisplayName: senderDisplayName, date: date, isLoadMoreLoading: true)
                 }
-            } else {
-                print("I stop animating the loading indicator")
-                self.collectionView!.infiniteScrollingView.stopAnimating()
+                if UInt(index) == limiteLoadMore {
+                    self.finishReceivingMessageAnimated(false)
+                    self.collectionView!.infiniteScrollingView.stopAnimating()
+                }
+                self.collectionView!.layoutIfNeeded()
+                self.collectionView!.contentOffset = CGPointMake(0, self.collectionView!.contentSize.height - oldBottomOffset)
             }
-            self.finishReceivingMessageAnimated(false)
-            self.collectionView!.layoutIfNeeded()
-            self.collectionView!.contentOffset = CGPointMake(0, self.collectionView!.contentSize.height - oldBottomOffset)
         }
         self.resetTimer()
     }
-
-
     
-    func finishReceivingAsyncMessage(index: Int, isInitialLoading: Bool, isLoadMoreLoading: Bool) -> Int {
+    
+    //    func loadMoreMessages(){ // cache: OK, but without for ... loop
+    //        let oldBottomOffset = self.collectionView!.contentSize.height - self.collectionView!.contentOffset.y
+    //        let messagesQuery = messageRef.queryOrderedByChild("dateTimestamp").queryEndingAtValue(lastTimestamp).queryLimitedToLast(LOAD_MORE_MESSAGE_LIMIT)
+    //        var index = 0
+    //        messagesQuery.observeEventType(.ChildAdded) { (snapshot: FIRDataSnapshot!) in
+    //
+    //            guard let id = snapshot.value!["senderId"] as? String else {return}
+    //            guard let text = snapshot.value!["text"] as? String else {return}
+    //            guard let senderDisplayName = snapshot.value!["senderDisplayName"] as? String else {return}
+    //            guard let dateTimestampInterval = snapshot.value!["dateTimestamp"] as? NSTimeInterval else {return}
+    //            var imageURLString = ""
+    //            if let imageURL = snapshot.value!["imageURL"] as? String {
+    //                imageURLString = imageURL
+    //            }
+    //
+    //            if (self.shouldUpdateLastTimestamp(dateTimestampInterval)){
+    //                self.lastTimestamp = dateTimestampInterval
+    //            }
+    //
+    //            let date = NSDate(timeIntervalSince1970: dateTimestampInterval)
+    //
+    //            if index < Int(self.LOAD_MORE_MESSAGE_LIMIT) {
+    //                if imageURLString != "" {
+    //                    let url = NSURL(string: imageURLString)!
+    //                    let imageMedia = AsyncPhotoMediaItem(withURL: url)
+    //                    self.addMessage(id, media: imageMedia, senderDisplayName: senderDisplayName, date: date, isLoadMoreLoading: true)
+    //                    index = self.finishReceivingAsyncMessage(index, isInitialLoading: false, isLoadMoreLoading: true)
+    //                }
+    //                else {
+    //                    index += 1
+    //                    self.addMessage(id, text: text, senderDisplayName: senderDisplayName, date: date, isLoadMoreLoading: true)
+    //                }
+    //            } else {
+    //                print("I stop animating the loading indicator")
+    //                self.collectionView!.infiniteScrollingView.stopAnimating()
+    //            }
+    //            self.finishReceivingMessageAnimated(false)
+    //            self.collectionView!.layoutIfNeeded()
+    //            self.collectionView!.contentOffset = CGPointMake(0, self.collectionView!.contentSize.height - oldBottomOffset)
+    //        }
+    //        self.resetTimer()
+    //    }
+    
+    
+    
+    func finishReceivingAsyncMessage(index: Int, isInitialLoading: Bool, isLoadMoreLoading: Bool, limiteLoadMore: UInt) -> Int {
         self.finishReceivingMessage()
         if UInt(index+1) == self.INITIAL_MESSAGE_LIMIT && isInitialLoading {
             self.scrollToBottomAnimated(true)
             MBProgressHUD.hideAllHUDsForView(self.navigationController?.view, animated: true)
-        } else if UInt(index+1) == LOAD_MORE_MESSAGE_LIMIT && isLoadMoreLoading {
-            self.collectionView!.infiniteScrollingView.stopAnimating()
+        } else if UInt(index+1) == limiteLoadMore && isLoadMoreLoading {
+            //self.collectionView!.infiniteScrollingView.stopAnimating()
         }
         return index+1
     }
@@ -595,60 +684,60 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
         return false
     }
     
-
     
     
     
-//    func loadMoreMessages(){
-//        let oldBottomOffset = self.collectionView!.contentSize.height - self.collectionView!.contentOffset.y
-//        let messagesQuery = messageRef.queryOrderedByChild("dateTimestamp").queryEndingAtValue(lastTimestamp).queryLimitedToLast(LOAD_MORE_MESSAGE_LIMIT)
-//        var index = 0
-//        messagesQuery.observeEventType(.ChildAdded) { (snapshot: FIRDataSnapshot!) in
-//            
-//            guard let id = snapshot.value!["senderId"] as? String else {return}
-//            guard let text = snapshot.value!["text"] as? String else {return}
-//            guard let senderDisplayName = snapshot.value!["senderDisplayName"] as? String else {return}
-//            guard let dateTimestampInterval = snapshot.value!["dateTimestamp"] as? NSTimeInterval else {return}
-//            var imageURLString = ""
-//            if let imageURL = snapshot.value!["imageURL"] as? String {
-//                imageURLString = imageURL
-//            }
-//            
-//            if (self.shouldUpdateLastTimestamp(dateTimestampInterval)){
-//                self.lastTimestamp = dateTimestampInterval
-//            }
-//            
-//            let date = NSDate(timeIntervalSince1970: dateTimestampInterval)
-//            
-//            if index < Int(self.LOAD_MORE_MESSAGE_LIMIT) {
-//                if imageURLString != "" {
-//                    let httpsReferenceImage = FIRStorage.storage().referenceForURL(imageURLString)
-//                    httpsReferenceImage.dataWithMaxSize(3 * 1024 * 1024) { (data, error) -> Void in
-//                        if (error != nil) {
-//                            print("Error downloading image from httpsReferenceImage firebase")
-//                        } else {
-//                            let image = UIImage(data: data!)?.resizedImageClosestTo1000
-//                            let mediaMessageData: JSQPhotoMediaItem = JSQPhotoMediaItem(image: image)
-//                            self.addMessage(id, media: mediaMessageData, senderDisplayName: senderDisplayName, date: date, isLoadMoreLoading: true)
-//                            index = self.finishReceivingAsyncMessage(index, isInitialLoading: false, isLoadMoreLoading: true)
-//                            print("index: \(index), load_more_message_limit: \(Int(self.LOAD_MORE_MESSAGE_LIMIT))")
-//                        }
-//                    }
-//                }
-//                else {
-//                    index += 1
-//                    self.addMessage(id, text: text, senderDisplayName: senderDisplayName, date: date, isLoadMoreLoading: true)
-//                }
-//            } else {
-//                print("I stop animating the loading indicator")
-//                self.collectionView!.infiniteScrollingView.stopAnimating()
-//            }
-//            self.finishReceivingMessageAnimated(false)
-//            self.collectionView!.layoutIfNeeded()
-//            self.collectionView!.contentOffset = CGPointMake(0, self.collectionView!.contentSize.height - oldBottomOffset)
-//        }
-//        self.resetTimer()
-//    }
+    
+    //    func loadMoreMessages(){
+    //        let oldBottomOffset = self.collectionView!.contentSize.height - self.collectionView!.contentOffset.y
+    //        let messagesQuery = messageRef.queryOrderedByChild("dateTimestamp").queryEndingAtValue(lastTimestamp).queryLimitedToLast(LOAD_MORE_MESSAGE_LIMIT)
+    //        var index = 0
+    //        messagesQuery.observeEventType(.ChildAdded) { (snapshot: FIRDataSnapshot!) in
+    //
+    //            guard let id = snapshot.value!["senderId"] as? String else {return}
+    //            guard let text = snapshot.value!["text"] as? String else {return}
+    //            guard let senderDisplayName = snapshot.value!["senderDisplayName"] as? String else {return}
+    //            guard let dateTimestampInterval = snapshot.value!["dateTimestamp"] as? NSTimeInterval else {return}
+    //            var imageURLString = ""
+    //            if let imageURL = snapshot.value!["imageURL"] as? String {
+    //                imageURLString = imageURL
+    //            }
+    //
+    //            if (self.shouldUpdateLastTimestamp(dateTimestampInterval)){
+    //                self.lastTimestamp = dateTimestampInterval
+    //            }
+    //
+    //            let date = NSDate(timeIntervalSince1970: dateTimestampInterval)
+    //
+    //            if index < Int(self.LOAD_MORE_MESSAGE_LIMIT) {
+    //                if imageURLString != "" {
+    //                    let httpsReferenceImage = FIRStorage.storage().referenceForURL(imageURLString)
+    //                    httpsReferenceImage.dataWithMaxSize(3 * 1024 * 1024) { (data, error) -> Void in
+    //                        if (error != nil) {
+    //                            print("Error downloading image from httpsReferenceImage firebase")
+    //                        } else {
+    //                            let image = UIImage(data: data!)?.resizedImageClosestTo1000
+    //                            let mediaMessageData: JSQPhotoMediaItem = JSQPhotoMediaItem(image: image)
+    //                            self.addMessage(id, media: mediaMessageData, senderDisplayName: senderDisplayName, date: date, isLoadMoreLoading: true)
+    //                            index = self.finishReceivingAsyncMessage(index, isInitialLoading: false, isLoadMoreLoading: true)
+    //                            print("index: \(index), load_more_message_limit: \(Int(self.LOAD_MORE_MESSAGE_LIMIT))")
+    //                        }
+    //                    }
+    //                }
+    //                else {
+    //                    index += 1
+    //                    self.addMessage(id, text: text, senderDisplayName: senderDisplayName, date: date, isLoadMoreLoading: true)
+    //                }
+    //            } else {
+    //                print("I stop animating the loading indicator")
+    //                self.collectionView!.infiniteScrollingView.stopAnimating()
+    //            }
+    //            self.finishReceivingMessageAnimated(false)
+    //            self.collectionView!.layoutIfNeeded()
+    //            self.collectionView!.contentOffset = CGPointMake(0, self.collectionView!.contentSize.height - oldBottomOffset)
+    //        }
+    //        self.resetTimer()
+    //    }
     
     func resetTimer() {
         timer.invalidate()
@@ -966,44 +1055,44 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
         print("cancel button pressed")
     }
     
-//    func createPhotoArray(image: UIImage) -> ([Photo], Int) {
-//        var arrayPhoto = [Photo]()
-//        var index = 0
-//        var tag = -1
-//        for message in messages {
-//            
-//            if message.isMediaMessage {
-//                if let imageItem = message.media as? JSQPhotoMediaItem {
-//                    arrayPhoto.append(Photo(photo: imageItem.image))
-//                    if imageItem.image == image {
-//                        tag = index
-//                    }
-//                    index += 1
-//                }
-//            }
-//        }
-//        return (arrayPhoto, tag)
-//    }
+    //    func createPhotoArray(image: UIImage) -> ([Photo], Int) {
+    //        var arrayPhoto = [Photo]()
+    //        var index = 0
+    //        var tag = -1
+    //        for message in messages {
+    //
+    //            if message.isMediaMessage {
+    //                if let imageItem = message.media as? JSQPhotoMediaItem {
+    //                    arrayPhoto.append(Photo(photo: imageItem.image))
+    //                    if imageItem.image == image {
+    //                        tag = index
+    //                    }
+    //                    index += 1
+    //                }
+    //            }
+    //        }
+    //        return (arrayPhoto, tag)
+    //    }
     
-//    override func collectionView(collectionView: JSQMessagesCollectionView!, didTapMessageBubbleAtIndexPath indexPath: NSIndexPath!) {
-//        let message = self.messages[indexPath.row]
-//        if let imageItem = message.media as? JSQPhotoMediaItem {
-//            let image = imageItem.image
-//            let photo = Photo(photo: image!)
-//            let photos = createPhotoArray(image!)
-//            let tagIndexPhotoInArray = photos.1
-//            if tagIndexPhotoInArray != -1 {
-//                print("Tag calc = \(tagIndexPhotoInArray)")
-//                let viewer = NYTPhotosViewController(photos: photos.0, initialPhoto: photos.0[tagIndexPhotoInArray])
-//                presentViewController(viewer, animated: true, completion: nil)
-//            } else {
-//                let viewer = NYTPhotosViewController(photos: [photo])
-//                presentViewController(viewer, animated: true, completion: nil)
-//            }
-//        } else {
-//            print("Problem with the image JSQMediaItem when I click on an image on chat")
-//        }
-//    }
+    //    override func collectionView(collectionView: JSQMessagesCollectionView!, didTapMessageBubbleAtIndexPath indexPath: NSIndexPath!) {
+    //        let message = self.messages[indexPath.row]
+    //        if let imageItem = message.media as? JSQPhotoMediaItem {
+    //            let image = imageItem.image
+    //            let photo = Photo(photo: image!)
+    //            let photos = createPhotoArray(image!)
+    //            let tagIndexPhotoInArray = photos.1
+    //            if tagIndexPhotoInArray != -1 {
+    //                print("Tag calc = \(tagIndexPhotoInArray)")
+    //                let viewer = NYTPhotosViewController(photos: photos.0, initialPhoto: photos.0[tagIndexPhotoInArray])
+    //                presentViewController(viewer, animated: true, completion: nil)
+    //            } else {
+    //                let viewer = NYTPhotosViewController(photos: [photo])
+    //                presentViewController(viewer, animated: true, completion: nil)
+    //            }
+    //        } else {
+    //            print("Problem with the image JSQMediaItem when I click on an image on chat")
+    //        }
+    //    }
     
     func createPhotoArray(image: UIImage) -> ([Photo], Int) {
         var arrayPhoto = [Photo]()
@@ -1029,12 +1118,12 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
         let message = self.messages[indexPath.row]
         if let imageItem = message.media as? AsyncPhotoMediaItem {
             guard let image = imageItem.asyncImageView.image else {return}
-//            for message in messages {
-//                if message.isMediaMessage {
-//                    guard let imageMedia = message.media as? AsyncPhotoMediaItem else {return}
-//                    guard let _ = imageMedia.asyncImageView.image else {return}
-//                }
-//            }
+            //            for message in messages {
+            //                if message.isMediaMessage {
+            //                    guard let imageMedia = message.media as? AsyncPhotoMediaItem else {return}
+            //                    guard let _ = imageMedia.asyncImageView.image else {return}
+            //                }
+            //            }
             let photo = Photo(photo: image)
             let photos = createPhotoArray(image)
             let tagIndexPhotoInArray = photos.1
@@ -1123,16 +1212,16 @@ class AsyncPhotoMediaItem2: JSQPhotoMediaItem {
         asyncImageView.kf_setImageWithURL(url)
         let placeholderImage = UIImage(named: "Amicaloading")
         asyncImageView.kf_setImageWithURL(url,
-                                              placeholderImage: placeholderImage,
-                                              optionsInfo: nil,
-                                              progressBlock: { (receivedSize, totalSize) -> () in
-                                                //print("Download Progress: \(receivedSize)/\(totalSize)")
+                                          placeholderImage: placeholderImage,
+                                          optionsInfo: nil,
+                                          progressBlock: { (receivedSize, totalSize) -> () in
+                                            //print("Download Progress: \(receivedSize)/\(totalSize)")
             },
-                                              completionHandler: { (image, error, cacheType, imageURL) -> () in
-                                                print("Downloaded and set!")
+                                          completionHandler: { (image, error, cacheType, imageURL) -> () in
+                                            print("Downloaded and set!")
             }
         )
-
+        
         
     }
     
@@ -1160,11 +1249,6 @@ class AsyncPhotoMediaItem: JSQPhotoMediaItem {
     
     init(withURL url: NSURL) {
         super.init()
-        // appliesMediaViewMaskAsOutgoing = (isOperator == false)
-        // var size = (imageSize == CGSizeZero) ? super.mediaViewDisplaySize() : ImageType(withSize: imageSize).frameSize()
-        // let resizedImageSize = UbikHelper.resizeFrameWithSize(imageSize, targetSize: size)
-        // size.width = min(size.width, resizedImageSize.width)
-        // size.height = min(size.height, resizedImageSize.height)
         
         asyncImageView = UIImageView()
         asyncImageView.frame = CGRectMake(0, 0, 170, 130)
