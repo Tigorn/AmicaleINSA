@@ -58,7 +58,6 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
         super.init(nibName: nil, bundle: nil)
     }
     
-    
     var outgoingBubbleImageView: JSQMessagesBubbleImage!
     var incomingBubbleImageView: JSQMessagesBubbleImage!
     
@@ -380,6 +379,63 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
     }
     
     
+//    private func observeMessages() {
+//        _log_Title("Count Messages", location: "ChatVC.observeMessages", shouldLog: LOG)
+//        var SwiftSpinnerAlreadyHidden = false
+//        var index = 0;
+//        let messagesQuery = messageRef.queryLimitedToLast(INITIAL_MESSAGE_LIMIT)
+//        messagesQuery.observeEventType(.ChildAdded) { (snapshot: FIRDataSnapshot!) in
+//            if !SwiftSpinnerAlreadyHidden {
+//                SwiftSpinnerAlreadyHidden = true
+//                MBProgressHUD.hideAllHUDsForView(self.navigationController?.view, animated: true)
+//                self.initActivityIndicatorPictures()
+//            }
+//            
+//            guard let idString = snapshot.value!["senderId"] as? String else {return}
+//            guard let textString = snapshot.value!["text"] as? String else {return}
+//            guard let senderDisplayNameString = snapshot.value!["senderDisplayName"] as? String else {return}
+//            guard let dateTimestampInterval = snapshot.value!["dateTimestamp"] as? NSTimeInterval else {return}
+//            
+//            var imageURLString = ""
+//            if let imageURL = snapshot.value!["imageURL"] as? String {
+//                imageURLString = imageURL
+//            }
+//            
+//            if (self.shouldUpdateLastTimestamp(dateTimestampInterval)){
+//                self.lastTimestamp = dateTimestampInterval
+//            }
+//            
+//            let date = NSDate(timeIntervalSince1970: dateTimestampInterval)
+//            let hashValue = "\(idString)\(date)\(senderDisplayNameString)\(dateTimestampInterval)".md5()
+//            let canAdd = self.shouldAddInArray(hashValue)
+//            if canAdd {
+//                if imageURLString != "" {
+//                    let httpsReferenceImage = FIRStorage.storage().referenceForURL(imageURLString)
+//                    httpsReferenceImage.dataWithMaxSize(3 * 1024 * 1024) { (data, error) -> Void in
+//                        if (error != nil) {
+//                            print("Error downloading image from httpsReferenceImage firebase")
+//                        } else {
+//                            //print("I download image from firebase reference")
+//                            let image = UIImage(data: data!)?.resizedImageClosestTo1000
+//                            let mediaMessageData: JSQPhotoMediaItem = JSQPhotoMediaItem(image: image)
+//                            self.addMessage(idString, media: mediaMessageData, senderDisplayName: senderDisplayNameString, date: date, isLoadMoreLoading: false)
+//                            index = self.finishReceivingAsyncMessage(index, isInitialLoading: true, isLoadMoreLoading: false)
+//                            _log_Element("Should have \(self.INITIAL_MESSAGE_LIMIT) messages, have: \(index)", shouldLog: self.LOG)
+//                        }
+//                    }
+//                } else {
+//                    self.addMessage(idString, text: textString, senderDisplayName: senderDisplayNameString, date: date, isLoadMoreLoading: false)
+//                    index = self.finishReceivingAsyncMessage(index, isInitialLoading: true, isLoadMoreLoading: false)
+//                }
+//                self.messagesHashValue += [hashValue]
+//            } else {
+//                print("I cannot add the message, PROBLEM!")
+//                print("Timestamp qui cause problème est: \(dateTimestampInterval), data: \(date)")
+//            }
+//        }
+//    }
+
+    
     private func observeMessages() {
         _log_Title("Count Messages", location: "ChatVC.observeMessages", shouldLog: LOG)
         var SwiftSpinnerAlreadyHidden = false
@@ -411,19 +467,10 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
             let canAdd = self.shouldAddInArray(hashValue)
             if canAdd {
                 if imageURLString != "" {
-                    let httpsReferenceImage = FIRStorage.storage().referenceForURL(imageURLString)
-                    httpsReferenceImage.dataWithMaxSize(3 * 1024 * 1024) { (data, error) -> Void in
-                        if (error != nil) {
-                            print("Error downloading image from httpsReferenceImage firebase")
-                        } else {
-                            //print("I download image from firebase reference")
-                            let image = UIImage(data: data!)?.resizedImageClosestTo1000
-                            let mediaMessageData: JSQPhotoMediaItem = JSQPhotoMediaItem(image: image)
-                            self.addMessage(idString, media: mediaMessageData, senderDisplayName: senderDisplayNameString, date: date, isLoadMoreLoading: false)
-                            index = self.finishReceivingAsyncMessage(index, isInitialLoading: true, isLoadMoreLoading: false)
-                            _log_Element("Should have \(self.INITIAL_MESSAGE_LIMIT) messages, have: \(index)", shouldLog: self.LOG)
-                        }
-                    }
+                    let url = NSURL(string: imageURLString)!
+                    let imageMedia = AsyncPhotoMediaItem(withURL: url)
+                    self.addMessage(idString, media: imageMedia, senderDisplayName: senderDisplayNameString, date: date, isLoadMoreLoading: false)
+                    index = self.finishReceivingAsyncMessage(index, isInitialLoading: true, isLoadMoreLoading: false)
                 } else {
                     self.addMessage(idString, text: textString, senderDisplayName: senderDisplayNameString, date: date, isLoadMoreLoading: false)
                     index = self.finishReceivingAsyncMessage(index, isInitialLoading: true, isLoadMoreLoading: false)
@@ -436,24 +483,16 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
         }
     }
     
-    
-    private func observeMessagesWithCache() {
-        _log_Title("Count Messages", location: "ChatVC.observeMessages", shouldLog: LOG)
-        var SwiftSpinnerAlreadyHidden = false
-        var index = 0;
-        let messagesQuery = messageRef.queryLimitedToLast(INITIAL_MESSAGE_LIMIT)
+    func loadMoreMessages(){
+        let oldBottomOffset = self.collectionView!.contentSize.height - self.collectionView!.contentOffset.y
+        let messagesQuery = messageRef.queryOrderedByChild("dateTimestamp").queryEndingAtValue(lastTimestamp).queryLimitedToLast(LOAD_MORE_MESSAGE_LIMIT)
+        var index = 0
         messagesQuery.observeEventType(.ChildAdded) { (snapshot: FIRDataSnapshot!) in
-            if !SwiftSpinnerAlreadyHidden {
-                SwiftSpinnerAlreadyHidden = true
-                MBProgressHUD.hideAllHUDsForView(self.navigationController?.view, animated: true)
-                self.initActivityIndicatorPictures()
-            }
             
-            guard let idString = snapshot.value!["senderId"] as? String else {return}
-            guard let textString = snapshot.value!["text"] as? String else {return}
-            guard let senderDisplayNameString = snapshot.value!["senderDisplayName"] as? String else {return}
+            guard let id = snapshot.value!["senderId"] as? String else {return}
+            guard let text = snapshot.value!["text"] as? String else {return}
+            guard let senderDisplayName = snapshot.value!["senderDisplayName"] as? String else {return}
             guard let dateTimestampInterval = snapshot.value!["dateTimestamp"] as? NSTimeInterval else {return}
-            
             var imageURLString = ""
             if let imageURL = snapshot.value!["imageURL"] as? String {
                 imageURLString = imageURL
@@ -464,26 +503,43 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
             }
             
             let date = NSDate(timeIntervalSince1970: dateTimestampInterval)
-            let hashValue = "\(idString)\(date)\(senderDisplayNameString)\(dateTimestampInterval)".md5()
-            let canAdd = self.shouldAddInArray(hashValue)
-            if canAdd {
+            
+            if index < Int(self.LOAD_MORE_MESSAGE_LIMIT) {
                 if imageURLString != "" {
-                    print("imageURLString: \(imageURLString)")
-                    imageURLString = "http://www.jqueryscript.net/images/Simplest-Responsive-jQuery-Image-Lightbox-Plugin-simple-lightbox.jpg"
-                    
-                } else {
-                    self.addMessage(idString, text: textString, senderDisplayName: senderDisplayNameString, date: date, isLoadMoreLoading: false)
-                    index = self.finishReceivingAsyncMessage(index, isInitialLoading: true, isLoadMoreLoading: false)
+                    let url = NSURL(string: imageURLString)!
+                    let imageMedia = AsyncPhotoMediaItem(withURL: url)
+                    self.addMessage(id, media: imageMedia, senderDisplayName: senderDisplayName, date: date, isLoadMoreLoading: true)
+                    index = self.finishReceivingAsyncMessage(index, isInitialLoading: false, isLoadMoreLoading: true)
+
+//                    let httpsReferenceImage = FIRStorage.storage().referenceForURL(imageURLString)
+//                    httpsReferenceImage.dataWithMaxSize(3 * 1024 * 1024) { (data, error) -> Void in
+//                        if (error != nil) {
+//                            print("Error downloading image from httpsReferenceImage firebase")
+//                        } else {
+//                            let image = UIImage(data: data!)?.resizedImageClosestTo1000
+//                            let mediaMessageData: JSQPhotoMediaItem = JSQPhotoMediaItem(image: image)
+//                            self.addMessage(id, media: mediaMessageData, senderDisplayName: senderDisplayName, date: date, isLoadMoreLoading: true)
+//                            index = self.finishReceivingAsyncMessage(index, isInitialLoading: false, isLoadMoreLoading: true)
+//                            print("index: \(index), load_more_message_limit: \(Int(self.LOAD_MORE_MESSAGE_LIMIT))")
+//                        }
+//                    }
                 }
-                self.messagesHashValue += [hashValue]
+                else {
+                    index += 1
+                    self.addMessage(id, text: text, senderDisplayName: senderDisplayName, date: date, isLoadMoreLoading: true)
+                }
             } else {
-                print("I cannot add the message, PROBLEM!")
-                print("Timestamp qui cause problème est: \(dateTimestampInterval), data: \(date)")
+                print("I stop animating the loading indicator")
+                self.collectionView!.infiniteScrollingView.stopAnimating()
             }
+            self.finishReceivingMessageAnimated(false)
+            self.collectionView!.layoutIfNeeded()
+            self.collectionView!.contentOffset = CGPointMake(0, self.collectionView!.contentSize.height - oldBottomOffset)
         }
+        self.resetTimer()
     }
-    
-    
+
+
     
     func finishReceivingAsyncMessage(index: Int, isInitialLoading: Bool, isLoadMoreLoading: Bool) -> Int {
         self.finishReceivingMessage()
@@ -539,57 +595,60 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
         return false
     }
     
+
     
-    func loadMoreMessages(){
-        let oldBottomOffset = self.collectionView!.contentSize.height - self.collectionView!.contentOffset.y
-        let messagesQuery = messageRef.queryOrderedByChild("dateTimestamp").queryEndingAtValue(lastTimestamp).queryLimitedToLast(LOAD_MORE_MESSAGE_LIMIT)
-        var index = 0
-        messagesQuery.observeEventType(.ChildAdded) { (snapshot: FIRDataSnapshot!) in
-            
-            guard let id = snapshot.value!["senderId"] as? String else {return}
-            guard let text = snapshot.value!["text"] as? String else {return}
-            guard let senderDisplayName = snapshot.value!["senderDisplayName"] as? String else {return}
-            guard let dateTimestampInterval = snapshot.value!["dateTimestamp"] as? NSTimeInterval else {return}
-            var imageURLString = ""
-            if let imageURL = snapshot.value!["imageURL"] as? String {
-                imageURLString = imageURL
-            }
-            
-            if (self.shouldUpdateLastTimestamp(dateTimestampInterval)){
-                self.lastTimestamp = dateTimestampInterval
-            }
-            
-            let date = NSDate(timeIntervalSince1970: dateTimestampInterval)
-            
-            if index < Int(self.LOAD_MORE_MESSAGE_LIMIT) {
-                if imageURLString != "" {
-                    let httpsReferenceImage = FIRStorage.storage().referenceForURL(imageURLString)
-                    httpsReferenceImage.dataWithMaxSize(3 * 1024 * 1024) { (data, error) -> Void in
-                        if (error != nil) {
-                            print("Error downloading image from httpsReferenceImage firebase")
-                        } else {
-                            let image = UIImage(data: data!)?.resizedImageClosestTo1000
-                            let mediaMessageData: JSQPhotoMediaItem = JSQPhotoMediaItem(image: image)
-                            self.addMessage(id, media: mediaMessageData, senderDisplayName: senderDisplayName, date: date, isLoadMoreLoading: true)
-                            index = self.finishReceivingAsyncMessage(index, isInitialLoading: false, isLoadMoreLoading: true)
-                            print("index: \(index), load_more_message_limit: \(Int(self.LOAD_MORE_MESSAGE_LIMIT))")
-                        }
-                    }
-                }
-                else {
-                    index += 1
-                    self.addMessage(id, text: text, senderDisplayName: senderDisplayName, date: date, isLoadMoreLoading: true)
-                }
-            } else {
-                print("I stop animating the loading indicator")
-                self.collectionView!.infiniteScrollingView.stopAnimating()
-            }
-            self.finishReceivingMessageAnimated(false)
-            self.collectionView!.layoutIfNeeded()
-            self.collectionView!.contentOffset = CGPointMake(0, self.collectionView!.contentSize.height - oldBottomOffset)
-        }
-        self.resetTimer()
-    }
+    
+    
+//    func loadMoreMessages(){
+//        let oldBottomOffset = self.collectionView!.contentSize.height - self.collectionView!.contentOffset.y
+//        let messagesQuery = messageRef.queryOrderedByChild("dateTimestamp").queryEndingAtValue(lastTimestamp).queryLimitedToLast(LOAD_MORE_MESSAGE_LIMIT)
+//        var index = 0
+//        messagesQuery.observeEventType(.ChildAdded) { (snapshot: FIRDataSnapshot!) in
+//            
+//            guard let id = snapshot.value!["senderId"] as? String else {return}
+//            guard let text = snapshot.value!["text"] as? String else {return}
+//            guard let senderDisplayName = snapshot.value!["senderDisplayName"] as? String else {return}
+//            guard let dateTimestampInterval = snapshot.value!["dateTimestamp"] as? NSTimeInterval else {return}
+//            var imageURLString = ""
+//            if let imageURL = snapshot.value!["imageURL"] as? String {
+//                imageURLString = imageURL
+//            }
+//            
+//            if (self.shouldUpdateLastTimestamp(dateTimestampInterval)){
+//                self.lastTimestamp = dateTimestampInterval
+//            }
+//            
+//            let date = NSDate(timeIntervalSince1970: dateTimestampInterval)
+//            
+//            if index < Int(self.LOAD_MORE_MESSAGE_LIMIT) {
+//                if imageURLString != "" {
+//                    let httpsReferenceImage = FIRStorage.storage().referenceForURL(imageURLString)
+//                    httpsReferenceImage.dataWithMaxSize(3 * 1024 * 1024) { (data, error) -> Void in
+//                        if (error != nil) {
+//                            print("Error downloading image from httpsReferenceImage firebase")
+//                        } else {
+//                            let image = UIImage(data: data!)?.resizedImageClosestTo1000
+//                            let mediaMessageData: JSQPhotoMediaItem = JSQPhotoMediaItem(image: image)
+//                            self.addMessage(id, media: mediaMessageData, senderDisplayName: senderDisplayName, date: date, isLoadMoreLoading: true)
+//                            index = self.finishReceivingAsyncMessage(index, isInitialLoading: false, isLoadMoreLoading: true)
+//                            print("index: \(index), load_more_message_limit: \(Int(self.LOAD_MORE_MESSAGE_LIMIT))")
+//                        }
+//                    }
+//                }
+//                else {
+//                    index += 1
+//                    self.addMessage(id, text: text, senderDisplayName: senderDisplayName, date: date, isLoadMoreLoading: true)
+//                }
+//            } else {
+//                print("I stop animating the loading indicator")
+//                self.collectionView!.infiniteScrollingView.stopAnimating()
+//            }
+//            self.finishReceivingMessageAnimated(false)
+//            self.collectionView!.layoutIfNeeded()
+//            self.collectionView!.contentOffset = CGPointMake(0, self.collectionView!.contentSize.height - oldBottomOffset)
+//        }
+//        self.resetTimer()
+//    }
     
     func resetTimer() {
         timer.invalidate()
@@ -907,6 +966,45 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
         print("cancel button pressed")
     }
     
+//    func createPhotoArray(image: UIImage) -> ([Photo], Int) {
+//        var arrayPhoto = [Photo]()
+//        var index = 0
+//        var tag = -1
+//        for message in messages {
+//            
+//            if message.isMediaMessage {
+//                if let imageItem = message.media as? JSQPhotoMediaItem {
+//                    arrayPhoto.append(Photo(photo: imageItem.image))
+//                    if imageItem.image == image {
+//                        tag = index
+//                    }
+//                    index += 1
+//                }
+//            }
+//        }
+//        return (arrayPhoto, tag)
+//    }
+    
+//    override func collectionView(collectionView: JSQMessagesCollectionView!, didTapMessageBubbleAtIndexPath indexPath: NSIndexPath!) {
+//        let message = self.messages[indexPath.row]
+//        if let imageItem = message.media as? JSQPhotoMediaItem {
+//            let image = imageItem.image
+//            let photo = Photo(photo: image!)
+//            let photos = createPhotoArray(image!)
+//            let tagIndexPhotoInArray = photos.1
+//            if tagIndexPhotoInArray != -1 {
+//                print("Tag calc = \(tagIndexPhotoInArray)")
+//                let viewer = NYTPhotosViewController(photos: photos.0, initialPhoto: photos.0[tagIndexPhotoInArray])
+//                presentViewController(viewer, animated: true, completion: nil)
+//            } else {
+//                let viewer = NYTPhotosViewController(photos: [photo])
+//                presentViewController(viewer, animated: true, completion: nil)
+//            }
+//        } else {
+//            print("Problem with the image JSQMediaItem when I click on an image on chat")
+//        }
+//    }
+    
     func createPhotoArray(image: UIImage) -> ([Photo], Int) {
         var arrayPhoto = [Photo]()
         var index = 0
@@ -914,9 +1012,10 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
         for message in messages {
             
             if message.isMediaMessage {
-                if let imageItem = message.media as? JSQPhotoMediaItem {
-                    arrayPhoto.append(Photo(photo: imageItem.image))
-                    if imageItem.image == image {
+                if let imageItem = message.media as? AsyncPhotoMediaItem {
+                    guard let imageAsync = imageItem.asyncImageView.image else {continue}
+                    arrayPhoto.append(Photo(photo: imageAsync))
+                    if imageAsync == image {
                         tag = index
                     }
                     index += 1
@@ -928,10 +1027,16 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
     
     override func collectionView(collectionView: JSQMessagesCollectionView!, didTapMessageBubbleAtIndexPath indexPath: NSIndexPath!) {
         let message = self.messages[indexPath.row]
-        if let imageItem = message.media as? JSQPhotoMediaItem {
-            let image = imageItem.image
-            let photo = Photo(photo: image!)
-            let photos = createPhotoArray(image!)
+        if let imageItem = message.media as? AsyncPhotoMediaItem {
+            guard let image = imageItem.asyncImageView.image else {return}
+//            for message in messages {
+//                if message.isMediaMessage {
+//                    guard let imageMedia = message.media as? AsyncPhotoMediaItem else {return}
+//                    guard let _ = imageMedia.asyncImageView.image else {return}
+//                }
+//            }
+            let photo = Photo(photo: image)
+            let photos = createPhotoArray(image)
             let tagIndexPhotoInArray = photos.1
             if tagIndexPhotoInArray != -1 {
                 print("Tag calc = \(tagIndexPhotoInArray)")
@@ -1000,4 +1105,106 @@ extension ChatViewController: UITableViewDataSource {
     //        header.tex
     //        return vw
     //    }
+    
+}
+
+class AsyncPhotoMediaItem2: JSQPhotoMediaItem {
+    var asyncImageView: UIImageView!
+    
+    override init!(maskAsOutgoing: Bool) {
+        super.init(maskAsOutgoing: maskAsOutgoing)
+    }
+    
+    init(withURL url: NSURL) {
+        super.init()
+        print("url: \(url)")
+        asyncImageView = UIImageView()
+        print("asyncImageView: \(asyncImageView)")
+        asyncImageView.kf_setImageWithURL(url)
+        let placeholderImage = UIImage(named: "Amicaloading")
+        asyncImageView.kf_setImageWithURL(url,
+                                              placeholderImage: placeholderImage,
+                                              optionsInfo: nil,
+                                              progressBlock: { (receivedSize, totalSize) -> () in
+                                                //print("Download Progress: \(receivedSize)/\(totalSize)")
+            },
+                                              completionHandler: { (image, error, cacheType, imageURL) -> () in
+                                                print("Downloaded and set!")
+            }
+        )
+
+        
+    }
+    
+    override func mediaView() -> UIView! {
+        let view = UIView()
+        view.addSubview(asyncImageView)
+        asyncImageView.frame.origin.x = self.appliesMediaViewMaskAsOutgoing ? -6 : 6
+        return view
+    }
+    override func mediaViewDisplaySize() -> CGSize {
+        return asyncImageView.frame.size
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+}
+
+class AsyncPhotoMediaItem: JSQPhotoMediaItem {
+    var asyncImageView: UIImageView!
+    
+    override init!(maskAsOutgoing: Bool) {
+        super.init(maskAsOutgoing: maskAsOutgoing)
+    }
+    
+    init(withURL url: NSURL) {
+        super.init()
+        // appliesMediaViewMaskAsOutgoing = (isOperator == false)
+        // var size = (imageSize == CGSizeZero) ? super.mediaViewDisplaySize() : ImageType(withSize: imageSize).frameSize()
+        // let resizedImageSize = UbikHelper.resizeFrameWithSize(imageSize, targetSize: size)
+        // size.width = min(size.width, resizedImageSize.width)
+        // size.height = min(size.height, resizedImageSize.height)
+        
+        asyncImageView = UIImageView()
+        asyncImageView.frame = CGRectMake(0, 0, 170, 130)
+        asyncImageView.contentMode = .ScaleAspectFill
+        asyncImageView.clipsToBounds = true
+        asyncImageView.layer.cornerRadius = 20
+        asyncImageView.backgroundColor = UIColor.jsq_messageBubbleLightGrayColor()
+        
+        let activityIndicator = JSQMessagesMediaPlaceholderView.viewWithActivityIndicator()
+        activityIndicator.frame = asyncImageView.frame
+        asyncImageView.addSubview(activityIndicator)
+        
+        KingfisherManager.sharedManager.cache.retrieveImageForKey(url.absoluteString, options: nil) { (image, cacheType) -> () in
+            
+            if let image = image {
+                self.asyncImageView.image = image
+                activityIndicator.removeFromSuperview()
+            } else {
+                KingfisherManager.sharedManager.downloader.downloadImageWithURL(url, progressBlock: nil) { (image, error, imageURL, originalData) -> () in
+                    
+                    if let image = image {
+                        self.asyncImageView.image = image
+                        activityIndicator.removeFromSuperview()
+                        
+                        KingfisherManager.sharedManager.cache.storeImage(image, forKey: url.absoluteString, toDisk: true, completionHandler: nil)
+                    }
+                }
+            }
+        }
+    }
+    
+    override func mediaView() -> UIView! {
+        return asyncImageView
+    }
+    
+    override func mediaViewDisplaySize() -> CGSize {
+        return asyncImageView.frame.size
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 }

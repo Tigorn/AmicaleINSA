@@ -432,7 +432,7 @@ class PostTableViewController: UITableViewController {
                                                             placeholderImage: placeholderImage,
                                                             optionsInfo: nil,
                                                             progressBlock: { (receivedSize, totalSize) -> () in
-                                                                print("Download Progress: \(receivedSize)/\(totalSize)")
+                                                                //print("Download Progress: \(receivedSize)/\(totalSize)")
                 },
                                                             completionHandler: { (image, error, cacheType, imageURL) -> () in
                                                                 print("Downloaded and set!")
