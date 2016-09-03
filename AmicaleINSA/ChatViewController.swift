@@ -251,9 +251,10 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
     
     func getHeightPopoverTableView() -> CGFloat {
         /*
-            44 = height of 1 cell
+            size header = 28
+            height of 1 cell = 44
         */
-        return (connectedUsers.count < 5) ? CGFloat(connectedUsers.count * 44) : CGFloat(175)
+        return CGFloat(28) + ((connectedUsers.count < 5) ? CGFloat(connectedUsers.count * 44) : CGFloat(175))
     }
     
     
@@ -999,10 +1000,25 @@ extension ChatViewController: UITableViewDataSource {
         return self.connectedUsers.count
     }
     
+    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+        return 1
+    }
+    
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = UITableViewCell(style: .Default, reuseIdentifier: nil)
         cell.textLabel?.text = self.connectedUsers[indexPath.row]
         cell.selectionStyle = .None
         return cell
     }
+
+    func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return "Users"
+    }
+    
+//    func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+//        let header = UIView()
+//        header.backgroundColor = UIColor.whiteColor()
+//        header.tex
+//        return vw
+//    }
 }
