@@ -72,12 +72,6 @@ class PostTableViewController: UITableViewController {
         obversePosts()
         
         lastTimestampReverse = 0
-        
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-        
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem()
     }
     
     
@@ -106,67 +100,6 @@ class PostTableViewController: UITableViewController {
         }
     }
     
-//    func obversePosts(){
-//        initActivityIndicator()
-//        let postQuery = postRef.queryLimitedToLast(INITIAL_POST_LIMIT)
-//        postQuery.observeEventType(.Value) { (snapshots: FIRDataSnapshot!) in
-//            let numberOfPosts = Int(snapshots.childrenCount)
-//            var currentNumberOfPosts = 0
-//            _log_Title("Downloading Posts", location: "PostTableVC.observePosts()", shouldLog: self.LOG)
-//            _log_Element("I download \(numberOfPosts) post(s)", shouldLog: self.LOG)
-//            for snapshot in snapshots.children {
-//                
-//                guard let titleString = snapshot.value!["title"] as? String else {return}
-//                guard let descriptionString = snapshot.value!["description"] as? String else {return}
-//                guard let authorString = snapshot.value!["author"] as? String else {return}
-//                guard let dateString = snapshot.value!["date"] as? String else {return}
-//                guard let dateTimestampInterval = snapshot.value!["timestamp"] as? NSTimeInterval else {return}
-//                guard let dateTimestampInverseInterval = snapshot.value!["timestampInverse"] as? NSTimeInterval else {return}
-//            
-//                if (self.shouldUpdateLastTimestamp(dateTimestampInterval)){
-//                    self.lastTimestamp = dateTimestampInterval
-//                }
-//                
-//                self.lastTimestampReverse = dateTimestampInverseInterval
-//                
-//                var imageURLString = ""
-//                if let imageURL = snapshot.value!["imageURL"] as? String {
-//                    imageURLString = imageURL
-//                    print("imageURL: \(imageURLString)")
-//                }
-//                
-//                if imageURLString != "" {
-//                    let httpsReferenceImage = FIRStorage.storage().referenceForURL(imageURLString)
-//                    httpsReferenceImage.dataWithMaxSize(3 * 1024 * 1024) { (data, error) -> Void in
-//                        if (error != nil) {
-//                            print("Error downloading image from httpsReferenceImage firebase")
-//                            print("Error: \(error)")
-//                        } else {
-//                            currentNumberOfPosts += 1
-//                            if currentNumberOfPosts == numberOfPosts {
-//                                _log_Element("I have all my post(s)", shouldLog: self.LOG)
-//                                _log_FullLineStars(self.LOG)
-//                                MBProgressHUD.hideAllHUDsForView(self.view, animated: true)
-//                            }
-//                            let image = UIImage(data: data!)?.resizedImageClosestTo1000
-//                            self.addPostBeginning(titleString, description: descriptionString, date: dateString, author: authorString, imagePresents: true, image: image, timestamp: dateTimestampInterval)
-//                            self.tableView.reloadData()
-//                        }
-//                    }
-//                } else {
-//                    currentNumberOfPosts += 1
-//                    if currentNumberOfPosts == numberOfPosts {
-//                        print("I have all my posts")
-//                        MBProgressHUD.hideAllHUDsForView(self.view, animated: true)
-//                    }
-//                    self.addPostBeginning(titleString, description: descriptionString, date: dateString, author: authorString, imagePresents: false, image: nil, timestamp: dateTimestampInterval)
-//                }
-//                
-//                self.tableView.reloadData()
-//            }
-//        }
-//    }
-
     
     func obversePosts(){
         initActivityIndicator()
@@ -195,7 +128,6 @@ class PostTableViewController: UITableViewController {
                 var imageURLString = ""
                 if let imageURL = snapshot.value!["imageURL"] as? String {
                     imageURLString = imageURL
-                    print("imageURL: \(imageURLString)")
                 }
                 
                 if imageURLString != "" {
@@ -261,64 +193,6 @@ class PostTableViewController: UITableViewController {
         }
         self.resetTimer()
     }
-
-
-    
-    
-//    func loadMorePosts() {
-//        let postQuery = postRef.queryOrderedByChild("timestampInverse").queryStartingAtValue(lastTimestampReverse).queryLimitedToFirst(LOAD_MORE_POST_LIMIT+LOAD_MORE_POST_LIMIT)
-//        var index = UInt(0)
-//        postQuery.observeEventType(.ChildAdded) { (snapshot: FIRDataSnapshot!) in
-//            print("I download \(snapshot.childrenCount) more posts")
-//            
-//            guard let titleString = snapshot.value!["title"] as? String else {return}
-//            guard let descriptionString = snapshot.value!["description"] as? String else {return}
-//            guard let authorString = snapshot.value!["author"] as? String else {return}
-//            guard let dateString = snapshot.value!["date"] as? String else {return}
-//            guard let dateTimestampInterval = snapshot.value!["timestamp"] as? NSTimeInterval else {return}
-//            guard let dateTimestampInverseInterval = snapshot.value!["timestampInverse"] as? NSTimeInterval else {return}
-//            
-//            if (self.shouldUpdateLastTimestamp(dateTimestampInterval)){
-//                self.lastTimestamp = dateTimestampInterval
-//            }
-//            
-//            self.lastTimestampReverse = dateTimestampInverseInterval
-//            index += 1
-//            var imageURLString = ""
-//            if let imageURL = snapshot.value!["imageURL"] as? String {
-//                imageURLString = imageURL
-//            }
-//            print("index: \(index) LOAD_MORE_POST_LIMIT: \(self.LOAD_MORE_POST_LIMIT)")
-//            self.printMessage(titleString, description: descriptionString, timestamp: dateTimestampInterval, date: dateString)
-//            if index <= (self.LOAD_MORE_POST_LIMIT+self.LOAD_MORE_POST_LIMIT) {
-//                if imageURLString != "" {
-//                    let httpsReferenceImage = FIRStorage.storage().referenceForURL(imageURLString)
-//                    httpsReferenceImage.dataWithMaxSize(3 * 1024 * 1024) { (data, error) -> Void in
-//                        if (error != nil) {
-//                            print("Error downloading image from httpsReferenceImage firebase")
-//                            print("Error: \(error)")
-//                        } else {
-//                            let image = UIImage(data: data!)?.resizedImageClosestTo1000
-//                            self.addPostAppend(titleString, description: descriptionString, date: dateString, author: authorString, imagePresents: true, image: image, timestamp: dateTimestampInterval)
-//                            self.tableView.reloadData()
-//                        }
-//                    }
-//                } else {
-//                    self.addPostAppend(titleString, description: descriptionString, date: dateString, author: authorString, imagePresents: false, image: nil, timestamp: dateTimestampInterval)
-//                    print("image no present")
-//                }
-//                
-//                print("title = \(titleString), description = \(descriptionString)")
-//                self.tableView.reloadData()
-//            } else {
-//                print("self.tableView.finishInfiniteScroll()")
-//                self.tableView.finishInfiniteScroll()
-//                self.tableView.reloadData()
-//            }
-//            
-//        }
-//        self.resetTimer()
-//    }
     
     func printMessage(title:String, description: String, timestamp: NSTimeInterval, date: String) {
         print("")
@@ -387,7 +261,6 @@ class PostTableViewController: UITableViewController {
     override func viewDidAppear(animated: Bool) {
         tableView.reloadData()
         registerForNotificationsAndEnterApp(self)
-        //tableView.backgroundColor = UIColor(red: 0.77, green: 0.776, blue: 0.8, alpha: 1)
     }
     
     // MARK: - Table view data source
@@ -402,7 +275,6 @@ class PostTableViewController: UITableViewController {
     }
     
     override func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        //return 14
         return CGFloat.min
     }
     
@@ -415,14 +287,9 @@ class PostTableViewController: UITableViewController {
         let header:UITableViewHeaderFooterView = view as! UITableViewHeaderFooterView
         header.textLabel?.textColor = UIColor.grayColor()
         header.tintColor = UIColor(red: 0.77, green: 0.776, blue: 0.8, alpha: 1)
-        //header.backgroundColor = UIColor(red: 0.58, green: 0.60, blue: 0.62, alpha: 1)
-        //header.textLabel?.textColor = UIColor(red: 0.58, green: 0.60, blue: 0.62, alpha: 1)
-        //UIColor(red: 0.90, green: 0.1, blue: 0.15, alpha: 0.5)
         header.textLabel?.font = UIFont.boldSystemFontOfSize(11)
         header.textLabel?.frame = header.frame
         header.textLabel?.textAlignment = NSTextAlignment.Center
-        // tableView.contentInset = UIEdgeInsetsMake(-14, 0, 0, 0)
-        //self.tableView.contentInset = UIEdgeInsetsMake(-dummyViewHeight, 0, 0, 0);
     }
     
     override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
@@ -448,12 +315,11 @@ class PostTableViewController: UITableViewController {
                                                                 //print("Download Progress: \(receivedSize)/\(totalSize)")
                 },
                                                             completionHandler: { (image, error, cacheType, imageURL) -> () in
-                                                                print("Downloaded and set!")
                 }
             )
             cell.postImageView.contentMode = .ScaleAspectFill
             cell.postImageView.tag = section
-            cell.textPostLabel.text = posts[section].description
+            cell.descriptionTextView.text = posts[section].description
             cell.selectionStyle = UITableViewCellSelectionStyle.None
             cell.titlePostLabel.text = posts[section].title
             
@@ -470,44 +336,12 @@ class PostTableViewController: UITableViewController {
             return cell
         } else {
             let cell = tableView.dequeueReusableCellWithIdentifier("cell_no_image", forIndexPath: indexPath) as! PostWithoutImageTableViewCell
-            //cell.textPostLabel.delegate = self
             cell.titlePostLabel.text = posts[section].title
-            cell.textPostLabel.text = posts[section].description
+            cell.descriptionTextView.text = posts[section].description
             cell.datePostLabel.text = posts[section].date
             cell.selectionStyle = UITableViewCellSelectionStyle.None
             return cell
         }
-
-        
-        
-//        if imagePresents {
-//            let cell = tableView.dequeueReusableCellWithIdentifier("cell_image", forIndexPath: indexPath) as! PostWithImageTableViewCell
-//            
-//            let colorForBorder = UIColor.blackColor()
-//            cell.postImageView.image = posts[section].image
-//            cell.postImageView.contentMode = .ScaleAspectFill
-//            cell.postImageView.tag = section
-//            cell.textPostLabel.text = posts[section].description
-//            cell.selectionStyle = UITableViewCellSelectionStyle.None
-//            cell.titlePostLabel.text = posts[section].title
-//            
-//            cell.postImageView.layer.cornerRadius = 6.0;
-//            cell.postImageView.layer.borderWidth = 0.5
-//            cell.postImageView.clipsToBounds = true
-//            cell.postImageView.layer.borderColor = colorForBorder.CGColor
-//            
-//            let tapGestureRecognizer = UITapGestureRecognizer(target: self, action:#selector(PostTableViewController.imageTapped(_:)))
-//            cell.postImageView.userInteractionEnabled = true
-//            cell.postImageView.addGestureRecognizer(tapGestureRecognizer)
-//            return cell
-//        } else {
-//            let cell = tableView.dequeueReusableCellWithIdentifier("cell_no_image", forIndexPath: indexPath) as! PostWithoutImageTableViewCell
-//            //cell.textPostLabel.delegate = self
-//            cell.titlePostLabel.text = posts[section].title
-//            cell.textPostLabel.text = posts[section].description
-//            cell.selectionStyle = UITableViewCellSelectionStyle.None
-//            return cell
-//        }
     }
     
     func initActivityIndicator() {
