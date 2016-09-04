@@ -56,7 +56,7 @@
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="L'Amicale vous souhaite la bienvenue" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Kgo-tu-8Vu">
-                                            <rect key="frame" x="8" y="21" width="584" height="25.5"/>
+                                            <rect key="frame" x="8" y="13" width="584" height="25.5"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="20" id="YVp-iu-xa2"/>
                                             </constraints>
@@ -65,14 +65,14 @@
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="qYY-hG-hiD">
-                                            <rect key="frame" x="0.0" y="48" width="600" height="148"/>
+                                            <rect key="frame" x="0.0" y="40" width="600" height="148"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" secondItem="qYY-hG-hiD" secondAttribute="height" multiplier="600:173" constant="86.705202312138681" id="cDj-Ed-Llp"/>
                                                 <constraint firstAttribute="height" constant="148" id="lUi-l1-nkr"/>
                                             </constraints>
                                         </imageView>
                                         <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalCompressionResistancePriority="749" scrollEnabled="NO" editable="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="9Oc-yc-jTE">
-                                            <rect key="frame" x="8" y="198" width="584" height="112.5"/>
+                                            <rect key="frame" x="8" y="190" width="584" height="120.5"/>
                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="10" id="ZRd-xC-Ttc"/>
@@ -86,7 +86,7 @@
                                     <constraints>
                                         <constraint firstItem="Kgo-tu-8Vu" firstAttribute="leading" secondItem="kSf-WD-3be" secondAttribute="leading" id="20q-qR-YP7"/>
                                         <constraint firstItem="9Oc-yc-jTE" firstAttribute="leading" secondItem="Kgo-tu-8Vu" secondAttribute="leading" id="3fC-hY-Li8"/>
-                                        <constraint firstItem="Kgo-tu-8Vu" firstAttribute="top" secondItem="kSf-WD-3be" secondAttribute="bottom" id="ABJ-Du-48d"/>
+                                        <constraint firstItem="Kgo-tu-8Vu" firstAttribute="top" secondItem="kSf-WD-3be" secondAttribute="bottom" constant="-8" id="ABJ-Du-48d"/>
                                         <constraint firstItem="qYY-hG-hiD" firstAttribute="leading" secondItem="Ov0-u1-AAE" secondAttribute="leading" id="DXE-iM-RV6"/>
                                         <constraint firstItem="kSf-WD-3be" firstAttribute="top" secondItem="Ov0-u1-AAE" secondAttribute="top" id="HBp-dB-9jd"/>
                                         <constraint firstItem="9Oc-yc-jTE" firstAttribute="top" secondItem="qYY-hG-hiD" secondAttribute="bottom" constant="2" id="HIa-sT-11n"/>
@@ -129,7 +129,7 @@
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="L'Amicale vous souhaite la bienvenue" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aoc-89-lMF">
-                                            <rect key="frame" x="8" y="21" width="584" height="26"/>
+                                            <rect key="frame" x="8" y="13" width="584" height="26"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="20" id="x9d-fw-WC9"/>
                                             </constraints>
@@ -138,7 +138,7 @@
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalCompressionResistancePriority="749" scrollEnabled="NO" editable="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="T39-yB-SlV">
-                                            <rect key="frame" x="8" y="55" width="584" height="90"/>
+                                            <rect key="frame" x="8" y="47" width="584" height="98"/>
                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="10" id="Gk2-1S-p7f"/>
@@ -153,7 +153,7 @@
                                         <constraint firstItem="SQq-uV-Lrr" firstAttribute="top" secondItem="SO2-ez-ckX" secondAttribute="top" id="1Hh-iV-asR"/>
                                         <constraint firstAttribute="bottomMargin" secondItem="T39-yB-SlV" secondAttribute="bottom" id="9nG-dg-Kr4"/>
                                         <constraint firstItem="SQq-uV-Lrr" firstAttribute="trailing" secondItem="SO2-ez-ckX" secondAttribute="trailingMargin" id="Abm-SA-I7A"/>
-                                        <constraint firstItem="aoc-89-lMF" firstAttribute="top" secondItem="SQq-uV-Lrr" secondAttribute="bottom" id="K6g-bC-H0x"/>
+                                        <constraint firstItem="aoc-89-lMF" firstAttribute="top" secondItem="SQq-uV-Lrr" secondAttribute="bottom" constant="-8" id="K6g-bC-H0x"/>
                                         <constraint firstAttribute="bottomMargin" secondItem="T39-yB-SlV" secondAttribute="bottom" constant="-0.5" id="SGk-td-rYo"/>
                                         <constraint firstItem="T39-yB-SlV" firstAttribute="trailing" secondItem="aoc-89-lMF" secondAttribute="trailing" id="TaP-eW-X41"/>
                                         <constraint firstItem="SQq-uV-Lrr" firstAttribute="leading" secondItem="SO2-ez-ckX" secondAttribute="leadingMargin" id="Uhe-cY-5sl"/>
