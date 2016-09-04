@@ -14,6 +14,7 @@ class PostWithImageTableViewCell: UITableViewCell, NYTPhotosViewControllerDelega
     @IBOutlet weak var postImageView: UIImageView!
     @IBOutlet weak var titlePostLabel: UILabel!
     @IBOutlet weak var textPostLabel: UILabel!
+    @IBOutlet weak var datePostLabel: UILabel!
     
     override func awakeFromNib() {
         super.awakeFromNib()

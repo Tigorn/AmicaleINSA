@@ -50,6 +50,7 @@ class PostTableViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         if self.revealViewController() != nil {
             menuButton.target = self.revealViewController()
             menuButton.action = #selector(SWRevealViewController.revealToggle(_:))
@@ -386,6 +387,7 @@ class PostTableViewController: UITableViewController {
     override func viewDidAppear(animated: Bool) {
         tableView.reloadData()
         registerForNotificationsAndEnterApp(self)
+        //tableView.backgroundColor = UIColor(red: 0.77, green: 0.776, blue: 0.8, alpha: 1)
     }
     
     // MARK: - Table view data source
@@ -400,21 +402,32 @@ class PostTableViewController: UITableViewController {
     }
     
     override func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 16
+        //return 14
+        return CGFloat.min
     }
     
+    override func tableView(tableView: UITableView, estimatedHeightForHeaderInSection section: Int) -> CGFloat {
+        return 14
+    }
     
     override func tableView(tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
         
         let header:UITableViewHeaderFooterView = view as! UITableViewHeaderFooterView
         header.textLabel?.textColor = UIColor.grayColor()
-        header.textLabel?.font = UIFont.boldSystemFontOfSize(13)
+        header.tintColor = UIColor(red: 0.77, green: 0.776, blue: 0.8, alpha: 1)
+        //header.backgroundColor = UIColor(red: 0.58, green: 0.60, blue: 0.62, alpha: 1)
+        //header.textLabel?.textColor = UIColor(red: 0.58, green: 0.60, blue: 0.62, alpha: 1)
+        //UIColor(red: 0.90, green: 0.1, blue: 0.15, alpha: 0.5)
+        header.textLabel?.font = UIFont.boldSystemFontOfSize(11)
         header.textLabel?.frame = header.frame
         header.textLabel?.textAlignment = NSTextAlignment.Center
+        // tableView.contentInset = UIEdgeInsetsMake(-14, 0, 0, 0)
+        //self.tableView.contentInset = UIEdgeInsetsMake(-dummyViewHeight, 0, 0, 0);
     }
     
     override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return posts[section].date
+        //return posts[section].date
+        return ""
     }
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
@@ -444,7 +457,9 @@ class PostTableViewController: UITableViewController {
             cell.selectionStyle = UITableViewCellSelectionStyle.None
             cell.titlePostLabel.text = posts[section].title
             
-            cell.postImageView.layer.cornerRadius = 6.0;
+            cell.datePostLabel.text = posts[section].date
+            
+            //cell.postImageView.layer.cornerRadius = 6.0;
             cell.postImageView.layer.borderWidth = 0.5
             cell.postImageView.clipsToBounds = true
             cell.postImageView.layer.borderColor = colorForBorder.CGColor
@@ -458,6 +473,7 @@ class PostTableViewController: UITableViewController {
             //cell.textPostLabel.delegate = self
             cell.titlePostLabel.text = posts[section].title
             cell.textPostLabel.text = posts[section].description
+            cell.datePostLabel.text = posts[section].date
             cell.selectionStyle = UITableViewCellSelectionStyle.None
             return cell
         }

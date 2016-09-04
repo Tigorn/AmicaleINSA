@@ -86,6 +86,8 @@
 		9206F3F41C839AE300978CF5 /* Photo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Photo.swift; sourceTree = "<group>"; };
 		9206F3F61C839F8900978CF5 /* AmicaleINSA-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "AmicaleINSA-Bridging-Header.h"; sourceTree = "<group>"; };
 		9206F3F71C83AC4900978CF5 /* Public.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Public.swift; sourceTree = "<group>"; };
+		9229064D1D7C32080052BF74 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Main.strings; sourceTree = "<group>"; };
+		9229064E1D7C32080052BF74 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
 		9233B9261CFF3AB400DFF955 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		923677FA1CAC28A100FA7084 /* BreakOutToRefreshView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BreakOutToRefreshView.swift; sourceTree = "<group>"; };
 		9247CD781CB12CE8008F51E2 /* PostWithImageTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostWithImageTableViewCell.swift; sourceTree = "<group>"; };
@@ -691,6 +693,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				9206F3BE1C838F8B00978CF5 /* Base */,
+				9229064D1D7C32080052BF74 /* fr */,
 			);
 			name = Main.storyboard;
 			sourceTree = "<group>";
@@ -699,6 +702,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				9206F3C61C838F8B00978CF5 /* Base */,
+				9229064E1D7C32080052BF74 /* fr */,
 			);
 			name = LaunchScreen.storyboard;
 			sourceTree = "<group>";

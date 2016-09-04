@@ -1,0 +1,93 @@
+
+/* Class = "UILabel"; text = "Home"; ObjectID = "0AH-BK-3hR"; */
+"0AH-BK-3hR.text" = "Home";
+
+/* Class = "UIBarButtonItem"; title = "Actuelle"; ObjectID = "0fp-Fn-4Ee"; */
+"0fp-Fn-4Ee.title" = "Actuelle";
+
+/* Class = "UILabel"; text = "Type machine"; ObjectID = "2QZ-hS-ir4"; */
+"2QZ-hS-ir4.text" = "Type machine";
+
+/* Class = "UILabel"; text = "Group"; ObjectID = "4kn-hn-Kib"; */
+"4kn-hn-Kib.text" = "Group";
+
+/* Class = "UILabel"; text = "°C"; ObjectID = "5EA-0d-jQG"; */
+"5EA-0d-jQG.text" = "°C";
+
+/* Class = "UILabel"; text = "1"; ObjectID = "5Ix-mV-oKh"; */
+"5Ix-mV-oKh.text" = "1";
+
+/* Class = "UILabel"; text = "Washinsa"; ObjectID = "Akb-yy-wR8"; */
+"Akb-yy-wR8.text" = "Washinsa";
+
+/* Class = "UILabel"; text = "Chat"; ObjectID = "C5s-R7-p2W"; */
+"C5s-R7-p2W.text" = "Chat";
+
+/* Class = "UINavigationItem"; title = "Washinsa"; ObjectID = "CeB-Vc-xxo"; */
+"CeB-Vc-xxo.title" = "Washinsa";
+
+/* Class = "UILabel"; text = "mm:ss - mm:ss"; ObjectID = "CjL-bc-xd9"; */
+"CjL-bc-xd9.text" = "mm:ss - mm:ss";
+
+/* Class = "UILabel"; text = "Pseudo"; ObjectID = "Dj0-xl-QCg"; */
+"Dj0-xl-QCg.text" = "Pseudo";
+
+/* Class = "UILabel"; text = "Settings"; ObjectID = "HHw-ui-Mg8"; */
+"HHw-ui-Mg8.text" = "Settings";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "HYV-8D-Jlu"; */
+"HYV-8D-Jlu.text" = "Label";
+
+/* Class = "UILabel"; text = "Disponibilité"; ObjectID = "JKD-fn-bNT"; */
+"JKD-fn-bNT.text" = "Disponibilité";
+
+/* Class = "UILabel"; text = "Planning"; ObjectID = "M7X-UH-ZhW"; */
+"M7X-UH-ZhW.text" = "Planning";
+
+/* Class = "UINavigationItem"; title = "Planning"; ObjectID = "PGi-CF-S5v"; */
+"PGi-CF-S5v.title" = "Planning";
+
+/* Class = "UINavigationItem"; title = "News"; ObjectID = "POj-fL-gAP"; */
+"POj-fL-gAP.title" = "News";
+
+/* Class = "UITableViewSection"; headerTitle = "Picture"; ObjectID = "PXQ-hb-tbi"; */
+"PXQ-hb-tbi.headerTitle" = "Picture";
+
+/* Class = "UILabel"; text = "username"; ObjectID = "XY3-Di-WtO"; */
+"XY3-Di-WtO.text" = "username";
+
+/* Class = "UILabel"; text = "  Amicale INSA Toulouse"; ObjectID = "aoT-5Z-xOO"; */
+"aoT-5Z-xOO.text" = "  Amicale INSA Toulouse";
+
+/* Class = "UITableViewSection"; headerTitle = "Chat"; ObjectID = "bAF-lg-mGb"; */
+"bAF-lg-mGb.headerTitle" = "Chat";
+
+/* Class = "UITableViewSection"; headerTitle = " "; ObjectID = "cGu-X9-LMB"; */
+"cGu-X9-LMB.headerTitle" = " ";
+
+/* Class = "UINavigationItem"; title = "Settings"; ObjectID = "eop-Op-9Dy"; */
+"eop-Op-9Dy.title" = "Settings";
+
+/* Class = "UILabel"; text = "Disponible dans"; ObjectID = "fl6-zW-Zsa"; */
+"fl6-zW-Zsa.text" = "Disponible dans";
+
+/* Class = "UILabel"; text = "1A-A"; ObjectID = "hux-8S-Ba1"; */
+"hux-8S-Ba1.text" = "1A-A";
+
+/* Class = "UILabel"; text = "Titre2"; ObjectID = "ltf-mZ-iJb"; */
+"ltf-mZ-iJb.text" = "Titre2";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "oaz-Uj-6Km"; */
+"oaz-Uj-6Km.text" = "Label";
+
+/* Class = "UITextField"; placeholder = "Pseudo1234"; ObjectID = "pqT-IP-e04"; */
+"pqT-IP-e04.placeholder" = "Pseudo1234";
+
+/* Class = "UITableViewSection"; headerTitle = "INSA"; ObjectID = "qgR-zG-mym"; */
+"qgR-zG-mym.headerTitle" = "INSA";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "ufD-vD-lyb"; */
+"ufD-vD-lyb.text" = "Label";
+
+/* Class = "UITableViewSection"; headerTitle = " "; ObjectID = "wOr-sE-Ubc"; */
+"wOr-sE-Ubc.headerTitle" = " ";
