@@ -489,20 +489,20 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
         var index = 0
         let messagesQuery = messageRef.queryLimitedToLast(INITIAL_MESSAGE_LIMIT)
         messagesQuery.observeEventType(.Value) { (snapshots: FIRDataSnapshot!) in
-            var limiteLoadMessages = snapshots.childrenCount
+            let limiteLoadMessages = snapshots.childrenCount
             for message in snapshots.children {
                 index += 1
+                print("index: \(index), limiteLoadMessages: \(limiteLoadMessages)")
                 if !SwiftSpinnerAlreadyHidden {
                     SwiftSpinnerAlreadyHidden = true
                     MBProgressHUD.hideAllHUDsForView(self.navigationController?.view, animated: true)
-                    self.initActivityIndicatorPictures()
                 }
                 
                 guard let idString = message.value!["senderId"] as? String else {return}
                 guard let textString = message.value!["text"] as? String else {return}
                 guard let senderDisplayNameString = message.value!["senderDisplayName"] as? String else {return}
                 guard let dateTimestampInterval = message.value!["dateTimestamp"] as? NSTimeInterval else {return}
-                
+                print(textString)
                 var imageURLString = ""
                 if let imageURL = message.value!["imageURL"] as? String {
                     imageURLString = imageURL
@@ -525,13 +525,12 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
                     }
                     self.messagesHashValue += [hashValue]
                 } else {
-                    print("I cannot add the message, PROBLEM!")
-                    print("Timestamp qui cause problème est: \(dateTimestampInterval), data: \(date)")
+                    //print("I cannot add the message, PROBLEM!")
+                    //print("Timestamp qui cause problème est: \(dateTimestampInterval), data: \(date)")
                 }
+                self.finishReceivingMessage()
                 if UInt(index) == limiteLoadMessages {
-                    self.finishReceivingMessage()
                     self.scrollToBottomAnimated(true)
-                    MBProgressHUD.hideAllHUDsForView(self.navigationController?.view, animated: true)
                 }
             }
             
