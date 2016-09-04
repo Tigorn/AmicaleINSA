@@ -178,6 +178,7 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
     }
     
     func initObservers() {
+        observeMessagesInit()
         observeMessages()
         observeTyping()
         observeActiveUsers()
@@ -483,53 +484,62 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
     //        }
     //    }
     
+    private func computeSnapshot(snapshot: FIRDataSnapshot, isLoadMoreMessages: Bool, isObserveMessages: Bool ) {
+        guard let idString = snapshot.value!["senderId"] as? String else {return}
+        guard let textString = snapshot.value!["text"] as? String else {return}
+        guard let senderDisplayNameString = snapshot.value!["senderDisplayName"] as? String else {return}
+        guard let dateTimestampInterval = snapshot.value!["dateTimestamp"] as? NSTimeInterval else {return}
+        
+        var imageURLString = ""
+        if let imageURL = snapshot.value!["imageURL"] as? String {
+            imageURLString = imageURL
+        }
+        
+        if (self.shouldUpdateLastTimestamp(dateTimestampInterval)){
+            self.lastTimestamp = dateTimestampInterval
+        }
+        
+        let date = NSDate(timeIntervalSince1970: dateTimestampInterval)
+        let hashValue = "\(idString)\(date)\(senderDisplayNameString)\(dateTimestampInterval)".md5()
+        let canAdd = self.shouldAddInArray(hashValue)
+        if canAdd {
+            if imageURLString != "" {
+                let url = NSURL(string: imageURLString)!
+                let imageMedia = AsyncPhotoMediaItem(withURL: url)
+                self.addMessage(idString, media: imageMedia, senderDisplayName: senderDisplayNameString, date: date, isLoadMoreLoading: isLoadMoreMessages)
+            } else {
+                self.addMessage(idString, text: textString, senderDisplayName: senderDisplayNameString, date: date, isLoadMoreLoading: isLoadMoreMessages)
+            }
+            self.messagesHashValue += [hashValue]
+        }
+        if isObserveMessages {
+            self.finishReceivingMessage()
+        }
+    }
+    
     private func observeMessages() {
+        let messagesQuery = messageRef.queryLimitedToLast(1)
+        messagesQuery.observeEventType(.ChildAdded, withBlock: { (snapshot: FIRDataSnapshot!) in
+            self.computeSnapshot(snapshot, isLoadMoreMessages: false, isObserveMessages: true)
+        })
+    }
+    
+    private func observeMessagesInit() {
         _log_Title("Count Messages", location: "ChatVC.observeMessages", shouldLog: LOG)
         var SwiftSpinnerAlreadyHidden = false
         var index = 0
         let messagesQuery = messageRef.queryLimitedToLast(INITIAL_MESSAGE_LIMIT)
-        messagesQuery.observeEventType(.Value) { (snapshots: FIRDataSnapshot!) in
+        messagesQuery.observeSingleEventOfType(.Value) { (snapshots: FIRDataSnapshot!) in
             let limiteLoadMessages = snapshots.childrenCount
             for message in snapshots.children {
                 index += 1
-                print("index: \(index), limiteLoadMessages: \(limiteLoadMessages)")
                 if !SwiftSpinnerAlreadyHidden {
                     SwiftSpinnerAlreadyHidden = true
                     MBProgressHUD.hideAllHUDsForView(self.navigationController?.view, animated: true)
                 }
-                
-                guard let idString = message.value!["senderId"] as? String else {return}
-                guard let textString = message.value!["text"] as? String else {return}
-                guard let senderDisplayNameString = message.value!["senderDisplayName"] as? String else {return}
-                guard let dateTimestampInterval = message.value!["dateTimestamp"] as? NSTimeInterval else {return}
-                print(textString)
-                var imageURLString = ""
-                if let imageURL = message.value!["imageURL"] as? String {
-                    imageURLString = imageURL
-                }
-                
-                if (self.shouldUpdateLastTimestamp(dateTimestampInterval)){
-                    self.lastTimestamp = dateTimestampInterval
-                }
-                
-                let date = NSDate(timeIntervalSince1970: dateTimestampInterval)
-                let hashValue = "\(idString)\(date)\(senderDisplayNameString)\(dateTimestampInterval)".md5()
-                let canAdd = self.shouldAddInArray(hashValue)
-                if canAdd {
-                    if imageURLString != "" {
-                        let url = NSURL(string: imageURLString)!
-                        let imageMedia = AsyncPhotoMediaItem(withURL: url)
-                        self.addMessage(idString, media: imageMedia, senderDisplayName: senderDisplayNameString, date: date, isLoadMoreLoading: false)
-                    } else {
-                        self.addMessage(idString, text: textString, senderDisplayName: senderDisplayNameString, date: date, isLoadMoreLoading: false)
-                    }
-                    self.messagesHashValue += [hashValue]
-                } else {
-                    //print("I cannot add the message, PROBLEM!")
-                    //print("Timestamp qui cause problème est: \(dateTimestampInterval), data: \(date)")
-                }
-                self.finishReceivingMessage()
+                self.computeSnapshot(message as! FIRDataSnapshot, isLoadMoreMessages: false, isObserveMessages: false)
                 if UInt(index) == limiteLoadMessages {
+                    self.finishReceivingMessage()
                     self.scrollToBottomAnimated(true)
                 }
             }
@@ -542,36 +552,11 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
         let oldBottomOffset = self.collectionView!.contentSize.height - self.collectionView!.contentOffset.y
         let messagesQuery = messageRef.queryOrderedByChild("dateTimestamp").queryEndingAtValue(lastTimestamp).queryLimitedToLast(LOAD_MORE_MESSAGE_LIMIT)
         var index = 0
-        print("loadMoreMessages ==> 1")
         messagesQuery.observeEventType(.Value) { (snapshots: FIRDataSnapshot!) in
             let limiteLoadMore = snapshots.childrenCount
-            print("loadMoreMessages ==> 2")
             for message in snapshots.children {
                 index += 1
-                print("blocage UI ? \(index)")
-                guard let id = message.value!["senderId"] as? String else {return}
-                guard let text = message.value!["text"] as? String else {return}
-                guard let senderDisplayName = message.value!["senderDisplayName"] as? String else {return}
-                guard let dateTimestampInterval = message.value!["dateTimestamp"] as? NSTimeInterval else {return}
-                var imageURLString = ""
-                if let imageURL = message.value!["imageURL"] as? String {
-                    imageURLString = imageURL
-                }
-                
-                if (self.shouldUpdateLastTimestamp(dateTimestampInterval)){
-                    self.lastTimestamp = dateTimestampInterval
-                }
-                
-                let date = NSDate(timeIntervalSince1970: dateTimestampInterval)
-                
-                if imageURLString != "" {
-                    let url = NSURL(string: imageURLString)!
-                    let imageMedia = AsyncPhotoMediaItem(withURL: url)
-                    self.addMessage(id, media: imageMedia, senderDisplayName: senderDisplayName, date: date, isLoadMoreLoading: true)
-                }
-                else {
-                    self.addMessage(id, text: text, senderDisplayName: senderDisplayName, date: date, isLoadMoreLoading: true)
-                }
+                self.computeSnapshot(message as! FIRDataSnapshot, isLoadMoreMessages: true, isObserveMessages: false)
                 if UInt(index) == limiteLoadMore {
                     self.finishReceivingMessageAnimated(false)
                     self.collectionView!.infiniteScrollingView.stopAnimating()
