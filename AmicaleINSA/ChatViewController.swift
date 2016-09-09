@@ -26,6 +26,7 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
     
     private var popover: Popover!
     private var connectedUsers = [String]()
+    private var connectedUsersTmp = [String]()
     private var popoverOptions: [PopoverOption] = [
         .Type(.Down),
         .BlackOverlayColor(UIColor(white: 0.0, alpha: 0.6))
@@ -238,6 +239,7 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
     func initChat(){}
     
     func emojiTitleRightTapped() {
+        connectedUsersTmp = connectedUsers
         let width = self.view.frame.width
         let x_startintPoint = width - (width * 0.084)
         let y_startintPoint = CGFloat(55)
@@ -891,44 +893,6 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
         print("cancel button pressed")
     }
     
-    //    func createPhotoArray(image: UIImage) -> ([Photo], Int) {
-    //        var arrayPhoto = [Photo]()
-    //        var index = 0
-    //        var tag = -1
-    //        for message in messages {
-    //
-    //            if message.isMediaMessage {
-    //                if let imageItem = message.media as? JSQPhotoMediaItem {
-    //                    arrayPhoto.append(Photo(photo: imageItem.image))
-    //                    if imageItem.image == image {
-    //                        tag = index
-    //                    }
-    //                    index += 1
-    //                }
-    //            }
-    //        }
-    //        return (arrayPhoto, tag)
-    //    }
-    
-    //    override func collectionView(collectionView: JSQMessagesCollectionView!, didTapMessageBubbleAtIndexPath indexPath: NSIndexPath!) {
-    //        let message = self.messages[indexPath.row]
-    //        if let imageItem = message.media as? JSQPhotoMediaItem {
-    //            let image = imageItem.image
-    //            let photo = Photo(photo: image!)
-    //            let photos = createPhotoArray(image!)
-    //            let tagIndexPhotoInArray = photos.1
-    //            if tagIndexPhotoInArray != -1 {
-    //                print("Tag calc = \(tagIndexPhotoInArray)")
-    //                let viewer = NYTPhotosViewController(photos: photos.0, initialPhoto: photos.0[tagIndexPhotoInArray])
-    //                presentViewController(viewer, animated: true, completion: nil)
-    //            } else {
-    //                let viewer = NYTPhotosViewController(photos: [photo])
-    //                presentViewController(viewer, animated: true, completion: nil)
-    //            }
-    //        } else {
-    //            print("Problem with the image JSQMediaItem when I click on an image on chat")
-    //        }
-    //    }
     
     func createPhotoArray(image: UIImage) -> ([Photo], Int) {
         var arrayPhoto = [Photo]()
@@ -1006,7 +970,7 @@ extension ChatViewController: UITableViewDelegate {
 extension ChatViewController: UITableViewDataSource {
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int{
-        return self.connectedUsers.count
+        return self.connectedUsersTmp.count
     }
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
@@ -1014,8 +978,10 @@ extension ChatViewController: UITableViewDataSource {
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        print("connectedUsers: \(connectedUsers)")
+        print("connectedUsersTmp: \(connectedUsersTmp)")
         let cell = UITableViewCell(style: .Default, reuseIdentifier: nil)
-        cell.textLabel?.text = self.connectedUsers[indexPath.row]
+        cell.textLabel?.text = self.connectedUsersTmp[indexPath.row]
         cell.selectionStyle = .None
         return cell
     }
