@@ -24,6 +24,7 @@ public struct Public {
     static let profilePicture = "profilePicture"
     static let beenToSettingsOnce = "beenToSettingsOnce"
     static let segueBeenToSettingsOnce = "showSettingsFirstConnexion"
+    static let segueFromPlanningToSettings = "showSettingsFromPlanning"
     
     // Webview offset
     static let Monday_iPhone4 = 0
@@ -86,6 +87,11 @@ public struct Public {
     static let LOGGING_stars_full = "****************************************************************************"
     static let LOGGING_whiteSpace_beforeTitle = ""
     static let LOGGING_LOG = true
+    
+    // Settings Group INSA
+    static let noGroupINSA = "elseGroupINSA"
+    static let titleAlertViewNoGroup = "Hé oui !"
+    static let subtitleAlertViewNoGroup = "Il faut choisir un groupe réel pour accéder au planning ;)\n\nVeuillez contacter l'Amicale s'il y a un problème avec les groupes."
 }
 
 /*
@@ -385,6 +391,18 @@ public func alertViewApplicationTooOld(message : String) {
     alert.showInfo(Public.titleAlertVersionNotAllowed, subTitle: message)
 }
 
+public func alertViewNoGroupINSA() {
+    let appearance = SCLAlertView.SCLAppearance(
+        showCloseButton: false
+    )
+    let alert = SCLAlertView(appearance: appearance)
+    alert.addButton("Compris !"){
+        
+    }
+    alert.showInfo(Public.titleAlertViewNoGroup, subTitle: Public.subtitleAlertViewNoGroup)
+}
+
+
 public func loadVersionsNotAllowedFromServer() {
     let LOG = true
     var msg = ""
@@ -516,6 +534,92 @@ public func getYearsINSAPlanning() -> [(String, String)] {
             ("4-GPE-TP - G2", "783"),
             ("4-GPE-TP - G3", "806"),
             ("4-GPE-TP - G4", "786"),
+            
+            ("5-GB", "266+304+267+314+312+313"),
+            ("5 GB biocatalyse", "266"),
+            ("5 GB bionano", "304"),
+            ("5 GB bioprocede", "267"),
+            ("5 GB bioseparation", "314"),
+            ("5 GB biosys", "312"),
+            ("5 GB microbiologie", "313"),
+            
+            ("5 GC", "624+626+625+1368"),
+            ("5 GC CLIM", "624"),
+            ("5 GC ING-BAT", "626"),
+            ("5 GC TRAV-PUB & OUV", "625"),
+            ("5 GC URBAIN", "1368"),
+            ("5 AGC", "894"),
+            
+            ("5 GEI ESE", "1138+1139"),
+            ("5 GEI ESE 1 CAP", "1138"),
+            ("5 GEI ESE 2 CAP", "1139"),
+            ("5 GEI IL", "377+379+380+384"),
+            ("5 GEI IL A", "377+379"),
+            ("5 GEI IL B", "380+384"),
+            
+            ("5 GEI Min AA", "794+537"),
+            ("5 GEI-AA 1", "794"),
+            ("5 GEI-AA 2", "537"),
+            ("5 GEI Min AMRA", "813+554"),
+            ("5 GEI-AMRA 1", "813"),
+            ("5 GEI-AMRA 2", "554"),
+            ("5 GEI Min IDM", "634+276"),
+            ("5 GEI-IDM 1", "634"),
+            ("5 GEI-IDM 2", "276"),
+            ("5 GEI Min PPC", "792+791"),
+            ("5 GEI-PPC 1", "792"),
+            ("5 GEI-PPC 2", "791"),
+            
+            ("5 GEI Min SECU", "789+749"),
+            ("5 GEI-SECU 1", "789"),
+            ("5 GEI-SECU 2", "749"),
+            ("5 GEI Min Cap", "23+22"),
+            ("5 GEI Cap 1", "23"),
+            ("5 GEI Cap 2", "22"),
+            ("5 GEI SDC", "431+438+423+430"),
+            ("5 GEI SDC A", "431+438"),
+            ("5 GEI SDC B", "423+430"),
+            ("5 GEI SEC", "288+467+239"),
+            ("5 GEI SEC A", "288"),
+            ("5 GEI SEC B", "467"),
+            ("5 GEI SEC C", "239"),
+            
+            ("5 GM-IM", "428+381+382+1188+1815+1820+1822+1823+741"),
+            ("5 GM Gr1 PE", "428"),
+            ("5 GM Gr2 SN", "281"),
+            ("5 GM Gr3 ID", "382"),
+            ("5 GM TPgrA", "1188"),
+            ("5 GM TPgrB", "1815"),
+            ("5 GM TPgrC", "1820"),
+            ("5 GM TPgrD", "1822"),
+            ("5 GM TPgrE", "1823"),
+            ("5 GM TPgrF", "741"),
+            
+            ("5 GM-IS", "105+559"),
+            ("5 IS", "105+559"),
+            
+            ("5 GMM", "685+97+496"),
+            ("5 GMM MMN", "685"),
+            ("5 GMM MMS-IF", "97"),
+            ("5 GMM MMS-SI", "496"),
+            ("5 GP", "301+199+420+198+1140+1129"),
+            ("5 GP IP", "301"),
+            ("5 GP IPTM", "199"),
+            ("5 GP MNEMS", "420"),
+            ("5 GP MNPA", "198"),
+            ("5 GP NB", "1140"),
+            ("5 GP NC", "1129"),
+            
+            ("5 GPE", "244+820+822+821+823+818+819"),
+            ("5 GPE Projet UF0", "244"),
+            ("5 GPE Série1 UF1", "820"),
+            ("5 GPE Série1 UF2", "821"),
+            ("5 GPE Série1 UF3", "818"),
+            ("5 GPE Série1 UF4", "822"),
+            ("5 GPE Série1 UF5", "823"),
+            ("5 GPE Série1 UF6", "819"),
+            
+            ("Autre", Public.noGroupINSA)
     ]
 }
 
@@ -533,8 +637,8 @@ public func escapeTextRemovingFirstWhiteSpace(str: String) -> String {
 }
 
 /*
-    Logging
-*/
+ Logging
+ */
 
 func _log_Title(text: String, location: String, shouldLog: Bool) {
     if shouldLog {

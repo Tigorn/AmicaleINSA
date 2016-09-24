@@ -38,8 +38,13 @@ class WebPlanningViewController: UIViewController, UIWebViewDelegate, UIScrollVi
         
         weekNumberToday = getWeekNumber()
         let url = NSURL(string: getUrlPlanning(weekNumberToday))
-        let request = NSURLRequest(URL: url!)
-        webView.loadRequest(request)
+        if url?.absoluteString != Public.noGroupINSA {
+            print("Je passe par là ?")
+            let request = NSURLRequest(URL: url!)
+            webView.loadRequest(request)
+        } else {
+            self.performSegueWithIdentifier(Public.segueFromPlanningToSettings, sender: self)
+        }
         
         initUI()
     }
@@ -287,11 +292,17 @@ class WebPlanningViewController: UIViewController, UIWebViewDelegate, UIScrollVi
         }
     }
     
+    func segueToSettingsIfNeeded(){
+        if !getBeenToSettingsOnce() {
+            self.performSegueWithIdentifier(Public.segueBeenToSettingsOnce, sender: self)
+        }
+    }
+    
     
     func getUrlPlanning(weekNumber: Int) -> String {
         let IDWebPlanning = getIDPlanningExpress()
-        if IDWebPlanning == "" {
-            return "http://apple.com/"
+        if IDWebPlanning == "" || IDWebPlanning == Public.noGroupINSA {
+            return Public.noGroupINSA
         } else {
             if debug {
                 print("https://www.etud.insa-toulouse.fr/planning/index.php?gid=\(IDWebPlanning)&wid=\(weekNumber)&platform=ios")
@@ -367,6 +378,13 @@ class WebPlanningViewController: UIViewController, UIWebViewDelegate, UIScrollVi
             let url = NSURL(string:"https://www.etud.insa-toulouse.fr/planning/index.php")
             let request = NSURLRequest(URL: url!)
             webView.loadRequest(request)
+        }
+    }
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if segue.identifier == Public.segueFromPlanningToSettings {
+            let settingsVC = segue.destinationViewController as! SettingsTableViewController
+            settingsVC.comeFromWebPlanningBecauseNoGroupSelected = true
         }
     }
     

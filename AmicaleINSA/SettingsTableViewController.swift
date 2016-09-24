@@ -26,6 +26,7 @@ class SettingsTableViewController: UITableViewController, UITextFieldDelegate, I
     let yearsINSA: [(String, String)] = getYearsINSAPlanning()
     var savedMBProgressHUD = MBProgressHUD()
     private var showYearsPickerINSAVisible = false
+    var comeFromWebPlanningBecauseNoGroupSelected = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -45,6 +46,12 @@ class SettingsTableViewController: UITableViewController, UITextFieldDelegate, I
         yearSpeGroupLabel.text = yearsINSA[defautlRowPickerView].0
         pseudoTextField.addTarget(self, action: #selector(SettingsTableViewController.pseudoDidChange), forControlEvents: .EditingDidBegin)
         pseudoTextField.addTarget(self, action: #selector(SettingsTableViewController.pseudoChangesFinished), forControlEvents: .EditingDidEnd)
+        
+        if comeFromWebPlanningBecauseNoGroupSelected {
+            showPopUpIfComeFromPlanningBecauseNoGroup()
+            comeFromWebPlanningBecauseNoGroupSelected = false
+        }
+        
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -192,6 +199,11 @@ class SettingsTableViewController: UITableViewController, UITextFieldDelegate, I
         tableView.endUpdates()
     }
     
+    /* Popup */
+    
+    private func showPopUpIfComeFromPlanningBecauseNoGroup() {
+        alertViewNoGroupINSA()
+    }
     
     
     /* MBProgressHUD */
