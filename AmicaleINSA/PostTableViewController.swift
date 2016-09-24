@@ -366,11 +366,13 @@ class PostTableViewController: UITableViewController {
             if post.imagePresents {
                 let ImageView = UIImageView()
                 ImageView.kf_setImageWithURL(NSURL(string: post.urlImage))
-                arrayPhoto.append(Photo(photo: ImageView.image!))
-                if ImageView.image == image {
-                    tag = index
+                if let imageViewImage = ImageView.image {
+                    arrayPhoto.append(Photo(photo: imageViewImage))
+                    if imageViewImage == image {
+                        tag = index
+                    }
+                    index += 1
                 }
-                index += 1
             }
         }
         return (arrayPhoto, tag)
@@ -380,13 +382,14 @@ class PostTableViewController: UITableViewController {
     {
         if let tag = img.view?.tag {
             let ImageView = UIImageView()
-            for post in posts {
-                if post.imagePresents {
-                    ImageView.kf_setImageWithURL(NSURL(string: post.urlImage))
-                    guard let _ = ImageView.image else {return}
-                }
-            }
+//            for post in posts {
+//                if post.imagePresents {
+//                    ImageView.kf_setImageWithURL(NSURL(string: post.urlImage))
+//                    //guard let _ = ImageView.image else {return}
+//                }
+//            }
             ImageView.kf_setImageWithURL(NSURL(string: posts[tag].urlImage))
+            guard let _ = ImageView.image else {return}
             let photo = Photo(photo: ImageView.image!)
             let photos = createPhotoArray(ImageView.image!)
             let tagIndexPhotoInArray = photos.1

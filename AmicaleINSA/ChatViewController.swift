@@ -978,8 +978,6 @@ extension ChatViewController: UITableViewDataSource {
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        print("connectedUsers: \(connectedUsers)")
-        print("connectedUsersTmp: \(connectedUsersTmp)")
         let cell = UITableViewCell(style: .Default, reuseIdentifier: nil)
         cell.textLabel?.text = self.connectedUsersTmp[indexPath.row]
         cell.selectionStyle = .None
