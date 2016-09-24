@@ -39,7 +39,6 @@ class WebPlanningViewController: UIViewController, UIWebViewDelegate, UIScrollVi
         weekNumberToday = getWeekNumber()
         let url = NSURL(string: getUrlPlanning(weekNumberToday))
         if url?.absoluteString != Public.noGroupINSA {
-            print("Je passe par là ?")
             let request = NSURLRequest(URL: url!)
             webView.loadRequest(request)
         } else {
