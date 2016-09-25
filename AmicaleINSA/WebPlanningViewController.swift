@@ -15,7 +15,11 @@ class WebPlanningViewController: UIViewController, UIWebViewDelegate, UIScrollVi
     @IBOutlet weak var menuButton:UIBarButtonItem!
     @IBOutlet weak var webView: UIWebView!
     @IBOutlet weak var ActualBarButtonItem: UIBarButtonItem!
-    var weekNumberToday : Int = 0
+    var weekNumberToday : Int = 0 {
+        didSet {
+            print("weekNumberToday: \(oldValue) -> \(weekNumberToday)")
+        }
+    }
     var debug = false
     let offsetScroll = CGFloat(190)
     var AmITheCurrentWeek = true
@@ -37,6 +41,7 @@ class WebPlanningViewController: UIViewController, UIWebViewDelegate, UIScrollVi
         self.webView.scrollView.delegate = self
         
         weekNumberToday = getWeekNumber()
+        print("week number: \(weekNumberToday)")
         let url = NSURL(string: getUrlPlanning(weekNumberToday))
         if url?.absoluteString != Public.noGroupINSA {
             let request = NSURLRequest(URL: url!)
@@ -313,8 +318,10 @@ class WebPlanningViewController: UIViewController, UIWebViewDelegate, UIScrollVi
     func getWeekNumber() -> Int {
         let calender = NSCalendar.currentCalendar()
         let dateComponent = calender.component(NSCalendarUnit.WeekOfYear, fromDate: NSDate())
+        print("date: \(NSDate())")
         let dayOfWeek = getDayOfWeek()
         if debug {
+            print("date component: \(dateComponent)")
             print("dayOfWeek = \(dayOfWeek)")
         }
         if (dayOfWeek == "Saturday" || dayOfWeek == "samedi" || dayOfWeek == "Sunday" || dayOfWeek == "dimanche"){
@@ -370,7 +377,8 @@ class WebPlanningViewController: UIViewController, UIWebViewDelegate, UIScrollVi
     
     @IBAction func todayWeekButtonAction(sender: AnyObject) {
         AmITheCurrentWeek = true
-        if let url = NSURL(string: getUrlPlanning(getWeekNumber())) {
+        weekNumberToday = getWeekNumber()
+        if let url = NSURL(string: getUrlPlanning(weekNumberToday)) {
             let request = NSURLRequest(URL: url)
             webView.loadRequest(request)
         } else {
