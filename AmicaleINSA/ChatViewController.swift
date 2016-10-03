@@ -371,14 +371,13 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
         guard let textString = snapshot.value!["text"] as? String else {return}
         guard let senderDisplayNameString = snapshot.value!["senderDisplayName"] as? String else {return}
         guard let dateTimestampInterval = snapshot.value!["dateTimestamp"] as? NSTimeInterval else {return}
-        var isTimestampFromFirebase = false
+        //var isTimestampFromFirebase = false
         var dateFromTimestampFirebase: NSDate? = nil
         if let t = snapshot.value!["timestampServerFirebase"] as? NSTimeInterval {
-            isTimestampFromFirebase = true
+            //isTimestampFromFirebase = true
             dateFromTimestampFirebase = NSDate(timeIntervalSince1970: t/1000)
-            print("timestamp from Firebase: \(dateFromTimestampFirebase), timestamp local: \(NSDate(timeIntervalSince1970: dateTimestampInterval))")
         }
-        
+        print("timestamp from Firebase: \(dateFromTimestampFirebase), timestamp local: \(NSDate(timeIntervalSince1970: dateTimestampInterval))")
         var imageURLString = ""
         if let imageURL = snapshot.value!["imageURL"] as? String {
             imageURLString = imageURL
@@ -395,11 +394,14 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
             if imageURLString != "" {
                 let url = NSURL(string: imageURLString)!
                 let imageMedia = AsyncPhotoMediaItem(withURL: url)
-                self.addMessage(idString, media: imageMedia, senderDisplayName: senderDisplayNameString, date: date, isLoadMoreLoading: isLoadMoreMessages, dateFromTimestampFirebase: dateFromTimestampFirebase)
+                self.addMessage(idString, text: nil, media: imageMedia, senderDisplayName: senderDisplayNameString, date: date, isLoadMoreLoading: isLoadMoreMessages, dateFromTimestampFirebase: dateFromTimestampFirebase)
             } else {
-                self.addMessage(idString, text: textString, senderDisplayName: senderDisplayNameString, date: date, isLoadMoreLoading: isLoadMoreMessages)
+                self.addMessage(idString, text: textString, media: nil, senderDisplayName: senderDisplayNameString, date: date, isLoadMoreLoading: isLoadMoreMessages, dateFromTimestampFirebase: dateFromTimestampFirebase)
+                //self.addMessage(idString, text: textString, senderDisplayName: senderDisplayNameString, date: date, isLoadMoreLoading: isLoadMoreMessages)
             }
             self.messagesHashValue += [hashValue]
+        } else {
+            print("Already present!")
         }
         if isObserveMessages {
             self.finishReceivingMessage()
@@ -529,13 +531,37 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
         return (msg1.date.compare(msg2.date) == NSComparisonResult.OrderedAscending)
     }
     
-    func addMessage(id: String, text: String, senderDisplayName: String, date: NSDate, isLoadMoreLoading: Bool) {
-        if messageAlreadyPresent(id, senderDisplayName:senderDisplayName, text: text, date: date) == false {
-            let msg = JSQMessage(senderId: id, senderDisplayName: senderDisplayName, date: date, text: text)
-            if isLoadMoreLoading {
-                messages.insert(msg, atIndex: 0)
+//    func addMessage(id: String, text: String, senderDisplayName: String, date: NSDate, isLoadMoreLoading: Bool) {
+//        if messageAlreadyPresent(id, senderDisplayName:senderDisplayName, text: text, date: date) == false {
+//            let msg = JSQMessage(senderId: id, senderDisplayName: senderDisplayName, date: date, text: text)
+//            if isLoadMoreLoading {
+//                messages.insert(msg, atIndex: 0)
+//            } else {
+//                messages.append(msg)
+//            }
+//            messages.sortInPlace({
+//                return ($0.date.compare($1.date) == NSComparisonResult.OrderedAscending)
+//            })
+//        }
+//    }
+    
+    func addMessage(id: String, text: String?, media: JSQPhotoMediaItem?, senderDisplayName: String, date: NSDate, isLoadMoreLoading: Bool, dateFromTimestampFirebase: NSDate?) {
+        if messageAlreadyPresent(id, senderDisplayName: senderDisplayName, text: text, date: date) == false {
+            //print("date from timestamp firebase: \(dateFromTimestampFirebase), date narmol: \(date)")
+            var msg: JSQMessage?
+            var dateMessage = date
+            if dateFromTimestampFirebase != nil {
+                dateMessage = dateFromTimestampFirebase!
+            }
+            if text == nil {
+               msg = JSQMessage(senderId: id, senderDisplayName: senderDisplayName, date: dateMessage, media: media)
             } else {
-                messages.append(msg)
+                msg = JSQMessage(senderId: id, senderDisplayName: senderDisplayName, date: dateMessage, text: text)
+            }
+            if isLoadMoreLoading {
+                messages.insert(msg!, atIndex: 0)
+            } else {
+                messages.append(msg!)
             }
             messages.sortInPlace({
                 return ($0.date.compare($1.date) == NSComparisonResult.OrderedAscending)
@@ -543,23 +569,11 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
         }
     }
     
-    func addMessage(id: String, media: JSQPhotoMediaItem, senderDisplayName: String, date: NSDate, isLoadMoreLoading: Bool, dateFromTimestampFirebase: NSDate?) {
-        if messageAlreadyPresent(id, senderDisplayName: senderDisplayName, media: media, date: date) == false {
-            print("date from timestamp firebase: \(dateFromTimestampFirebase)")
-            let msg = JSQMessage(senderId: id, senderDisplayName: senderDisplayName, date: date, media: media)
-            if isLoadMoreLoading {
-                messages.insert(msg, atIndex: 0)
-            } else {
-                messages.append(msg)
-            }
-            messages.sortInPlace({
-                return ($0.date.compare($1.date) == NSComparisonResult.OrderedAscending)
-            })
+    func messageAlreadyPresent(id: String, senderDisplayName: String, text: String?, date: NSDate) -> Bool {
+        var msg = "\(id)\(senderDisplayName)\(text)\(date)"
+        if text == nil {
+            msg = "\(id)\(senderDisplayName)\(date)"
         }
-    }
-    
-    func messageAlreadyPresent(id: String, senderDisplayName: String, text: String, date: NSDate) -> Bool {
-        let msg = "\(id)\(senderDisplayName)\(text)\(date)"
         var msgToCompare = ""
         for message in messages {
             if message.isMediaMessage == false {
@@ -572,19 +586,19 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
         return false
     }
     
-    func messageAlreadyPresent(id: String, senderDisplayName: String, media: JSQPhotoMediaItem, date: NSDate) -> Bool {
-        let msg = "\(id)\(senderDisplayName)\(date)"
-        var msgToCompare = ""
-        for message in messages {
-            if message.isMediaMessage == true {
-                msgToCompare = "\(message.senderId)\(message.senderDisplayName)\(message.date)"
-                if msgToCompare == msg {
-                    return true
-                }
-            }
-        }
-        return false
-    }
+//    func messageAlreadyPresent(id: String, senderDisplayName: String, date: NSDate) -> Bool {
+//        let msg = "\(id)\(senderDisplayName)\(date)"
+//        var msgToCompare = ""
+//        for message in messages {
+//            if message.isMediaMessage == true {
+//                msgToCompare = "\(message.senderId)\(message.senderDisplayName)\(message.date)"
+//                if msgToCompare == msg {
+//                    return true
+//                }
+//            }
+//        }
+//        return false
+//    }
     
     override func collectionView(collectionView: JSQMessagesCollectionView!, header headerView: JSQMessagesLoadEarlierHeaderView!, didTapLoadEarlierMessagesButton sender: UIButton!) {
         print("didTapLoadEarlierMessagesButton")
