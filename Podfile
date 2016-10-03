@@ -11,20 +11,22 @@ target 'AmicaleINSA' do
     pod 'Firebase/Auth'
     pod 'Firebase/Storage'
     pod 'Firebase/Crash'
-    #pod 'JSQMessagesViewController', :git => 'https://github.com/jessesquires/JSQMessagesViewController.git', :branch => 'develop'    
+    #pod 'JSQMessagesViewController', :git => 'https://github.com/jessesquires/JSQMessagesViewController.git', :branch => 'develop'
     pod 'JSQMessagesViewController', :git => 'https://github.com/TeletronicsDotAe/JSQMessagesViewController.git', :branch => 'tlt-issue1458-support-scrolling-to-last-message'
-    pod 'CryptoSwift'
+    #pod 'CryptoSwift', :git => "https://github.com/krzyzanowskim/CryptoSwift.git", :branch => "swift21"
+     pod 'CryptoSwift', '~> 0.5.2'
     pod 'SVPullToRefresh', :git => 'https://github.com/gabro/SVPullToRefresh.git', :branch => 'top-infinitescrolling'
     pod 'NYTPhotoViewer', '~> 1.1.0'
     pod 'ALCameraViewController'
     #pod 'ImagePicker'
     pod 'ImagePicker', :git => 'https://github.com/hyperoslo/ImagePicker.git'
 #    pod 'SwiftSpinner', :git => 'https://github.com/icanzilb/SwiftSpinner.git'
-    pod 'SwiftSpinner'
+    pod 'SwiftSpinner', '~> 0.9.5'
     pod 'Fuzi', '~> 0.3.0'
     pod 'MBCircularProgressBar'
     pod 'MBProgressHUD', '~> 0.9.2'
-    pod 'SwiftyJSON', :git => 'https://github.com/SwiftyJSON/SwiftyJSON.git'
+    # pod 'SwiftyJSON', :git => 'https://github.com/SwiftyJSON/SwiftyJSON.git'
+    pod 'SwiftyJSON', '~> 2.3.2'
     pod 'UIScrollView-InfiniteScroll'
     pod 'Parse'
     pod 'Alamofire', '~> 3.3'
@@ -42,4 +44,3 @@ end
 target 'AmicaleINSAUITests' do
 
 end
-

@@ -67,6 +67,7 @@ class FirebaseManager {
             "senderId": senderId,
             "senderDisplayName": senderDisplayName,
             "dateTimestamp": dateTimestamp,
+            "timestampServerFirebase": FIRServerValue.timestamp(),
             "isMedia": false,
             "hashValue": "\(senderId)\(dateTimestamp)".md5(),
             "imageURL": imageURL

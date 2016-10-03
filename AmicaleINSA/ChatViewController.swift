@@ -365,28 +365,19 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
     func shouldAddInArray(hashValue: String) -> Bool {
         return !messagesHashValue.contains(hashValue)
     }
-    
-    
-    func messageAlreadyPresent(id: String, senderDisplayName: String, text: String, date: NSDate) -> Bool {
-        let msg = "\(id)\(senderDisplayName)\(text)\(date)"
-        var msgToCompare = ""
-        for message in messages {
-            if message.isMediaMessage == false {
-                msgToCompare = "\(message.senderId)\(message.senderDisplayName)\(message.text)\(message.date)"
-                if msgToCompare == msg {
-                    return true
-                }
-            }
-        }
-        return false
-    }
  
-    
     private func computeSnapshot(snapshot: FIRDataSnapshot, isLoadMoreMessages: Bool, isObserveMessages: Bool ) {
         guard let idString = snapshot.value!["senderId"] as? String else {return}
         guard let textString = snapshot.value!["text"] as? String else {return}
         guard let senderDisplayNameString = snapshot.value!["senderDisplayName"] as? String else {return}
         guard let dateTimestampInterval = snapshot.value!["dateTimestamp"] as? NSTimeInterval else {return}
+        var isTimestampFromFirebase = false
+        var dateFromTimestampFirebase: NSDate? = nil
+        if let t = snapshot.value!["timestampServerFirebase"] as? NSTimeInterval {
+            isTimestampFromFirebase = true
+            dateFromTimestampFirebase = NSDate(timeIntervalSince1970: t/1000)
+            print("timestamp from Firebase: \(dateFromTimestampFirebase), timestamp local: \(NSDate(timeIntervalSince1970: dateTimestampInterval))")
+        }
         
         var imageURLString = ""
         if let imageURL = snapshot.value!["imageURL"] as? String {
@@ -404,7 +395,7 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
             if imageURLString != "" {
                 let url = NSURL(string: imageURLString)!
                 let imageMedia = AsyncPhotoMediaItem(withURL: url)
-                self.addMessage(idString, media: imageMedia, senderDisplayName: senderDisplayNameString, date: date, isLoadMoreLoading: isLoadMoreMessages)
+                self.addMessage(idString, media: imageMedia, senderDisplayName: senderDisplayNameString, date: date, isLoadMoreLoading: isLoadMoreMessages, dateFromTimestampFirebase: dateFromTimestampFirebase)
             } else {
                 self.addMessage(idString, text: textString, senderDisplayName: senderDisplayNameString, date: date, isLoadMoreLoading: isLoadMoreMessages)
             }
@@ -522,61 +513,6 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
         return false
     }
     
-    
-    
-    
-    
-    //    func loadMoreMessages(){
-    //        let oldBottomOffset = self.collectionView!.contentSize.height - self.collectionView!.contentOffset.y
-    //        let messagesQuery = messageRef.queryOrderedByChild("dateTimestamp").queryEndingAtValue(lastTimestamp).queryLimitedToLast(LOAD_MORE_MESSAGE_LIMIT)
-    //        var index = 0
-    //        messagesQuery.observeEventType(.ChildAdded) { (snapshot: FIRDataSnapshot!) in
-    //
-    //            guard let id = snapshot.value!["senderId"] as? String else {return}
-    //            guard let text = snapshot.value!["text"] as? String else {return}
-    //            guard let senderDisplayName = snapshot.value!["senderDisplayName"] as? String else {return}
-    //            guard let dateTimestampInterval = snapshot.value!["dateTimestamp"] as? NSTimeInterval else {return}
-    //            var imageURLString = ""
-    //            if let imageURL = snapshot.value!["imageURL"] as? String {
-    //                imageURLString = imageURL
-    //            }
-    //
-    //            if (self.shouldUpdateLastTimestamp(dateTimestampInterval)){
-    //                self.lastTimestamp = dateTimestampInterval
-    //            }
-    //
-    //            let date = NSDate(timeIntervalSince1970: dateTimestampInterval)
-    //
-    //            if index < Int(self.LOAD_MORE_MESSAGE_LIMIT) {
-    //                if imageURLString != "" {
-    //                    let httpsReferenceImage = FIRStorage.storage().referenceForURL(imageURLString)
-    //                    httpsReferenceImage.dataWithMaxSize(3 * 1024 * 1024) { (data, error) -> Void in
-    //                        if (error != nil) {
-    //                            print("Error downloading image from httpsReferenceImage firebase")
-    //                        } else {
-    //                            let image = UIImage(data: data!)?.resizedImageClosestTo1000
-    //                            let mediaMessageData: JSQPhotoMediaItem = JSQPhotoMediaItem(image: image)
-    //                            self.addMessage(id, media: mediaMessageData, senderDisplayName: senderDisplayName, date: date, isLoadMoreLoading: true)
-    //                            index = self.finishReceivingAsyncMessage(index, isInitialLoading: false, isLoadMoreLoading: true)
-    //                            print("index: \(index), load_more_message_limit: \(Int(self.LOAD_MORE_MESSAGE_LIMIT))")
-    //                        }
-    //                    }
-    //                }
-    //                else {
-    //                    index += 1
-    //                    self.addMessage(id, text: text, senderDisplayName: senderDisplayName, date: date, isLoadMoreLoading: true)
-    //                }
-    //            } else {
-    //                print("I stop animating the loading indicator")
-    //                self.collectionView!.infiniteScrollingView.stopAnimating()
-    //            }
-    //            self.finishReceivingMessageAnimated(false)
-    //            self.collectionView!.layoutIfNeeded()
-    //            self.collectionView!.contentOffset = CGPointMake(0, self.collectionView!.contentSize.height - oldBottomOffset)
-    //        }
-    //        self.resetTimer()
-    //    }
-    
     func resetTimer() {
         timer.invalidate()
         let nextTimer = NSTimer.scheduledTimerWithTimeInterval(4.0, target: self, selector: #selector(ChatViewController.handleIdleEvent(_:)), userInfo: nil, repeats: false)
@@ -593,14 +529,6 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
         return (msg1.date.compare(msg2.date) == NSComparisonResult.OrderedAscending)
     }
     
-    func addMessageAtFirstPosition(id: String, text: String, senderDisplayName: String, date: NSDate) {
-        let msg = JSQMessage(senderId: id, senderDisplayName: senderDisplayName, date: date, text: text)
-        messages.append(msg)
-        messages.sortInPlace({
-            return ($0.date.compare($1.date) == NSComparisonResult.OrderedAscending)
-        })
-    }
-    
     func addMessage(id: String, text: String, senderDisplayName: String, date: NSDate, isLoadMoreLoading: Bool) {
         if messageAlreadyPresent(id, senderDisplayName:senderDisplayName, text: text, date: date) == false {
             let msg = JSQMessage(senderId: id, senderDisplayName: senderDisplayName, date: date, text: text)
@@ -615,8 +543,9 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
         }
     }
     
-    func addMessage(id: String, media: JSQPhotoMediaItem, senderDisplayName: String, date: NSDate, isLoadMoreLoading: Bool) {
+    func addMessage(id: String, media: JSQPhotoMediaItem, senderDisplayName: String, date: NSDate, isLoadMoreLoading: Bool, dateFromTimestampFirebase: NSDate?) {
         if messageAlreadyPresent(id, senderDisplayName: senderDisplayName, media: media, date: date) == false {
+            print("date from timestamp firebase: \(dateFromTimestampFirebase)")
             let msg = JSQMessage(senderId: id, senderDisplayName: senderDisplayName, date: date, media: media)
             if isLoadMoreLoading {
                 messages.insert(msg, atIndex: 0)
@@ -627,6 +556,20 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
                 return ($0.date.compare($1.date) == NSComparisonResult.OrderedAscending)
             })
         }
+    }
+    
+    func messageAlreadyPresent(id: String, senderDisplayName: String, text: String, date: NSDate) -> Bool {
+        let msg = "\(id)\(senderDisplayName)\(text)\(date)"
+        var msgToCompare = ""
+        for message in messages {
+            if message.isMediaMessage == false {
+                msgToCompare = "\(message.senderId)\(message.senderDisplayName)\(message.text)\(message.date)"
+                if msgToCompare == msg {
+                    return true
+                }
+            }
+        }
+        return false
     }
     
     func messageAlreadyPresent(id: String, senderDisplayName: String, media: JSQPhotoMediaItem, date: NSDate) -> Bool {
