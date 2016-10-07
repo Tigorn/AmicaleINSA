@@ -371,13 +371,6 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
         guard let textString = snapshot.value!["text"] as? String else {return}
         guard let senderDisplayNameString = snapshot.value!["senderDisplayName"] as? String else {return}
         guard let dateTimestampInterval = snapshot.value!["dateTimestamp"] as? NSTimeInterval else {return}
-        //var isTimestampFromFirebase = false
-        var dateFromTimestampFirebase: NSDate? = nil
-        if let t = snapshot.value!["timestampServerFirebase"] as? NSTimeInterval {
-            //isTimestampFromFirebase = true
-            dateFromTimestampFirebase = NSDate(timeIntervalSince1970: t/1000)
-        }
-        print("timestamp from Firebase: \(dateFromTimestampFirebase), timestamp local: \(NSDate(timeIntervalSince1970: dateTimestampInterval))")
         var imageURLString = ""
         if let imageURL = snapshot.value!["imageURL"] as? String {
             imageURLString = imageURL
@@ -394,9 +387,9 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
             if imageURLString != "" {
                 let url = NSURL(string: imageURLString)!
                 let imageMedia = AsyncPhotoMediaItem(withURL: url)
-                self.addMessage(idString, text: nil, media: imageMedia, senderDisplayName: senderDisplayNameString, date: date, isLoadMoreLoading: isLoadMoreMessages, dateFromTimestampFirebase: dateFromTimestampFirebase)
+                self.addMessage(idString, text: nil, media: imageMedia, senderDisplayName: senderDisplayNameString, date: date, isLoadMoreLoading: isLoadMoreMessages)
             } else {
-                self.addMessage(idString, text: textString, media: nil, senderDisplayName: senderDisplayNameString, date: date, isLoadMoreLoading: isLoadMoreMessages, dateFromTimestampFirebase: dateFromTimestampFirebase)
+                self.addMessage(idString, text: textString, media: nil, senderDisplayName: senderDisplayNameString, date: date, isLoadMoreLoading: isLoadMoreMessages)
                 //self.addMessage(idString, text: textString, senderDisplayName: senderDisplayNameString, date: date, isLoadMoreLoading: isLoadMoreMessages)
             }
             self.messagesHashValue += [hashValue]
@@ -527,9 +520,9 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
         self.collectionView!.infiniteScrollingView.stopAnimating()
     }
     
-    func customSortJSQMessage(msg1: JSQMessage, msg2 : JSQMessage) -> Bool {
-        return (msg1.date.compare(msg2.date) == NSComparisonResult.OrderedAscending)
-    }
+//    func customSortJSQMessage(msg1: JSQMessage, msg2 : JSQMessage) -> Bool {
+//        return (msg1.date.compare(msg2.date) == NSComparisonResult.OrderedAscending)
+//    }
     
 //    func addMessage(id: String, text: String, senderDisplayName: String, date: NSDate, isLoadMoreLoading: Bool) {
 //        if messageAlreadyPresent(id, senderDisplayName:senderDisplayName, text: text, date: date) == false {
@@ -545,18 +538,13 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
 //        }
 //    }
     
-    func addMessage(id: String, text: String?, media: JSQPhotoMediaItem?, senderDisplayName: String, date: NSDate, isLoadMoreLoading: Bool, dateFromTimestampFirebase: NSDate?) {
+    func addMessage(id: String, text: String?, media: JSQPhotoMediaItem?, senderDisplayName: String, date: NSDate, isLoadMoreLoading: Bool) {
         if messageAlreadyPresent(id, senderDisplayName: senderDisplayName, text: text, date: date) == false {
-            //print("date from timestamp firebase: \(dateFromTimestampFirebase), date narmol: \(date)")
             var msg: JSQMessage?
-            var dateMessage = date
-            if dateFromTimestampFirebase != nil {
-                dateMessage = dateFromTimestampFirebase!
-            }
             if text == nil {
-               msg = JSQMessage(senderId: id, senderDisplayName: senderDisplayName, date: dateMessage, media: media)
+               msg = JSQMessage(senderId: id, senderDisplayName: senderDisplayName, date: date, media: media)
             } else {
-                msg = JSQMessage(senderId: id, senderDisplayName: senderDisplayName, date: dateMessage, text: text)
+                msg = JSQMessage(senderId: id, senderDisplayName: senderDisplayName, date: date, text: text)
             }
             if isLoadMoreLoading {
                 messages.insert(msg!, atIndex: 0)
