@@ -277,16 +277,17 @@ class WebPlanningViewController: UIViewController, UIWebViewDelegate, UIScrollVi
     private func getHourString() -> String {
         let date = NSDate();
         let formatter = NSDateFormatter();
-        formatter.dateFormat = "HH:mm";
+        formatter.dateFormat = "h:mm a";
         let defaultTimeZoneStr = formatter.stringFromDate(date);
         return defaultTimeZoneStr
     }
     
     private func shouldGoTomorrow() -> Bool {
         let currentHourString = getHourString()
-        let hourStringToCompare = "19:00"
+        print("current hour string: \(currentHourString)")
+        let hourStringToCompare = "07:00 PM"
         let formatter = NSDateFormatter();
-        formatter.dateFormat = "HH:mm";
+        formatter.dateFormat = "h:mm a";
         let currentDate = formatter.dateFromString(currentHourString)
         let dateToCompare = formatter.dateFromString(hourStringToCompare)
         if currentDate!.isGreaterThanDate(dateToCompare!) {
