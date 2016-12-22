@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import Fuzi
 import SwiftSpinner
 import SWRevealViewController
 import SwiftyJSON
@@ -39,7 +38,7 @@ class WashINSATableViewController: UITableViewController {
     var machine12 = machine(type: "", available: "", remainingTime: "", avancement: "", startTime: "", endTime: "", numberMachine: "", typeTextile: "")
     
     
-    var timer = NSTimer()
+    var timer = Timer()
     var dataLoaded = false
     
     struct machine {
@@ -53,7 +52,7 @@ class WashINSATableViewController: UITableViewController {
         var typeTextile = ""
     }
     
-    private let tableController = UITableViewController()
+    fileprivate let tableController = UITableViewController()
     var messageMachineDone = ""
     
     override func viewDidLoad() {
@@ -69,35 +68,35 @@ class WashINSATableViewController: UITableViewController {
         
         initUI()
         
-        self.refreshControl?.addTarget(self, action: #selector(WashINSATableViewController.refresh(_:)), forControlEvents: UIControlEvents.ValueChanged)
+        self.refreshControl?.addTarget(self, action: #selector(WashINSATableViewController.refresh(_:)), for: UIControlEvents.valueChanged)
         
         loadInfoInMachinesDB()
     }
     
-    func refresh(sender:AnyObject) {
+    func refresh(_ sender:AnyObject) {
         loadInfoInMachinesDB()
     }
     
     func endRefresh(){
         SwiftSpinner.hide()
         let message = "Problème de chargement"
-        let myActivityIndicatorHUD = MBProgressHUD.showHUDAddedTo(self.navigationController?.view, animated: true)
-        myActivityIndicatorHUD.mode = MBProgressHUDMode.Indeterminate
-        myActivityIndicatorHUD.labelText = message
-        myActivityIndicatorHUD.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(WashINSATableViewController.tapToCancel)))
+        let myActivityIndicatorHUD = MBProgressHUD.showAdded(to: self.navigationController?.view, animated: true)
+        myActivityIndicatorHUD?.mode = MBProgressHUDMode.indeterminate
+        myActivityIndicatorHUD?.labelText = message
+        myActivityIndicatorHUD?.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(WashINSATableViewController.tapToCancel)))
         self.refreshControl!.endRefreshing()
     }
     
-    @IBAction func refreshButtonItemAction(sender: AnyObject) {
+    @IBAction func refreshButtonItemAction(_ sender: AnyObject) {
         loadInfoInMachinesDB()
     }
     
     
     func initActivityIndicator() {
-        myActivityIndicator = UIActivityIndicatorView(frame: CGRectMake(0,0, 50, 50)) as UIActivityIndicatorView
-        myActivityIndicator.center = CGPoint(x: UIScreen.mainScreen().bounds.width/2, y: UIScreen.mainScreen().bounds.height/2)
+        myActivityIndicator = UIActivityIndicatorView(frame: CGRect(x: 0,y: 0, width: 50, height: 50)) as UIActivityIndicatorView
+        myActivityIndicator.center = CGPoint(x: UIScreen.main.bounds.width/2, y: UIScreen.main.bounds.height/2)
         myActivityIndicator.hidesWhenStopped = true
-        myActivityIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.Gray
+        myActivityIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.gray
         view.addSubview(myActivityIndicator)
     }
     
@@ -110,9 +109,9 @@ class WashINSATableViewController: UITableViewController {
         SwiftSpinner.show("Connexion \nen cours...").addTapHandler({
             SwiftSpinner.hide()
         })
-        Alamofire.request(.GET, url).validate().responseJSON { response in
+        Alamofire.request(url).validate().responseJSON { (response) in
             switch response.result {
-            case .Success:
+            case .success:
                 self.observeCountWashingTotal()
                 _log_Title("WashINSA", location: "WashINSA.loadInfoInMachinesDB()", shouldLog: self.LOG)
                 _log_Element("Response: \(response)", shouldLog: self.LOG)
@@ -157,27 +156,27 @@ class WashINSATableViewController: UITableViewController {
                     } else {
                         SwiftSpinner.hide()
                         let message = json_full["message"].string
-                        let myActivityIndicatorHUD = MBProgressHUD.showHUDAddedTo(self.navigationController?.view, animated: true)
-                        myActivityIndicatorHUD.mode = MBProgressHUDMode.Indeterminate
-                        myActivityIndicatorHUD.labelText = message
-                        myActivityIndicatorHUD.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(WashINSATableViewController.tapToCancel)))
+                        let myActivityIndicatorHUD = MBProgressHUD.showAdded(to: self.navigationController?.view, animated: true)
+                        myActivityIndicatorHUD?.mode = MBProgressHUDMode.indeterminate
+                        myActivityIndicatorHUD?.labelText = message
+                        myActivityIndicatorHUD?.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(WashINSATableViewController.tapToCancel)))
                     }
                 }
-            case .Failure(let error):
+            case .failure(let error):
                 print("Error: \(error)")
                 SwiftSpinner.hide()
-                let myActivityIndicatorHUD = MBProgressHUD.showHUDAddedTo(self.navigationController?.view, animated: true)
-                myActivityIndicatorHUD.mode = MBProgressHUDMode.Determinate
-                myActivityIndicatorHUD.labelText = "Error..."
-                myActivityIndicatorHUD.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(WashINSATableViewController.tapToCancel)))
+                let myActivityIndicatorHUD = MBProgressHUD.showAdded(to: self.navigationController?.view, animated: true)
+                myActivityIndicatorHUD?.mode = MBProgressHUDMode.determinate
+                myActivityIndicatorHUD?.labelText = "Error..."
+                myActivityIndicatorHUD?.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(WashINSATableViewController.tapToCancel)))
             }
         }
     }
     
-    private func observeCountWashingTotal() {
+    fileprivate func observeCountWashingTotal() {
         let washingRef = FirebaseManager.firebaseManager.createWashingRef()
         let numberUsersWashingRef = washingRef.child("numberUsers")
-        numberUsersWashingRef.observeEventType(.Value, withBlock: { (snapshot: FIRDataSnapshot!) in
+        numberUsersWashingRef.observe(.value, with: { (snapshot: FIRDataSnapshot!) in
             if let count = snapshot.value {
                 self.title = "WashINSA (\(count))"
             } else {
@@ -189,7 +188,7 @@ class WashINSATableViewController: UITableViewController {
     
     func tapToCancel(){
         print("cancel tap")
-        MBProgressHUD.hideAllHUDsForView(self.navigationController?.view, animated: true)
+        MBProgressHUD.hideAllHUDs(for: self.navigationController?.view, animated: true)
     }
     
     override func didReceiveMemoryWarning() {
@@ -199,12 +198,12 @@ class WashINSATableViewController: UITableViewController {
     
     // MARK: - Table view data source
     
-    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    override func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
         return 2
     }
     
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
         switch section {
         case 0:
@@ -216,10 +215,10 @@ class WashINSATableViewController: UITableViewController {
         }
     }
     
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) as! WashINSATableViewCell
-        cell.selectionStyle = UITableViewCellSelectionStyle.None
+        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! WashINSATableViewCell
+        cell.selectionStyle = UITableViewCellSelectionStyle.none
         
         if dataLoaded == true {
             
@@ -239,42 +238,42 @@ class WashINSATableViewController: UITableViewController {
             
             cell.numberMachineLabel.text = machines[indexInArray].numberMachine
             cell.typeMachineLabel.text = machines[indexInArray].type
-            if machines[indexInArray].available.containsString("Disponible") {
+            if machines[indexInArray].available.contains("Disponible") {
                 cell.availabilityMachineLabel.text = machines[indexInArray].available
                 cell.availableInTimeMachineLabel.text = ""
                 cell.startEndTimeLabel.text = ""
-                cell.numberMachineLabel.backgroundColor = UIColor.greenColor()
-            } else if machines[indexInArray].available.containsString("Terminé") {
+                cell.numberMachineLabel.backgroundColor = UIColor.green
+            } else if machines[indexInArray].available.contains("Terminé") {
                 cell.availabilityMachineLabel.text = machines[indexInArray].available
                 cell.startEndTimeLabel.text = ""
                 cell.availableInTimeMachineLabel.text = messageMachineDone
-                cell.numberMachineLabel.backgroundColor = UIColor.yellowColor()
-            } else if machines[indexInArray].available.containsString("Hors service") {
+                cell.numberMachineLabel.backgroundColor = UIColor.yellow
+            } else if machines[indexInArray].available.contains("Hors service") {
                 cell.availabilityMachineLabel.text = "HORS SERVICE"
                 cell.availableInTimeMachineLabel.text = "Disponible je sais pas quand ..."
-                cell.numberMachineLabel.backgroundColor = UIColor.redColor()
+                cell.numberMachineLabel.backgroundColor = UIColor.red
                 cell.startEndTimeLabel.text = ""
-            } else if machines[indexInArray].available.containsString("En cours d'utilisation") {
+            } else if machines[indexInArray].available.contains("En cours d'utilisation") {
                 let remainingTime = machines[indexInArray].remainingTime
                 cell.availabilityMachineLabel.text = machines[indexInArray].available
                 cell.availableInTimeMachineLabel.text = "Disponible dans \(remainingTime) min"
-                cell.numberMachineLabel.backgroundColor = UIColor.redColor()
+                cell.numberMachineLabel.backgroundColor = UIColor.red
                 cell.startEndTimeLabel.text = "\(machines[indexInArray].startTime) - \(machines[indexInArray].endTime)"
                 if let minute = Int(remainingTime) {
                     if minute == 0 {
                         cell.availabilityMachineLabel.text = machines[indexInArray].available
                         cell.startEndTimeLabel.text = ""
                         cell.availableInTimeMachineLabel.text = messageMachineDone
-                        cell.numberMachineLabel.backgroundColor = UIColor.yellowColor()
+                        cell.numberMachineLabel.backgroundColor = UIColor.yellow
                     }
                 }
             }
             if alreadyNotificationForMachine(indexInArray) {
-                cell.reservedMachineCircularLabel.backgroundColor = UIColor.redColor()
-                cell.reservedMachineCircularLabel.layer.borderColor = UIColor.blackColor().CGColor
+                cell.reservedMachineCircularLabel.backgroundColor = UIColor.red
+                cell.reservedMachineCircularLabel.layer.borderColor = UIColor.black.cgColor
             } else {
-                cell.reservedMachineCircularLabel.backgroundColor = UIColor.whiteColor()
-                cell.reservedMachineCircularLabel.layer.borderColor = UIColor.whiteColor().CGColor
+                cell.reservedMachineCircularLabel.backgroundColor = UIColor.white
+                cell.reservedMachineCircularLabel.layer.borderColor = UIColor.white.cgColor
             }
         } else {
             cell.numberMachineLabel.text = ""
@@ -285,14 +284,14 @@ class WashINSATableViewController: UITableViewController {
             cell.numberMachineLabel.layer.cornerRadius = cell.numberMachineLabel.frame.size.width/2
             cell.numberMachineLabel.layer.borderWidth = 0.5
             cell.numberMachineLabel.clipsToBounds = true
-            cell.numberMachineLabel.backgroundColor = UIColor.whiteColor()
-            cell.reservedMachineCircularLabel.backgroundColor = UIColor.whiteColor()
-            cell.reservedMachineCircularLabel.layer.borderColor = UIColor.whiteColor().CGColor
+            cell.numberMachineLabel.backgroundColor = UIColor.white
+            cell.reservedMachineCircularLabel.backgroundColor = UIColor.white
+            cell.reservedMachineCircularLabel.layer.borderColor = UIColor.white.cgColor
         }
         return cell
     }
     
-    override func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [UITableViewRowAction]? {
+    override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
         var indexInArray = indexPath.row
         if indexPath.section == 1 {
             indexInArray += 3
@@ -300,62 +299,63 @@ class WashINSATableViewController: UITableViewController {
         let remainingTime = machines[indexInArray].remainingTime
         var alarm: UITableViewRowAction!
         if alreadyNotificationForMachine(indexInArray) {
-            alarm = UITableViewRowAction(style: .Normal, title: "Unset\nAlarm") { action, index in
+            alarm = UITableViewRowAction(style: .normal, title: "Unset\nAlarm") { action, index in
                 print("alarm button tapped")
                 self.cancelNotificationForMachine(indexInArray)
-                self.tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Left)
-                alarm.backgroundColor = UIColor.redColor()
+                self.tableView.reloadRows(at: [indexPath], with: UITableViewRowAnimation.left)
+                alarm.backgroundColor = UIColor.red
             }
-            alarm.backgroundColor = UIColor.redColor()
+            alarm.backgroundColor = UIColor.red
         } else {
-            alarm = UITableViewRowAction(style: .Normal, title: "Set\nAlarm") { action, index in
+            alarm = UITableViewRowAction(style: .normal, title: "Set\nAlarm") { action, index in
                 if let minute = Int(remainingTime) {
                     self.createAndShowAlarmAlert(minute, indexInArray: indexInArray, remainingTimeString: remainingTime, indexPath: indexPath)
                 }
             }
-            alarm.backgroundColor = UIColor.redColor()
+            alarm.backgroundColor = UIColor.red
         }
         return [alarm]
     }
     
-    func createAndShowAlarmAlert(minute: Int, indexInArray: Int, remainingTimeString: String, indexPath: NSIndexPath) {
+    func createAndShowAlarmAlert(_ minute: Int, indexInArray: Int, remainingTimeString: String, indexPath: IndexPath) {
         let appearance = SCLAlertView.SCLAppearance(
-            showCloseButton: false,
             kTitleFont: UIFont(name: "HelveticaNeue-Bold", size: 18)!,
             kTextFont: UIFont(name: "HelveticaNeue", size: 16)!,
-            kButtonFont: UIFont(name: "HelveticaNeue", size: 16)!
+            kButtonFont: UIFont(name: "HelveticaNeue", size: 16)!,
+            showCloseButton: false
         )
+        
         let alert = SCLAlertView(appearance: appearance)
         alert.addButton("à l'heure") {
             print("compris's button tapped")
             sendLocalNotificationWashingMachine(minute, numeroMachine: indexInArray, numberOfMinutesBeforeTheEndOfTheMachine: 0)
-            self.tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Left)
+            self.tableView.reloadRows(at: [indexPath], with: UITableViewRowAnimation.left)
         }
         if minute > 5 {
             alert.addButton("5 minutes avant") {
                 print("compris's button tapped")
                 sendLocalNotificationWashingMachine(minute, numeroMachine: indexInArray, numberOfMinutesBeforeTheEndOfTheMachine: 5)
-                self.tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Left)
+                self.tableView.reloadRows(at: [indexPath], with: UITableViewRowAnimation.left)
             }
         }
         if minute > 10 {
             alert.addButton("10 minutes avant") {
                 print("compris's button tapped")
                 sendLocalNotificationWashingMachine(minute, numeroMachine: indexInArray, numberOfMinutesBeforeTheEndOfTheMachine: 10)
-                self.tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Left)
+                self.tableView.reloadRows(at: [indexPath], with: UITableViewRowAnimation.left)
             }
         }
         alert.addButton("Annuler") {
             print("cancal's button tapped")
-            self.tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.None)
+            self.tableView.reloadRows(at: [indexPath], with: UITableViewRowAnimation.none)
         }
         alert.showInfo("Disponible dans \(remainingTimeString) min", subTitle: "Je veux être alerté")
     }
     
     
-    func cancelNotificationForMachine(machineNumber:Int) {
+    func cancelNotificationForMachine(_ machineNumber:Int) {
         print("canceled notification for machine \(machineNumber+1)")
-        let app:UIApplication = UIApplication.sharedApplication()
+        let app:UIApplication = UIApplication.shared
         for oneEvent in app.scheduledLocalNotifications! {
             let notification = oneEvent as UILocalNotification
             if let userInfoCurrent = notification.userInfo as? [String:Int] {
@@ -368,9 +368,9 @@ class WashINSATableViewController: UITableViewController {
         }
     }
     
-    func alreadyNotificationForMachine(machineNumber: Int) -> Bool {
+    func alreadyNotificationForMachine(_ machineNumber: Int) -> Bool {
         _log_Title("WashINSA Notification", location: "WashINSA.alreadyNotificationForMachine()", shouldLog: self.LOG)
-        let app:UIApplication = UIApplication.sharedApplication()
+        let app:UIApplication = UIApplication.shared
         _log_Element("Local Notifications: \(app.scheduledLocalNotifications!)", shouldLog: self.LOG)
         for oneEvent in app.scheduledLocalNotifications! {
             let notification = oneEvent as UILocalNotification
@@ -388,9 +388,9 @@ class WashINSATableViewController: UITableViewController {
         return false
     }
     
-    override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {}
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {}
     
-    override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         switch section {
         case 0:
             return "Seche linge"
@@ -401,14 +401,14 @@ class WashINSATableViewController: UITableViewController {
         }
     }
     
-    func matchesForRegexInText(regex: String!, text: String!) -> [String] {
+    func matchesForRegexInText(_ regex: String!, text: String!) -> [String] {
         
         do {
             let regex = try NSRegularExpression(pattern: regex, options: [])
             let nsString = text as NSString
-            let results = regex.matchesInString(text,
+            let results = regex.matches(in: text,
                                                 options: [], range: NSMakeRange(0, nsString.length))
-            return results.map { nsString.substringWithRange($0.range)}
+            return results.map { nsString.substring(with: $0.range)}
         } catch let error as NSError {
             print("invalid regex: \(error.localizedDescription)")
             return []
@@ -417,12 +417,12 @@ class WashINSATableViewController: UITableViewController {
     
     
     // Override to support conditional editing of the table view.
-    override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         var indexInArray = indexPath.row
         if indexPath.section == 1 {
             indexInArray += 3
         }
-        if machines[indexInArray].available.containsString("En cours d'utilisation") {
+        if machines[indexInArray].available.contains("En cours d'utilisation") {
             return true
         } else {
             return false

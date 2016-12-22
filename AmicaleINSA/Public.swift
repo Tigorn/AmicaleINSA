@@ -99,11 +99,11 @@ public struct Public {
  */
 
 public func removeNSUserDefault(){
-    for key in NSUserDefaults.standardUserDefaults().dictionaryRepresentation().keys {
+    for key in UserDefaults.standard.dictionaryRepresentation().keys {
         print(key)
-        NSUserDefaults.standardUserDefaults().removeObjectForKey(key)
+        UserDefaults.standard.removeObject(forKey: key)
     }
-    NSUserDefaults.standardUserDefaults().synchronize()
+    UserDefaults.standard.synchronize()
 }
 
 /*
@@ -111,7 +111,7 @@ public func removeNSUserDefault(){
  */
 
 public func initApp() {
-    if (NSUserDefaults.standardUserDefaults().boolForKey(Public.usernameChatRegistred) ==  false) {
+    if (UserDefaults.standard.bool(forKey: Public.usernameChatRegistred) ==  false) {
         var randomNumber = Int(arc4random_uniform(UInt32(10000)))
         print("randomNumber = \(randomNumber)")
         if randomNumber % 2 == 1 {
@@ -119,12 +119,12 @@ public func initApp() {
         }
         print("randomNumber = \(randomNumber)")
         let usernameChat = "invite\(randomNumber)"
-        NSUserDefaults.standardUserDefaults().setObject(usernameChat, forKey: Public.usernameChat)
-        NSUserDefaults.standardUserDefaults().setBool(true, forKey: Public.usernameChatRegistred)
+        UserDefaults.standard.set(usernameChat, forKey: Public.usernameChat)
+        UserDefaults.standard.set(true, forKey: Public.usernameChatRegistred)
     }
     setTemperature()
     loadVersionsNumberNotAllowed()
-    FIRAuth.auth()!.signInAnonymouslyWithCompletion() { (user, error) in
+    FIRAuth.auth()!.signInAnonymously() { (user, error) in
         if let error = error {
             print("Sign in failed:", error.localizedDescription)
         }
@@ -136,23 +136,23 @@ public func initApp() {
  */
 
 public func setBeenToSettingsOnce(){
-    NSUserDefaults.standardUserDefaults().setBool(true, forKey: Public.beenToSettingsOnce)
+    UserDefaults.standard.set(true, forKey: Public.beenToSettingsOnce)
 }
 
 public func getBeenToSettingsOnce() -> Bool {
-    return NSUserDefaults.standardUserDefaults().boolForKey(Public.beenToSettingsOnce)
+    return UserDefaults.standard.bool(forKey: Public.beenToSettingsOnce)
 }
 
 /*
  username getter/setter
  */
 
-public func setUsernameChat(username: String) {
-    NSUserDefaults.standardUserDefaults().setObject(username, forKey: Public.usernameChat)
+public func setUsernameChat(_ username: String) {
+    UserDefaults.standard.set(username, forKey: Public.usernameChat)
 }
 
 public func getUsernameChat() -> String {
-    if let username = NSUserDefaults.standardUserDefaults().stringForKey(Public.usernameChat) {
+    if let username = UserDefaults.standard.string(forKey: Public.usernameChat) {
         return username
     } else {
         var randomNumber = Int(arc4random_uniform(UInt32(10000)))
@@ -178,47 +178,47 @@ private func _returnDefaultYearSpeGroupPlanningExpress() -> String {
 }
 
 public func getIDPlanningExpress() -> String {
-    if let idPlanningExpress = NSUserDefaults.standardUserDefaults().stringForKey(Public.idPlanningExpress) {
+    if let idPlanningExpress = UserDefaults.standard.string(forKey: Public.idPlanningExpress) {
         return idPlanningExpress
     } else {
         return _returnDefaultIDPlanningExpress()
     }
 }
 
-public func setIDPlanningExpress(id: String) {
-    NSUserDefaults.standardUserDefaults().setObject(id, forKey: Public.idPlanningExpress)
+public func setIDPlanningExpress(_ id: String) {
+    UserDefaults.standard.set(id, forKey: Public.idPlanningExpress)
 }
 
 public func getYearSpeGroupPlanningExpress() -> String {
-    if let yearSpeGroup = NSUserDefaults.standardUserDefaults().stringForKey(Public.yearSpeGroupPlanningExpress) {
+    if let yearSpeGroup = UserDefaults.standard.string(forKey: Public.yearSpeGroupPlanningExpress) {
         return yearSpeGroup
     } else {
         return _returnDefaultYearSpeGroupPlanningExpress()
     }
 }
 
-public func setYearSpeGroupPlanningExpress(yearSpeGroup:String){
-    NSUserDefaults.standardUserDefaults().setObject(yearSpeGroup, forKey: Public.yearSpeGroupPlanningExpress)
+public func setYearSpeGroupPlanningExpress(_ yearSpeGroup:String){
+    UserDefaults.standard.set(yearSpeGroup, forKey: Public.yearSpeGroupPlanningExpress)
 }
 
 /*
  profile picture getter/setter
  */
 
-public func setProfilPicture(image : UIImage){
+public func setProfilPicture(_ image : UIImage){
     print("setProfilePicture in")
-    NSUserDefaults.standardUserDefaults().setObject(UIImagePNGRepresentation(image), forKey: Public.profilePicture)
+    UserDefaults.standard.set(UIImagePNGRepresentation(image), forKey: Public.profilePicture)
     print("setProfilePicture in 2")
-    NSUserDefaults.standardUserDefaults().setBool(true, forKey: Public.profilePictureIsSet)
+    UserDefaults.standard.set(true, forKey: Public.profilePictureIsSet)
     print("setProfilePicture in 3")
-    NSUserDefaults.standardUserDefaults().synchronize()
+    UserDefaults.standard.synchronize()
     print("setProfilePicture out")
 }
 
 public func getProfilPicture() -> UIImage {
-    let isProfilePictureIsSet = NSUserDefaults.standardUserDefaults().boolForKey(Public.profilePictureIsSet)
+    let isProfilePictureIsSet = UserDefaults.standard.bool(forKey: Public.profilePictureIsSet)
     if isProfilePictureIsSet{
-        if let  imageData = NSUserDefaults.standardUserDefaults().objectForKey(Public.profilePicture) as? NSData {
+        if let  imageData = UserDefaults.standard.object(forKey: Public.profilePicture) as? Data {
             let profilePicture = UIImage(data: imageData)
             return profilePicture!
         } else{
@@ -233,7 +233,7 @@ public func getProfilPicture() -> UIImage {
  */
 
 public func getTemperature() -> String {
-    if let temperature = NSUserDefaults.standardUserDefaults().stringForKey(Public.temperatureNSUserDefaults) {
+    if let temperature = UserDefaults.standard.string(forKey: Public.temperatureNSUserDefaults) {
         return "\(temperature) °C"
     } else {
         return ""
@@ -242,18 +242,17 @@ public func getTemperature() -> String {
 
 private func setTemperature(){
     let url = Public.urlWeatherToulouse
-    let urlNSUrl = NSURL(string: url)
-    let qos = Int(QOS_CLASS_USER_INITIATED.rawValue) // qos = quality of service (if it's slow, important...)
-    dispatch_async(dispatch_get_global_queue(qos, 0)) { () -> Void in
-        if  let data = NSData(contentsOfURL: urlNSUrl!) {
-            dispatch_async(dispatch_get_main_queue(), {
+    let urlNSUrl = URL(string: url)
+    DispatchQueue.global().async { () -> Void in
+        if  let data = try? Data(contentsOf: urlNSUrl!) {
+            DispatchQueue.main.async(execute: {
                 let json = JSON(data: data)
                 if let temperature = json["currently"]["temperature"].float{
                     let temperatureCelsius = (temperature-32)/1.8
                     let temperatureCelsiusString = String(format: "%.1f", temperatureCelsius)
-                    NSUserDefaults.standardUserDefaults().setObject(temperatureCelsiusString, forKey: Public.temperatureNSUserDefaults)
+                    UserDefaults.standard.set(temperatureCelsiusString, forKey: Public.temperatureNSUserDefaults)
                 }
-                NSUserDefaults.standardUserDefaults().synchronize()
+                UserDefaults.standard.synchronize()
                 }
             )
         }
@@ -268,28 +267,28 @@ private func setTemperature(){
  */
 
 private func getUserAnsweredForPushNotifications() -> Bool {
-    return NSUserDefaults.standardUserDefaults().boolForKey(Public.userAnsweredForPushNotifications)
+    return UserDefaults.standard.bool(forKey: Public.userAnsweredForPushNotifications)
 }
 
 private func setUserAnsweredForPushNotifications() {
-    NSUserDefaults.standardUserDefaults().setBool(true, forKey: Public.userAnsweredForPushNotifications)
+    UserDefaults.standard.set(true, forKey: Public.userAnsweredForPushNotifications)
 }
 
 private func getUserWantsToBeRegistreredForPushNotifications() -> Bool {
-    return NSUserDefaults.standardUserDefaults().boolForKey(Public.userWantsToBeRegistreredForPushNotifications)
+    return UserDefaults.standard.bool(forKey: Public.userWantsToBeRegistreredForPushNotifications)
 }
 
 private func getUserDeclinedToBeRegisteredForPushNotifications() -> Bool {
-    return NSUserDefaults.standardUserDefaults().boolForKey(Public.userDeclinedToBeRegisteredForPushNotifications)
+    return UserDefaults.standard.bool(forKey: Public.userDeclinedToBeRegisteredForPushNotifications)
 }
 
 public func setUserDeclinedToBeRegisteredForPushNotifications() {
-    NSUserDefaults.standardUserDefaults().setBool(true, forKey: Public.userDeclinedToBeRegisteredForPushNotifications)
+    UserDefaults.standard.set(true, forKey: Public.userDeclinedToBeRegisteredForPushNotifications)
 }
 
 private func getUserAlreadyRegisteredForPushNotifications() -> Bool {
-    let notificationType = UIApplication.sharedApplication().currentUserNotificationSettings()!.types
-    if notificationType == UIUserNotificationType.None {
+    let notificationType = UIApplication.shared.currentUserNotificationSettings!.types
+    if notificationType == UIUserNotificationType() {
         return false
     }else{
         return true
@@ -316,7 +315,7 @@ private func getShowAlertForPermissionPushNotifications() -> Bool {
 }
 
 
-public func registerForNotificationsAndEnterApp(controller: UIViewController) {
+public func registerForNotificationsAndEnterApp(_ controller: UIViewController) {
     let showAlert = getShowAlertForPermissionPushNotifications()
     if showAlert {
         let appearance = SCLAlertView.SCLAppearance(
@@ -325,10 +324,10 @@ public func registerForNotificationsAndEnterApp(controller: UIViewController) {
         let alert = SCLAlertView(appearance: appearance)
         alert.addButton("Compris !") {
             setUserAnsweredForPushNotifications()
-            let application = UIApplication.sharedApplication()
+            let application = UIApplication.shared
             print("J'affiche l'alert qui va demander de recevoir des notifications")
-            let userNotificationTypes: UIUserNotificationType = [.Alert, .Badge, .Sound]
-            let settings = UIUserNotificationSettings(forTypes: userNotificationTypes, categories: nil)
+            let userNotificationTypes: UIUserNotificationType = [.alert, .badge, .sound]
+            let settings = UIUserNotificationSettings(types: userNotificationTypes, categories: nil)
             application.registerUserNotificationSettings(settings)
             application.registerForRemoteNotifications()
         }
@@ -336,7 +335,7 @@ public func registerForNotificationsAndEnterApp(controller: UIViewController) {
     }
 }
 
-public func sendLocalNotificationWashingMachine(time: Int, numeroMachine: Int, numberOfMinutesBeforeTheEndOfTheMachine: Int){
+public func sendLocalNotificationWashingMachine(_ time: Int, numeroMachine: Int, numberOfMinutesBeforeTheEndOfTheMachine: Int){
     print("An alert will be sent in \(time-numberOfMinutesBeforeTheEndOfTheMachine) minutes")
     let timeFireDate = Double((time-numberOfMinutesBeforeTheEndOfTheMachine)*60)
     var alertBody = "Vite, ton linge est prêt !!"
@@ -346,29 +345,29 @@ public func sendLocalNotificationWashingMachine(time: Int, numeroMachine: Int, n
         alertBody = "Commence à te préparer, tu dois être à la laverie dans 10 minutes !"
     }
     let notification = UILocalNotification()
-    notification.fireDate = NSDate(timeIntervalSinceNow: timeFireDate)
+    notification.fireDate = Date(timeIntervalSinceNow: timeFireDate)
     notification.alertBody = alertBody
     notification.alertAction = "récupérer ton linge !"
     notification.userInfo = ["numero_machine": numeroMachine, "alert": true]
     notification.soundName = UILocalNotificationDefaultSoundName
-    UIApplication.sharedApplication().scheduleLocalNotification(notification)
+    UIApplication.shared.scheduleLocalNotification(notification)
 }
 
-public func setLocalNotificationWithoutAlertWashingMachine(time: Int, numeroMachine: Int) {
+public func setLocalNotificationWithoutAlertWashingMachine(_ time: Int, numeroMachine: Int) {
     print("Set a local notification without alert, in \(time) minutes")
     let notification = UILocalNotification()
-    notification.fireDate = NSDate(timeIntervalSinceNow: Double(time*60))
+    notification.fireDate = Date(timeIntervalSinceNow: Double(time*60))
     notification.alertBody = nil
     notification.alertAction = nil
     notification.userInfo = ["numero_machine": numeroMachine, "alert": false]
-    UIApplication.sharedApplication().scheduleLocalNotification(notification)
+    UIApplication.shared.scheduleLocalNotification(notification)
 }
 
 public func getVersionNumberApp() -> String {
-    return NSBundle.mainBundle().infoDictionary!["CFBundleShortVersionString"] as! String
+    return Bundle.main.infoDictionary!["CFBundleShortVersionString"] as! String
 }
 
-public func checkIfVersionNumberIsAllowed(versionsNumberNotAllowed: [String]) -> Bool {
+public func checkIfVersionNumberIsAllowed(_ versionsNumberNotAllowed: [String]) -> Bool {
     let versionNumberApp = getVersionNumberApp()
     let LOG = true
     _log_Element("Current Version: \(versionNumberApp)", shouldLog: LOG)
@@ -380,7 +379,7 @@ public func checkIfVersionNumberIsAllowed(versionsNumberNotAllowed: [String]) ->
     }
 }
 
-public func alertViewApplicationTooOld(message : String) {
+public func alertViewApplicationTooOld(_ message : String) {
     let appearance = SCLAlertView.SCLAppearance(
         showCloseButton: false
     )
@@ -407,9 +406,9 @@ public func loadVersionsNotAllowedFromServer() {
     let LOG = true
     var msg = ""
     let url = Public.urlVersionsNotAllowed
-    Alamofire.request(.GET, url).validate().responseJSON { response in
+    Alamofire.request(url).validate().responseJSON { response in
         switch response.result {
-        case .Success:
+        case .success:
             if let value = response.result.value {
                 let json_full = JSON(value)
                 let json = json_full["json"]
@@ -419,7 +418,7 @@ public func loadVersionsNotAllowedFromServer() {
                 let arrayVersionNotAllowedJSON = json["iOS"]["versionsNotAllowed"]
                 var arrayVersionNotAllowedString:[String] = []
                 for version in arrayVersionNotAllowedJSON {
-                    arrayVersionNotAllowedString.append(String(version.1))
+                    arrayVersionNotAllowedString.append(String(describing: version.1))
                 }
                 _log_Title("Checking Version Application", location: "Public.loadVersionsNotAllowedFromServer()", shouldLog: LOG)
                 _log_Element("Version not allowed received from my VPS Server:", shouldLog: LOG)
@@ -428,7 +427,7 @@ public func loadVersionsNotAllowedFromServer() {
                     alertViewApplicationTooOld(msg)
                 }
             }
-        case .Failure(let error):
+        case .failure(let error):
             print("Error: \(error)")
         }
     }
@@ -624,24 +623,24 @@ public func getYearsINSAPlanning() -> [(String, String)] {
     ]
 }
 
-public func stringNotWhiteSpaceAndNotEmpty(str: String) -> Bool {
-    let whitespaceSet = NSCharacterSet.whitespaceCharacterSet()
-    if str.characters.count > 0 && str.stringByTrimmingCharactersInSet(whitespaceSet) != "" {
+public func stringNotWhiteSpaceAndNotEmpty(_ str: String) -> Bool {
+    let whitespaceSet = CharacterSet.whitespaces
+    if str.characters.count > 0 && str.trimmingCharacters(in: whitespaceSet) != "" {
         return true
     }
     return false
 }
 
-public func escapeTextRemovingFirstWhiteSpace(str: String) -> String {
-    let whitespaceSet = NSCharacterSet.whitespaceCharacterSet()
-    return str.stringByTrimmingCharactersInSet(whitespaceSet)
+public func escapeTextRemovingFirstWhiteSpace(_ str: String) -> String {
+    let whitespaceSet = CharacterSet.whitespaces
+    return str.trimmingCharacters(in: whitespaceSet)
 }
 
 /*
  Logging
  */
 
-func _log_Title(text: String, location: String, shouldLog: Bool) {
+func _log_Title(_ text: String, location: String, shouldLog: Bool) {
     if shouldLog {
         print(Public.LOGGING_stars_full)
         print(Public.LOGGING_whiteSpace_beforeTitle + "Title: " + text)
@@ -650,7 +649,7 @@ func _log_Title(text: String, location: String, shouldLog: Bool) {
     }
 }
 
-func _log_FullLineStars(shouldLog: Bool) {
+func _log_FullLineStars(_ shouldLog: Bool) {
     if shouldLog {
         print(Public.LOGGING_stars_full)
         print("")
@@ -658,7 +657,7 @@ func _log_FullLineStars(shouldLog: Bool) {
     }
 }
 
-func _log_Element(element: String, shouldLog: Bool) {
+func _log_Element(_ element: String, shouldLog: Bool) {
     if shouldLog {
         print("- \(element)")
     }

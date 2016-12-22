@@ -25,7 +25,6 @@
 		9206F3F81C83AC4900978CF5 /* Public.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9206F3F71C83AC4900978CF5 /* Public.swift */; };
 		922906581D7C7DFA0052BF74 /* AsyncPhotoMediaItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 922906571D7C7DFA0052BF74 /* AsyncPhotoMediaItem.swift */; };
 		9233B9271CFF3AB400DFF955 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 9233B9261CFF3AB400DFF955 /* GoogleService-Info.plist */; };
-		923677FB1CAC28A100FA7084 /* BreakOutToRefreshView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 923677FA1CAC28A100FA7084 /* BreakOutToRefreshView.swift */; };
 		9247CD791CB12CE8008F51E2 /* PostWithImageTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9247CD781CB12CE8008F51E2 /* PostWithImageTableViewCell.swift */; };
 		9247CD7B1CB12CFA008F51E2 /* PostWithoutImageTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9247CD7A1CB12CFA008F51E2 /* PostWithoutImageTableViewCell.swift */; };
 		9247CD7D1CB12D07008F51E2 /* PostTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9247CD7C1CB12D07008F51E2 /* PostTableViewController.swift */; };
@@ -38,7 +37,6 @@
 		92A7013D1C847B4C000E1E8F /* WebPlanningViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92A7013C1C847B4C000E1E8F /* WebPlanningViewController.swift */; };
 		92A7013F1C847EA0000E1E8F /* Device.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92A7013E1C847EA0000E1E8F /* Device.swift */; };
 		92AAF0F51CEA5EB000301CBD /* TODO.txt in Resources */ = {isa = PBXBuildFile; fileRef = 92AAF0F41CEA5EB000301CBD /* TODO.txt */; };
-		92B366F51CA8889000C3265E /* WashINSADetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92B366F41CA8889000C3265E /* WashINSADetailsViewController.swift */; };
 		92BCDC731CEF163900237160 /* LocalINSATableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92BCDC721CEF163900237160 /* LocalINSATableViewController.swift */; };
 		92BCDC751CEF185A00237160 /* LocalINSATableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92BCDC741CEF185A00237160 /* LocalINSATableViewCell.swift */; };
 		92CBC4E61C8642CB0074B9B2 /* Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92CBC4E51C8642CB0074B9B2 /* Extension.swift */; };
@@ -91,7 +89,6 @@
 		9229064E1D7C32080052BF74 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
 		922906571D7C7DFA0052BF74 /* AsyncPhotoMediaItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AsyncPhotoMediaItem.swift; sourceTree = "<group>"; };
 		9233B9261CFF3AB400DFF955 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
-		923677FA1CAC28A100FA7084 /* BreakOutToRefreshView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BreakOutToRefreshView.swift; sourceTree = "<group>"; };
 		9247CD781CB12CE8008F51E2 /* PostWithImageTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostWithImageTableViewCell.swift; sourceTree = "<group>"; };
 		9247CD7A1CB12CFA008F51E2 /* PostWithoutImageTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostWithoutImageTableViewCell.swift; sourceTree = "<group>"; };
 		9247CD7C1CB12D07008F51E2 /* PostTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostTableViewController.swift; sourceTree = "<group>"; };
@@ -104,7 +101,6 @@
 		92A7013C1C847B4C000E1E8F /* WebPlanningViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebPlanningViewController.swift; sourceTree = "<group>"; };
 		92A7013E1C847EA0000E1E8F /* Device.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Device.swift; sourceTree = "<group>"; };
 		92AAF0F41CEA5EB000301CBD /* TODO.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = TODO.txt; sourceTree = "<group>"; };
-		92B366F41CA8889000C3265E /* WashINSADetailsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WashINSADetailsViewController.swift; sourceTree = "<group>"; };
 		92BCDC721CEF163900237160 /* LocalINSATableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocalINSATableViewController.swift; sourceTree = "<group>"; };
 		92BCDC741CEF185A00237160 /* LocalINSATableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocalINSATableViewCell.swift; sourceTree = "<group>"; };
 		92CBC4E51C8642CB0074B9B2 /* Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extension.swift; sourceTree = "<group>"; };
@@ -214,7 +210,6 @@
 		923677F71CAC287E00FA7084 /* UI */ = {
 			isa = PBXGroup;
 			children = (
-				923677FA1CAC28A100FA7084 /* BreakOutToRefreshView.swift */,
 				929D4C491CB2ECB00097CFA6 /* CustomInfiniteIndicator.swift */,
 			);
 			name = UI;
@@ -234,7 +229,6 @@
 			isa = PBXGroup;
 			children = (
 				9265E2661CA8348A000BE187 /* WashINSATableViewController.swift */,
-				92B366F41CA8889000C3265E /* WashINSADetailsViewController.swift */,
 				9265E26A1CA8355B000BE187 /* WashINSATableViewCell.swift */,
 			);
 			name = Washinsa;
@@ -357,12 +351,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 9206F3E11C838F8B00978CF5 /* Build configuration list for PBXNativeTarget "AmicaleINSA" */;
 			buildPhases = (
-				82771AA903F8B715718FE121 /* 📦 Check Pods Manifest.lock */,
+				82771AA903F8B715718FE121 /* [CP] Check Pods Manifest.lock */,
 				9206F3B21C838F8B00978CF5 /* Sources */,
 				9206F3B31C838F8B00978CF5 /* Frameworks */,
 				9206F3B41C838F8B00978CF5 /* Resources */,
-				2CB42A7378579E2A7B03E138 /* 📦 Embed Pods Frameworks */,
-				04F131DAF710A79676F72073 /* 📦 Copy Pods Resources */,
+				2CB42A7378579E2A7B03E138 /* [CP] Embed Pods Frameworks */,
+				04F131DAF710A79676F72073 /* [CP] Copy Pods Resources */,
 				92FEF49C1D28197D00C89677 /* Run Script */,
 			);
 			buildRules = (
@@ -378,12 +372,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 9206F3E41C838F8B00978CF5 /* Build configuration list for PBXNativeTarget "AmicaleINSATests" */;
 			buildPhases = (
-				99E6B214F7946234D2AC47BD /* 📦 Check Pods Manifest.lock */,
+				99E6B214F7946234D2AC47BD /* [CP] Check Pods Manifest.lock */,
 				9206F3C91C838F8B00978CF5 /* Sources */,
 				9206F3CA1C838F8B00978CF5 /* Frameworks */,
 				9206F3CB1C838F8B00978CF5 /* Resources */,
-				16B68B32C5F29C36D8CC87A3 /* 📦 Embed Pods Frameworks */,
-				6F3C047BE26ECCE584108F8F /* 📦 Copy Pods Resources */,
+				16B68B32C5F29C36D8CC87A3 /* [CP] Embed Pods Frameworks */,
+				6F3C047BE26ECCE584108F8F /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -399,11 +393,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 9206F3E71C838F8B00978CF5 /* Build configuration list for PBXNativeTarget "AmicaleINSAUITests" */;
 			buildPhases = (
-				77065091654B9E220E4B6703 /* 📦 Check Pods Manifest.lock */,
+				77065091654B9E220E4B6703 /* [CP] Check Pods Manifest.lock */,
 				9206F3D41C838F8B00978CF5 /* Sources */,
 				9206F3D51C838F8B00978CF5 /* Frameworks */,
 				9206F3D61C838F8B00978CF5 /* Resources */,
-				72CF02A4659C224F15BC7163 /* 📦 Copy Pods Resources */,
+				72CF02A4659C224F15BC7163 /* [CP] Copy Pods Resources */,
+				B5CB7275E6F7DBDC2EA2A598 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -428,6 +423,7 @@
 					9206F3B51C838F8B00978CF5 = {
 						CreatedOnToolsVersion = 7.2.1;
 						DevelopmentTeam = Q4B996RU7K;
+						LastSwiftMigration = 0820;
 						SystemCapabilities = {
 							com.apple.Push = {
 								enabled = 1;
@@ -436,10 +432,12 @@
 					};
 					9206F3CC1C838F8B00978CF5 = {
 						CreatedOnToolsVersion = 7.2.1;
+						LastSwiftMigration = 0820;
 						TestTargetID = 9206F3B51C838F8B00978CF5;
 					};
 					9206F3D71C838F8B00978CF5 = {
 						CreatedOnToolsVersion = 7.2.1;
+						LastSwiftMigration = 0820;
 						TestTargetID = 9206F3B51C838F8B00978CF5;
 					};
 				};
@@ -494,14 +492,14 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		04F131DAF710A79676F72073 /* 📦 Copy Pods Resources */ = {
+		04F131DAF710A79676F72073 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "📦 Copy Pods Resources";
+			name = "[CP] Copy Pods Resources";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -509,14 +507,14 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-AmicaleINSA/Pods-AmicaleINSA-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		16B68B32C5F29C36D8CC87A3 /* 📦 Embed Pods Frameworks */ = {
+		16B68B32C5F29C36D8CC87A3 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "📦 Embed Pods Frameworks";
+			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -524,14 +522,14 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-AmicaleINSATests/Pods-AmicaleINSATests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		2CB42A7378579E2A7B03E138 /* 📦 Embed Pods Frameworks */ = {
+		2CB42A7378579E2A7B03E138 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "📦 Embed Pods Frameworks";
+			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -539,14 +537,14 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-AmicaleINSA/Pods-AmicaleINSA-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		6F3C047BE26ECCE584108F8F /* 📦 Copy Pods Resources */ = {
+		6F3C047BE26ECCE584108F8F /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "📦 Copy Pods Resources";
+			name = "[CP] Copy Pods Resources";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -554,14 +552,14 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-AmicaleINSATests/Pods-AmicaleINSATests-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		72CF02A4659C224F15BC7163 /* 📦 Copy Pods Resources */ = {
+		72CF02A4659C224F15BC7163 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "📦 Copy Pods Resources";
+			name = "[CP] Copy Pods Resources";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -569,34 +567,34 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-AmicaleINSAUITests/Pods-AmicaleINSAUITests-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		77065091654B9E220E4B6703 /* 📦 Check Pods Manifest.lock */ = {
+		77065091654B9E220E4B6703 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "📦 Check Pods Manifest.lock";
+			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
-		82771AA903F8B715718FE121 /* 📦 Check Pods Manifest.lock */ = {
+		82771AA903F8B715718FE121 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "📦 Check Pods Manifest.lock";
+			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 		92FEF49C1D28197D00C89677 /* Run Script */ = {
@@ -613,19 +611,34 @@
 			shellPath = /bin/sh;
 			shellScript = "# Replace this path with the path to the key you just downloaded\n#JSON_FILE=~/Source/Amicale/AmicaleINSA_update_firebase2/amicale-5065783525a3.json\n\n# Replace this with the GOOGLE_APP_ID from your GoogleService-Info.plist file\n\nGOOGLE_APP_ID=1:301365828536:ios:ea5751efe39b0652\n\"${PODS_ROOT}\"/FirebaseCrash/upload-sym \"/Users/arthurpapailhau/Source/Amicale/AmicaleINSA_update_firebase2/amicale-5065783525a3.json\"\n\n#defaults write com.google.SymbolUpload version -integer 1   # creates file if it does not exist\n#JSON=$(cat \"${JSON_FILE}\")\n#/usr/bin/plutil -replace \"app_${GOOGLE_APP_ID//:/_}\" -json \"${JSON}\" \"$HOME/Library/Preferences/com.google.SymbolUpload.plist\"\n#\"${PODS_ROOT}\"/FirebaseCrash/upload-sym";
 		};
-		99E6B214F7946234D2AC47BD /* 📦 Check Pods Manifest.lock */ = {
+		99E6B214F7946234D2AC47BD /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "📦 Check Pods Manifest.lock";
+			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		B5CB7275E6F7DBDC2EA2A598 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-AmicaleINSAUITests/Pods-AmicaleINSAUITests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -650,14 +663,12 @@
 				9247CD7B1CB12CFA008F51E2 /* PostWithoutImageTableViewCell.swift in Sources */,
 				929D4C4A1CB2ECB00097CFA6 /* CustomInfiniteIndicator.swift in Sources */,
 				9206F3C21C838F8B00978CF5 /* AmicaleINSA.xcdatamodeld in Sources */,
-				92B366F51CA8889000C3265E /* WashINSADetailsViewController.swift in Sources */,
 				9265E26B1CA8355B000BE187 /* WashINSATableViewCell.swift in Sources */,
 				9247CD791CB12CE8008F51E2 /* PostWithImageTableViewCell.swift in Sources */,
 				92CBC4E61C8642CB0074B9B2 /* Extension.swift in Sources */,
 				9206F3EF1C8399F600978CF5 /* ChatViewController.swift in Sources */,
 				92A03D3C1D3BDCA40021E0C5 /* SettingsTableViewController.swift in Sources */,
 				9206F3BA1C838F8B00978CF5 /* AppDelegate.swift in Sources */,
-				923677FB1CAC28A100FA7084 /* BreakOutToRefreshView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -810,6 +821,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = Amicale.INSAAmicaleINSA;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
@@ -826,6 +838,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = Amicale.INSAAmicaleINSA;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
 		};
@@ -838,6 +851,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = INSA.AmicaleINSATests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/AmicaleINSA.app/AmicaleINSA";
 			};
 			name = Debug;
@@ -851,6 +865,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = INSA.AmicaleINSATests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/AmicaleINSA.app/AmicaleINSA";
 			};
 			name = Release;
@@ -863,6 +878,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = INSA.AmicaleINSAUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 				TEST_TARGET_NAME = AmicaleINSA;
 				USES_XCTRUNNER = YES;
 			};
@@ -876,6 +892,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = INSA.AmicaleINSAUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 				TEST_TARGET_NAME = AmicaleINSA;
 				USES_XCTRUNNER = YES;
 			};

@@ -34,7 +34,7 @@ class WebPlanningViewController: UIViewController, UIWebViewDelegate, UIScrollVi
             self.view.addGestureRecognizer(self.revealViewController().tapGestureRecognizer())
         }
         
-        self.navigationController?.navigationBar.translucent = false
+        self.navigationController?.navigationBar.isTranslucent = false
         
         // set delegate
         self.webView.delegate = self
@@ -42,12 +42,12 @@ class WebPlanningViewController: UIViewController, UIWebViewDelegate, UIScrollVi
         
         weekNumberToday = getWeekNumber()
         print("week number: \(weekNumberToday)")
-        let url = NSURL(string: getUrlPlanning(weekNumberToday))
+        let url = URL(string: getUrlPlanning(weekNumberToday))
         if url?.absoluteString != Public.noGroupINSA {
-            let request = NSURLRequest(URL: url!)
+            let request = URLRequest(url: url!)
             webView.loadRequest(request)
         } else {
-            self.performSegueWithIdentifier(Public.segueFromPlanningToSettings, sender: self)
+            self.performSegue(withIdentifier: Public.segueFromPlanningToSettings, sender: self)
         }
         
         initUI()
@@ -59,12 +59,12 @@ class WebPlanningViewController: UIViewController, UIWebViewDelegate, UIScrollVi
     
     
     func setLandscapeOrientation(){
-        let value = UIInterfaceOrientation.LandscapeLeft.rawValue;
-        UIDevice.currentDevice().setValue(value, forKey: "orientation")
+        let value = UIInterfaceOrientation.landscapeLeft.rawValue;
+        UIDevice.current.setValue(value, forKey: "orientation")
     }
     
     
-    func webViewDidStartLoad(webView: UIWebView) {
+    func webViewDidStartLoad(_ webView: UIWebView) {
         if (debug) {
             print("[WebPlanningViewController][webViewDidStartLoad] I start loading my page")
         }
@@ -73,7 +73,7 @@ class WebPlanningViewController: UIViewController, UIWebViewDelegate, UIScrollVi
         })
     }
     
-    func webViewDidFinishLoad(webView: UIWebView) {
+    func webViewDidFinishLoad(_ webView: UIWebView) {
         let offSetOfDay = getOffsetOfDay()
         if (debug) {
             print("[WebPlanningViewController][webViewDidFinishLoad] I stop loading my page")
@@ -84,7 +84,7 @@ class WebPlanningViewController: UIViewController, UIWebViewDelegate, UIScrollVi
         if debug {
             print("getOffSet: \(offSetOfDay)")
         }
-        self.webView.scrollView.contentOffset = CGPointMake(offSetOfDay, 0)
+        self.webView.scrollView.contentOffset = CGPoint(x: offSetOfDay, y: 0)
         
     }
     
@@ -255,41 +255,41 @@ class WebPlanningViewController: UIViewController, UIWebViewDelegate, UIScrollVi
     }
     
     func getDayOfWeekSimple() -> String {
-        let date = NSDate()
-        let dateFormatter = NSDateFormatter()
+        let date = Date()
+        let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "EEEE"
-        let dayOfWeekString = dateFormatter.stringFromDate(date)
+        let dayOfWeekString = dateFormatter.string(from: date)
         return dayOfWeekString
     }
     
     func getDayOfWeek() -> String{
-        var date = NSDate()
+        var date = Date()
         if shouldGoTomorrow() && getDayOfWeekSimple() != "Sunday" && getDayOfWeekSimple() != "dimanche" {
             date = date.addDays(1)
         }
-        let dateFormatter = NSDateFormatter()
+        let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "EEEE"
-        let dayOfWeekString = dateFormatter.stringFromDate(date)
+        let dayOfWeekString = dateFormatter.string(from: date)
         
         return dayOfWeekString
     }
     
-    private func getHourString() -> String {
-        let date = NSDate();
-        let formatter = NSDateFormatter();
+    fileprivate func getHourString() -> String {
+        let date = Date();
+        let formatter = DateFormatter();
         formatter.dateFormat = "h:mm a";
-        let defaultTimeZoneStr = formatter.stringFromDate(date);
+        let defaultTimeZoneStr = formatter.string(from: date);
         return defaultTimeZoneStr
     }
     
-    private func shouldGoTomorrow() -> Bool {
+    fileprivate func shouldGoTomorrow() -> Bool {
         let currentHourString = getHourString()
         print("current hour string: \(currentHourString)")
         let hourStringToCompare = "07:00 PM"
-        let formatter = NSDateFormatter();
+        let formatter = DateFormatter();
         formatter.dateFormat = "h:mm a";
-        let currentDate = formatter.dateFromString(currentHourString)
-        let dateToCompare = formatter.dateFromString(hourStringToCompare)
+        let currentDate = formatter.date(from: currentHourString)
+        let dateToCompare = formatter.date(from: hourStringToCompare)
         if currentDate!.isGreaterThanDate(dateToCompare!) {
             return true
         } else {
@@ -299,12 +299,12 @@ class WebPlanningViewController: UIViewController, UIWebViewDelegate, UIScrollVi
     
     func segueToSettingsIfNeeded(){
         if !getBeenToSettingsOnce() {
-            self.performSegueWithIdentifier(Public.segueBeenToSettingsOnce, sender: self)
+            self.performSegue(withIdentifier: Public.segueBeenToSettingsOnce, sender: self)
         }
     }
     
     
-    func getUrlPlanning(weekNumber: Int) -> String {
+    func getUrlPlanning(_ weekNumber: Int) -> String {
         let IDWebPlanning = getIDPlanningExpress()
         if IDWebPlanning == "" || IDWebPlanning == Public.noGroupINSA {
             return Public.noGroupINSA
@@ -317,9 +317,9 @@ class WebPlanningViewController: UIViewController, UIWebViewDelegate, UIScrollVi
     }
     
     func getWeekNumber() -> Int {
-        let calender = NSCalendar.currentCalendar()
-        let dateComponent = calender.component(NSCalendarUnit.WeekOfYear, fromDate: NSDate())
-        print("date: \(NSDate())")
+        let calender = Calendar.current
+        let dateComponent = (calender as NSCalendar).component(NSCalendar.Unit.weekOfYear, from: Date())
+        print("date: \(Date())")
         let dayOfWeek = getDayOfWeek()
         if debug {
             print("date component: \(dateComponent)")
@@ -333,8 +333,8 @@ class WebPlanningViewController: UIViewController, UIWebViewDelegate, UIScrollVi
     }
     
     func getWeekNumberForZoom() -> Int {
-        let calender = NSCalendar.currentCalendar()
-        let dateComponent = calender.component(NSCalendarUnit.WeekOfYear, fromDate: NSDate())
+        let calender = Calendar.current
+        let dateComponent = (calender as NSCalendar).component(NSCalendar.Unit.weekOfYear, from: Date())
         return dateComponent
     }
     
@@ -344,54 +344,54 @@ class WebPlanningViewController: UIViewController, UIWebViewDelegate, UIScrollVi
     }
     
     
-    override func shouldAutorotate() -> Bool {
+    override var shouldAutorotate : Bool {
         return false
     }
     
     // MARK: Network
     
-    @IBAction func nextWeekButtonAction(sender: AnyObject) {
+    @IBAction func nextWeekButtonAction(_ sender: AnyObject) {
         weekNumberToday += 1
         AmITheCurrentWeek = false
-        if let url = NSURL(string: getUrlPlanning(weekNumberToday)) {
-            let request = NSURLRequest(URL: url)
+        if let url = URL(string: getUrlPlanning(weekNumberToday)) {
+            let request = URLRequest(url: url)
             webView.loadRequest(request)
         } else {
-            let url = NSURL(string:"https://www.etud.insa-toulouse.fr/planning/index.php")
-            let request = NSURLRequest(URL: url!)
+            let url = URL(string:"https://www.etud.insa-toulouse.fr/planning/index.php")
+            let request = URLRequest(url: url!)
             webView.loadRequest(request)
         }
     }
     
-    @IBAction func lastWeekButtonAction(sender: AnyObject) {
+    @IBAction func lastWeekButtonAction(_ sender: AnyObject) {
         weekNumberToday -= 1
         AmITheCurrentWeek = false
-        if let url = NSURL(string: getUrlPlanning(weekNumberToday)) {
-            let request = NSURLRequest(URL: url)
+        if let url = URL(string: getUrlPlanning(weekNumberToday)) {
+            let request = URLRequest(url: url)
             webView.loadRequest(request)
         } else {
-            let url = NSURL(string:"https://www.etud.insa-toulouse.fr/planning/index.php")
-            let request = NSURLRequest(URL: url!)
+            let url = URL(string:"https://www.etud.insa-toulouse.fr/planning/index.php")
+            let request = URLRequest(url: url!)
             webView.loadRequest(request)
         }
     }
     
-    @IBAction func todayWeekButtonAction(sender: AnyObject) {
+    @IBAction func todayWeekButtonAction(_ sender: AnyObject) {
         AmITheCurrentWeek = true
         weekNumberToday = getWeekNumber()
-        if let url = NSURL(string: getUrlPlanning(weekNumberToday)) {
-            let request = NSURLRequest(URL: url)
+        if let url = URL(string: getUrlPlanning(weekNumberToday)) {
+            let request = URLRequest(url: url)
             webView.loadRequest(request)
         } else {
-            let url = NSURL(string:"https://www.etud.insa-toulouse.fr/planning/index.php")
-            let request = NSURLRequest(URL: url!)
+            let url = URL(string:"https://www.etud.insa-toulouse.fr/planning/index.php")
+            let request = URLRequest(url: url!)
             webView.loadRequest(request)
         }
     }
     
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == Public.segueFromPlanningToSettings {
-            let settingsVC = segue.destinationViewController as! SettingsTableViewController
+            let settingsVC = segue.destination as! SettingsTableViewController
             settingsVC.comeFromWebPlanningBecauseNoGroupSelected = true
         }
     }

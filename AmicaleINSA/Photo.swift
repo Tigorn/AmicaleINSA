@@ -11,7 +11,7 @@ import NYTPhotoViewer
 
 class Photo: NSObject, NYTPhoto {
     
-    private let photo: UIImage
+    fileprivate let photo: UIImage
     
     init(photo: UIImage) {
         self.photo = photo
@@ -19,7 +19,7 @@ class Photo: NSObject, NYTPhoto {
     
     var image: UIImage? { return photo }
     
-    var imageData: NSData? { return nil }
+    var imageData: Data? { return nil }
     
     var placeholderImage: UIImage? { return nil }
     

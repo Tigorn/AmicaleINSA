@@ -28,39 +28,39 @@ class MenuController: UITableViewController {
         initUI()
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         updateUI()
         delegate?.dismissKeyboardFromMenu(self)
     }
     
-    private func updateUI() {
+    fileprivate func updateUI() {
         usernameChatLabel.text = getUsernameChat()
         profileImageView.image = getProfilPicture()
         temperatureLabel.text = getTemperature()
     }
     
     
-    private func initUI() {
+    fileprivate func initUI() {
         profileImageView.layer.cornerRadius = self.profileImageView.frame.size.width / 2
         profileImageView.layer.borderWidth = 0.5
-        profileImageView.layer.borderColor =   UIColor.blackColor().CGColor
+        profileImageView.layer.borderColor =   UIColor.black.cgColor
         profileImageView.clipsToBounds = true
-        self.profileImageView.contentMode = .ScaleAspectFill
+        self.profileImageView.contentMode = .scaleAspectFill
         UIGraphicsBeginImageContext(self.topViewMenu.frame.size)
         let image: UIImage = UIImage(named: "redGradient3")!
-        image.drawInRect(self.topViewMenu.bounds)
+        image.draw(in: self.topViewMenu.bounds)
         UIGraphicsEndImageContext()
         topViewMenu.backgroundColor = UIColor(patternImage: image)
     }
     
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject!)
+    override func prepare(for segue: UIStoryboardSegue, sender: Any!)
     {
         if(segue.identifier == "GoToChat")
         {
-            super.prepareForSegue(segue, sender: sender)
-            let navVc = segue.destinationViewController as! UINavigationController
+            super.prepare(for: segue, sender: sender)
+            let navVc = segue.destination as! UINavigationController
             let chatVc = navVc.viewControllers.first as! ChatViewController
-            let uuid = UIDevice.currentDevice().identifierForVendor!.UUIDString
+            let uuid = UIDevice.current.identifierForVendor!.uuidString
             
             /* ça c'est pas bon parce qu'il faut faire la diff entre plusieurs pseudos, */
             chatVc.senderId = "\(uuid.md5())"
@@ -70,7 +70,7 @@ class MenuController: UITableViewController {
             _log_FullLineStars(LOG)
             delegate = chatVc
         } else if (segue.identifier == "GoToSettings"){
-            let navVc = segue.destinationViewController as! UINavigationController
+            let navVc = segue.destination as! UINavigationController
             let settingsTVc = navVc.viewControllers.first as! SettingsTableViewController
             delegate = settingsTVc
         }

@@ -16,35 +16,36 @@ class AsyncPhotoMediaItem: JSQPhotoMediaItem {
         super.init(maskAsOutgoing: maskAsOutgoing)
     }
     
-    init(withURL url: NSURL) {
+    init(withURL url: URL) {
         super.init()
         
         asyncImageView = UIImageView()
-        asyncImageView.frame = CGRectMake(0, 0, 170, 130)
-        asyncImageView.contentMode = .ScaleAspectFill
+        asyncImageView.frame = CGRect(x: 0, y: 0, width: 170, height: 130)
+        asyncImageView.contentMode = .scaleAspectFill
         asyncImageView.clipsToBounds = true
         asyncImageView.layer.cornerRadius = 20
-        asyncImageView.backgroundColor = UIColor.jsq_messageBubbleLightGrayColor()
+        asyncImageView.backgroundColor = UIColor.jsq_messageBubbleLightGray()
         
-        let activityIndicator = JSQMessagesMediaPlaceholderView.viewWithActivityIndicator()
-        activityIndicator.frame = asyncImageView.frame
-        asyncImageView.addSubview(activityIndicator)
+        let activityIndicator = JSQMessagesMediaPlaceholderView.withActivityIndicator()
+        activityIndicator?.frame = asyncImageView.frame
+        asyncImageView.addSubview(activityIndicator!)
         
-        KingfisherManager.sharedManager.cache.retrieveImageForKey(url.absoluteString, options: nil) { (image, cacheType) -> () in
-            
+        KingfisherManager.shared.cache.retrieveImage(forKey: url.absoluteString, options: nil) { (image, cacheType) in
             if let image = image {
                 self.asyncImageView.image = image
-                activityIndicator.removeFromSuperview()
+                activityIndicator?.removeFromSuperview()
             } else {
-                KingfisherManager.sharedManager.downloader.downloadImageWithURL(url, progressBlock: nil) { (image, error, imageURL, originalData) -> () in
-                    
+                KingfisherManager.shared.downloader.downloadImage(with: url, options: nil, progressBlock: nil, completionHandler: { (image, error, imageURL, originalData) in
                     if let image = image {
                         self.asyncImageView.image = image
-                        activityIndicator.removeFromSuperview()
-                        
-                        KingfisherManager.sharedManager.cache.storeImage(image, forKey: url.absoluteString, toDisk: true, completionHandler: nil)
+                        activityIndicator?.removeFromSuperview()
+                        KingfisherManager.shared.cache.store(image, forKey: url.absoluteString)
+                        /* KingfisherManager.shared.cache.store(image, original: nil, forKey: url.absoluteString, processorIdentifier: url.absoluteString, cacheSerializer: CacheSerializer, toDisk: true, completionHandler: {
+                            nil
+                        }) */
+                        // KingfisherManager.sharedManager.cache.storeImage(image, forKey: url.absoluteString, toDisk: true, completionHandler: nil)
                     }
-                }
+                })
             }
         }
     }

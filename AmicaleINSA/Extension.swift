@@ -11,22 +11,22 @@ import UIKit
 
 extension UIImage {
     
-    var uncompressedPNGData: NSData      { return UIImagePNGRepresentation(self)!        }
-    var highestQualityJPEGNSData: NSData { return UIImageJPEGRepresentation(self, 1.0)!  }
-    var highQualityJPEGNSData: NSData    { return UIImageJPEGRepresentation(self, 0.75)! }
-    var mediumQualityJPEGNSData: NSData  { return UIImageJPEGRepresentation(self, 0.5)!  }
-    var lowQualityJPEGNSData: NSData     { return UIImageJPEGRepresentation(self, 0.25)! }
-    var lowestQualityJPEGNSData:NSData   { return UIImageJPEGRepresentation(self, 0.0)!  }
+    var uncompressedPNGData: Data      { return UIImagePNGRepresentation(self)!        }
+    var highestQualityJPEGNSData: Data { return UIImageJPEGRepresentation(self, 1.0)!  }
+    var highQualityJPEGNSData: Data    { return UIImageJPEGRepresentation(self, 0.75)! }
+    var mediumQualityJPEGNSData: Data  { return UIImageJPEGRepresentation(self, 0.5)!  }
+    var lowQualityJPEGNSData: Data     { return UIImageJPEGRepresentation(self, 0.25)! }
+    var lowestQualityJPEGNSData:Data   { return UIImageJPEGRepresentation(self, 0.0)!  }
     
     
-    public func imageRotatedByDegrees(degrees: CGFloat, flip: Bool) -> UIImage {
+    public func imageRotatedByDegrees(_ degrees: CGFloat, flip: Bool) -> UIImage {
         let degreesToRadians: (CGFloat) -> CGFloat = {
             return $0 / 180.0 * CGFloat(M_PI)
         }
         
         // calculate the size of the rotated view's containing box for our drawing space
-        let rotatedViewBox = UIView(frame: CGRect(origin: CGPointZero, size: size))
-        let t = CGAffineTransformMakeRotation(degreesToRadians(degrees));
+        let rotatedViewBox = UIView(frame: CGRect(origin: CGPoint.zero, size: size))
+        let t = CGAffineTransform(rotationAngle: degreesToRadians(degrees));
         rotatedViewBox.transform = t
         let rotatedSize = rotatedViewBox.frame.size
         
@@ -35,10 +35,10 @@ extension UIImage {
         let bitmap = UIGraphicsGetCurrentContext()
         
         // Move the origin to the middle of the image so we will rotate and scale around the center.
-        CGContextTranslateCTM(bitmap, rotatedSize.width / 2.0, rotatedSize.height / 2.0);
+        bitmap?.translateBy(x: rotatedSize.width / 2.0, y: rotatedSize.height / 2.0);
         
         //   // Rotate the image context
-        CGContextRotateCTM(bitmap, degreesToRadians(degrees));
+        bitmap?.rotate(by: degreesToRadians(degrees));
         
         // Now, draw the rotated/scaled image into the context
         var yFlip: CGFloat
@@ -49,25 +49,25 @@ extension UIImage {
             yFlip = CGFloat(1.0)
         }
         
-        CGContextScaleCTM(bitmap, yFlip, -1.0)
-        CGContextDrawImage(bitmap, CGRectMake(-size.width / 2, -size.height / 2, size.width, size.height), CGImage)
+        bitmap?.scaleBy(x: yFlip, y: -1.0)
+        bitmap?.draw(cgImage!, in: CGRect(x: -size.width / 2, y: -size.height / 2, width: size.width, height: size.height))
         
         let newImage = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
         
-        return newImage
+        return newImage!
     }
     
     var circle: UIImage? {
         let square = CGSize(width: min(size.width, size.height), height: min(size.width, size.height))
         let imageView = UIImageView(frame: CGRect(origin: CGPoint(x: 0, y: 0), size: square))
-        imageView.contentMode = .ScaleAspectFill
+        imageView.contentMode = .scaleAspectFill
         imageView.image = self
         imageView.layer.cornerRadius = square.width/2
         imageView.layer.masksToBounds = true
         UIGraphicsBeginImageContextWithOptions(imageView.bounds.size, false, scale)
         guard let context = UIGraphicsGetCurrentContext() else { return nil }
-        imageView.layer.renderInContext(context)
+        imageView.layer.render(in: context)
         let result = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
         return result
@@ -83,22 +83,22 @@ extension UIImage {
             newHeight /= 2
             print("w: \(newWidth), h: \(newHeight)")
         }
-        UIGraphicsBeginImageContext(CGSizeMake(newWidth, newHeight))
-        drawInRect(CGRectMake(0, 0, newWidth, newHeight))
+        UIGraphicsBeginImageContext(CGSize(width: newWidth, height: newHeight))
+        draw(in: CGRect(x: 0, y: 0, width: newWidth, height: newHeight))
         let newImage = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
         
-        return newImage
+        return newImage!
     }
 }
 
-extension NSDate {
-    func isGreaterThanDate(dateToCompare: NSDate) -> Bool {
+extension Date {
+    func isGreaterThanDate(_ dateToCompare: Date) -> Bool {
         //Declare Variables
         var isGreater = false
         
         //Compare Values
-        if self.compare(dateToCompare) == NSComparisonResult.OrderedDescending {
+        if self.compare(dateToCompare) == ComparisonResult.orderedDescending {
             isGreater = true
         }
         
@@ -106,12 +106,12 @@ extension NSDate {
         return isGreater
     }
     
-    func isLessThanDate(dateToCompare: NSDate) -> Bool {
+    func isLessThanDate(_ dateToCompare: Date) -> Bool {
         //Declare Variables
         var isLess = false
         
         //Compare Values
-        if self.compare(dateToCompare) == NSComparisonResult.OrderedAscending {
+        if self.compare(dateToCompare) == ComparisonResult.orderedAscending {
             isLess = true
         }
         
@@ -119,12 +119,12 @@ extension NSDate {
         return isLess
     }
     
-    func equalToDate(dateToCompare: NSDate) -> Bool {
+    func equalToDate(_ dateToCompare: Date) -> Bool {
         //Declare Variables
         var isEqualTo = false
         
         //Compare Values
-        if self.compare(dateToCompare) == NSComparisonResult.OrderedSame {
+        if self.compare(dateToCompare) == ComparisonResult.orderedSame {
             isEqualTo = true
         }
         
@@ -132,17 +132,17 @@ extension NSDate {
         return isEqualTo
     }
     
-    func addDays(daysToAdd: Int) -> NSDate {
-        let secondsInDays: NSTimeInterval = Double(daysToAdd) * 60 * 60 * 24
-        let dateWithDaysAdded: NSDate = self.dateByAddingTimeInterval(secondsInDays)
+    func addDays(_ daysToAdd: Int) -> Date {
+        let secondsInDays: TimeInterval = Double(daysToAdd) * 60 * 60 * 24
+        let dateWithDaysAdded: Date = self.addingTimeInterval(secondsInDays)
         
         //Return Result
         return dateWithDaysAdded
     }
     
-    func addHours(hoursToAdd: Int) -> NSDate {
-        let secondsInHours: NSTimeInterval = Double(hoursToAdd) * 60 * 60
-        let dateWithHoursAdded: NSDate = self.dateByAddingTimeInterval(secondsInHours)
+    func addHours(_ hoursToAdd: Int) -> Date {
+        let secondsInHours: TimeInterval = Double(hoursToAdd) * 60 * 60
+        let dateWithHoursAdded: Date = self.addingTimeInterval(secondsInHours)
         
         //Return Result
         return dateWithHoursAdded
@@ -153,6 +153,6 @@ extension String
 {
     func trim() -> String
     {
-        return self.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet())
+        return self.trimmingCharacters(in: CharacterSet.whitespaces)
     }
 }
