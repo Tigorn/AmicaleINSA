@@ -367,38 +367,39 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
     }
  
     fileprivate func computeSnapshot(_ snapshot: FIRDataSnapshot, isLoadMoreMessages: Bool, isObserveMessages: Bool ) {
-//        guard let idString = snapshot.value!["senderId"] as? String else {return}
-//        guard let textString = snapshot.value!["text"] as? String else {return}
-//        guard let senderDisplayNameString = snapshot.value!["senderDisplayName"] as? String else {return}
-//        guard let dateTimestampInterval = snapshot.value!["dateTimestamp"] as? TimeInterval else {return}
-//        var imageURLString = ""
-//        if let imageURL = snapshot.value!["imageURL"] as? String {
-//            imageURLString = imageURL
-//        }
-//        
-//        if (self.shouldUpdateLastTimestamp(dateTimestampInterval)){
-//            self.lastTimestamp = dateTimestampInterval
-//        }
-//        
-//        let date = Date(timeIntervalSince1970: dateTimestampInterval)
-//        let hashValue = "\(idString)\(date)\(senderDisplayNameString)\(dateTimestampInterval)".md5()
-//        let canAdd = self.shouldAddInArray(hashValue)
-//        if canAdd {
-//            if imageURLString != "" {
-//                let url = URL(string: imageURLString)!
-//                let imageMedia = AsyncPhotoMediaItem(withURL: url)
-//                self.addMessage(idString, text: nil, media: imageMedia, senderDisplayName: senderDisplayNameString, date: date, isLoadMoreLoading: isLoadMoreMessages)
-//            } else {
-//                self.addMessage(idString, text: textString, media: nil, senderDisplayName: senderDisplayNameString, date: date, isLoadMoreLoading: isLoadMoreMessages)
-//                //self.addMessage(idString, text: textString, senderDisplayName: senderDisplayNameString, date: date, isLoadMoreLoading: isLoadMoreMessages)
-//            }
-//            self.messagesHashValue += [hashValue]
-//        } else {
-//            print("Already present!")
-//        }
-//        if isObserveMessages {
-//            self.finishReceivingMessage()
-//        }
+        let snapshotValue = snapshot.value as? NSDictionary
+        guard let idString = snapshotValue?["senderId"] as? String else {return}
+        guard let textString = snapshotValue?["text"] as? String else {return}
+        guard let senderDisplayNameString = snapshotValue?["senderDisplayName"] as? String else {return}
+        guard let dateTimestampInterval = snapshotValue?["dateTimestamp"] as? TimeInterval else {return}
+        var imageURLString = ""
+        if let imageURL = snapshotValue?["imageURL"] as? String {
+            imageURLString = imageURL
+        }
+        
+        if (self.shouldUpdateLastTimestamp(dateTimestampInterval)){
+            self.lastTimestamp = dateTimestampInterval
+        }
+        
+        let date = Date(timeIntervalSince1970: dateTimestampInterval)
+        let hashValue = "\(idString)\(date)\(senderDisplayNameString)\(dateTimestampInterval)".md5()
+        let canAdd = self.shouldAddInArray(hashValue)
+        if canAdd {
+            if imageURLString != "" {
+                let url = URL(string: imageURLString)!
+                let imageMedia = AsyncPhotoMediaItem(withURL: url)
+                self.addMessage(idString, text: nil, media: imageMedia, senderDisplayName: senderDisplayNameString, date: date, isLoadMoreLoading: isLoadMoreMessages)
+            } else {
+                self.addMessage(idString, text: textString, media: nil, senderDisplayName: senderDisplayNameString, date: date, isLoadMoreLoading: isLoadMoreMessages)
+                //self.addMessage(idString, text: textString, senderDisplayName: senderDisplayNameString, date: date, isLoadMoreLoading: isLoadMoreMessages)
+            }
+            self.messagesHashValue += [hashValue]
+        } else {
+            print("Already present!")
+        }
+        if isObserveMessages {
+            self.finishReceivingMessage()
+        }
     }
     
     fileprivate func observeMessages() {

@@ -19,8 +19,8 @@ class PostTableViewController: UITableViewController {
     
     let LOG = false
     
-    let INITIAL_POST_LIMIT = UInt(8)
-    let LOAD_MORE_POST_LIMIT  = UInt(8)
+    let INITIAL_POST_LIMIT = UInt(4)
+    let LOAD_MORE_POST_LIMIT  = UInt(4)
     
     struct post {
         var title: String
@@ -111,16 +111,7 @@ class PostTableViewController: UITableViewController {
             var currentNumberOfPosts = 0
             _log_Title("Downloading Posts", location: "PostTableVC.observePosts()", shouldLog: self.LOG)
             _log_Element("I download \(numberOfPosts) post(s)", shouldLog: self.LOG)
-            //            for snapshot in snapshots.children {
-            //                print("Snapshot: ", snapshot.value)
-            //                //let snapDict = snapshot as? [String: Any]
-            //                //print("snapDict: ", snapDict)
-            //                //guard let titleString = snapshot["title"] as? String else {return}
-            //            }
-            let snapDict = snapshots.value as! [String:Any]
-            for snapshot in snapDict {
-                //    print("snapshot: ", snapshot)
-            }
+            
             for child in snapshots.children {
                 let snap = child as! FIRDataSnapshot
                 let dict = snap.value as! [String: Any]
@@ -158,136 +149,53 @@ class PostTableViewController: UITableViewController {
             
         })
     }
-    //                guard let titleString = snapshot.value!["title"] as? String else {return}
-    //                guard let titleString = (snapshot as NSDictionary).value!["title"] as? String else {return}
-    //                guard let descriptionString = (snapshot as AnyObject).value!["description"] as? String else {return}
-    //                guard let authorString = (snapshot as AnyObject).value!["author"] as? String else {return}
-    //                guard let dateString = (snapshot as AnyObject).value!["date"] as? String else {return}
-    //                guard let dateTimestampInterval = (snapshot as AnyObject).value!["timestamp"] as? TimeInterval else {return}
-    //                guard let dateTimestampInverseInterval = (snapshot as AnyObject).value!["timestampInverse"] as? TimeInterval else {return}
-    //
-    //                if (self.shouldUpdateLastTimestamp(dateTimestampInterval)){
-    //                    self.lastTimestamp = dateTimestampInterval
-    //                }
-    //
-    //                self.lastTimestampReverse = dateTimestampInverseInterval
-    //
-    //                var imageURLString = ""
-    //                if let imageURL = (snapshot as AnyObject).value!["imageURL"] as? String {
-    //                    imageURLString = imageURL
-    //                }
-    //
-    //                if imageURLString != "" {
-    //                    self.addPostBeginning(titleString, description: descriptionString, date: dateString, author: authorString, imagePresents: true, timestamp: dateTimestampInterval, urlImage: imageURLString)
-    //                    self.tableView.reloadData()
-    //                } else {
-    //                    currentNumberOfPosts += 1
-    //                    if currentNumberOfPosts == numberOfPosts {
-    //                        print("I have all my posts")
-    //                        MBProgressHUD.hideAllHUDs(for: self.view, animated: true)
-    //                    }
-    //                    self.addPostBeginning(titleString, description: descriptionString, date: dateString, author: authorString, imagePresents: false, timestamp: dateTimestampInterval, urlImage: "")
-    //                }
-    //
-    //                self.tableView.reloadData()
-    //            }
-    //
-    //        })
-    //    }
-    
-    
-    //        postQuery.observe(.value) { (snapshots: FIRDataSnapshot!) in
-    //            MBProgressHUD.hideAllHUDs(for: self.view, animated: true)
-    //            let numberOfPosts = Int(snapshots.childrenCount)
-    //            var currentNumberOfPosts = 0
-    //            _log_Title("Downloading Posts", location: "PostTableVC.observePosts()", shouldLog: self.LOG)
-    //            _log_Element("I download \(numberOfPosts) post(s)", shouldLog: self.LOG)
-    //
-    //            for snapshot in snapshots.children {
-    //
-    //
-    //
-    //
-    //                guard let titleString = snapshot.value!["title"] as? String else {return}
-    //                guard let titleString = (snapshot as NSDictionary).value!["title"] as? String else {return}
-    //                guard let descriptionString = (snapshot as AnyObject).value!["description"] as? String else {return}
-    //                guard let authorString = (snapshot as AnyObject).value!["author"] as? String else {return}
-    //                guard let dateString = (snapshot as AnyObject).value!["date"] as? String else {return}
-    //                guard let dateTimestampInterval = (snapshot as AnyObject).value!["timestamp"] as? TimeInterval else {return}
-    //                guard let dateTimestampInverseInterval = (snapshot as AnyObject).value!["timestampInverse"] as? TimeInterval else {return}
-    //
-    //                if (self.shouldUpdateLastTimestamp(dateTimestampInterval)){
-    //                    self.lastTimestamp = dateTimestampInterval
-    //                }
-    //
-    //                self.lastTimestampReverse = dateTimestampInverseInterval
-    //
-    //                var imageURLString = ""
-    //                if let imageURL = (snapshot as AnyObject).value!["imageURL"] as? String {
-    //                    imageURLString = imageURL
-    //                }
-    //
-    //                if imageURLString != "" {
-    //                    self.addPostBeginning(titleString, description: descriptionString, date: dateString, author: authorString, imagePresents: true, timestamp: dateTimestampInterval, urlImage: imageURLString)
-    //                    self.tableView.reloadData()
-    //                } else {
-    //                    currentNumberOfPosts += 1
-    //                    if currentNumberOfPosts == numberOfPosts {
-    //                        print("I have all my posts")
-    //                        MBProgressHUD.hideAllHUDs(for: self.view, animated: true)
-    //                    }
-    //                    self.addPostBeginning(titleString, description: descriptionString, date: dateString, author: authorString, imagePresents: false, timestamp: dateTimestampInterval, urlImage: "")
-    //                }
-    //
-    //                self.tableView.reloadData()
-    //            }
-    //        }
     
     
     func loadMorePosts() {
-        //        let postQuery = postRef.queryOrdered(byChild: "timestampInverse").queryStarting(atValue: lastTimestampReverse).queryLimited(toFirst: LOAD_MORE_POST_LIMIT+LOAD_MORE_POST_LIMIT)
-        //        var index = UInt(0)
-        //        postQuery.observe(.childAdded) { (snapshot: FIRDataSnapshot!) in
-        //            print("I download \(snapshot.childrenCount) more posts")
-        //
-        ////            guard let titleString = snapshot.value!["title"] as? String else {return}
-        ////            guard let descriptionString = snapshot.value!["description"] as? String else {return}
-        ////            guard let authorString = snapshot.value!["author"] as? String else {return}
-        ////            guard let dateString = snapshot.value!["date"] as? String else {return}
-        ////            guard let dateTimestampInterval = snapshot.value!["timestamp"] as? TimeInterval else {return}
-        ////            guard let dateTimestampInverseInterval = snapshot.value!["timestampInverse"] as? TimeInterval else {return}
-        //
-        //            if (self.shouldUpdateLastTimestamp(dateTimestampInterval)){
-        //                self.lastTimestamp = dateTimestampInterval
-        //            }
-        //
-        //            self.lastTimestampReverse = dateTimestampInverseInterval
-        //            index += 1
-        //            var imageURLString = ""
-        //            if let imageURL = snapshot.value!["imageURL"] as? String {
-        //                imageURLString = imageURL
-        //            }
-        //            print("index: \(index) LOAD_MORE_POST_LIMIT: \(self.LOAD_MORE_POST_LIMIT)")
-        //            self.printMessage(titleString, description: descriptionString, timestamp: dateTimestampInterval, date: dateString)
-        //            if index <= (self.LOAD_MORE_POST_LIMIT+self.LOAD_MORE_POST_LIMIT) {
-        //                if imageURLString != "" {
-        //                    self.addPostAppend(titleString, description: descriptionString, date: dateString, author: authorString, imagePresents: true, timestamp: dateTimestampInterval, urlImage: imageURLString)
-        //                    self.tableView.reloadData()
-        //                } else {
-        //                    self.addPostAppend(titleString, description: descriptionString, date: dateString, author: authorString, imagePresents: false, timestamp: dateTimestampInterval, urlImage: "")
-        //                    print("image no present")
-        //                }
-        //
-        //                print("title = \(titleString), description = \(descriptionString)")
-        //                self.tableView.reloadData()
-        //            } else {
-        //                print("self.tableView.finishInfiniteScroll()")
-        //                self.tableView.finishInfiniteScroll()
-        //                self.tableView.reloadData()
-        //            }
-        //
-        //        }
-        //        self.resetTimer()
+                let postQuery = postRef.queryOrdered(byChild: "timestampInverse").queryStarting(atValue: lastTimestampReverse).queryLimited(toFirst: LOAD_MORE_POST_LIMIT+LOAD_MORE_POST_LIMIT)
+                var index = UInt(0)
+                postQuery.observe(.childAdded) { (snapshot: FIRDataSnapshot!) in
+                    print("I download \(snapshot.childrenCount) more posts")
+                    let snapshotValue = snapshot.value as? NSDictionary
+                    
+                    guard let titleString = snapshotValue?["title"] as? String else {return}
+                    guard let descriptionString = snapshotValue?["description"] as? String else {return}
+                    guard let authorString = snapshotValue?["author"] as? String else {return}
+                    guard let dateString = snapshotValue?["date"] as? String else {return}
+                    guard let dateTimestampInterval = snapshotValue?["timestamp"] as? TimeInterval else {return}
+                    guard let dateTimestampInverseInterval = snapshotValue?["timestampInverse"] as? TimeInterval else {return}
+        
+                    if (self.shouldUpdateLastTimestamp(dateTimestampInterval)){
+                        self.lastTimestamp = dateTimestampInterval
+                    }
+        
+                    self.lastTimestampReverse = dateTimestampInverseInterval
+                    index += 1
+                    var imageURLString = ""
+                    if let imageURL = snapshotValue?["imageURL"] as? String {
+                        imageURLString = imageURL
+                    }
+                    print("index: \(index) LOAD_MORE_POST_LIMIT: \(self.LOAD_MORE_POST_LIMIT)")
+                    self.printMessage(titleString, description: descriptionString, timestamp: dateTimestampInterval, date: dateString)
+                    if index <= (self.LOAD_MORE_POST_LIMIT+self.LOAD_MORE_POST_LIMIT) {
+                        if imageURLString != "" {
+                            self.addPostAppend(titleString, description: descriptionString, date: dateString, author: authorString, imagePresents: true, timestamp: dateTimestampInterval, urlImage: imageURLString)
+                            self.tableView.reloadData()
+                        } else {
+                            self.addPostAppend(titleString, description: descriptionString, date: dateString, author: authorString, imagePresents: false, timestamp: dateTimestampInterval, urlImage: "")
+                            print("image no present")
+                        }
+        
+                        print("title = \(titleString), description = \(descriptionString)")
+                        self.tableView.reloadData()
+                    } else {
+                        print("self.tableView.finishInfiniteScroll()")
+                        self.tableView.finishInfiniteScroll()
+                        self.tableView.reloadData()
+                    }
+        
+                }
+                self.resetTimer()
     }
     
     func printMessage(_ title:String, description: String, timestamp: TimeInterval, date: String) {
