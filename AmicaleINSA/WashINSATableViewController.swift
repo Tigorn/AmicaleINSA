@@ -24,7 +24,7 @@ class WashINSATableViewController: UITableViewController {
     
     var machines = [machine]()
     
-    var machine1 = machine(type: "Chargement en cours ...", available: "", remainingTime: "", avancement: "", startTime: "", endTime: "", numberMachine: "", typeTextile: "")
+    var machine1 = machine(type: "", available: "", remainingTime: "", avancement: "", startTime: "", endTime: "", numberMachine: "", typeTextile: "")
     var machine2 = machine(type: "", available: "", remainingTime: "", avancement: "", startTime: "", endTime: "", numberMachine: "", typeTextile: "")
     var machine3 = machine(type: "", available: "", remainingTime: "", avancement: "", startTime: "", endTime: "", numberMachine: "", typeTextile: "")
     var machine4 = machine(type: "", available: "", remainingTime: "", avancement: "", startTime: "", endTime: "", numberMachine: "", typeTextile: "")
@@ -153,6 +153,7 @@ class WashINSATableViewController: UITableViewController {
                         self.tableView.reloadData()
                         SwiftSpinner.hide()
                         self.refreshControl!.endRefreshing()
+                        self.animateRows()
                     } else {
                         SwiftSpinner.hide()
                         let message = json_full["message"].string
@@ -171,6 +172,31 @@ class WashINSATableViewController: UITableViewController {
                 myActivityIndicatorHUD?.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(WashINSATableViewController.tapToCancel)))
             }
         }
+    }
+    
+    fileprivate func animateRows() {
+        
+        animateRow(atPosition: 0)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1, execute: {
+            self.animateRow(atPosition: 1)
+        })
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2, execute: {
+            self.animateRow(atPosition: 2)
+        })
+    }
+    
+    fileprivate func animateRow(atPosition position: Int) {
+        let indexPath = IndexPath(item: position, section: 0)
+        let contentView = tableView.cellForRow(at: indexPath)?.contentView
+        let original = contentView?.frame
+        var bounceOffset = original
+        bounceOffset?.origin.x -= 100
+        UIView.animate(withDuration: 0.5, delay: 0, options: .curveEaseOut, animations: {
+            contentView?.frame = bounceOffset!
+        }) { (_) in
+            UIView.animate(withDuration: 1, delay: 0, usingSpringWithDamping: 0.75, initialSpringVelocity: 0, options: .curveEaseOut, animations: {
+                contentView?.frame = original!
+            }, completion: nil)}
     }
     
     fileprivate func observeCountWashingTotal() {
@@ -226,6 +252,7 @@ class WashINSATableViewController: UITableViewController {
             if indexPath.section == 1 {
                 indexInArray += 3
             }
+            
             cell.numberMachineLabel.layer.cornerRadius = cell.numberMachineLabel.frame.size.width/2
             cell.numberMachineLabel.layer.borderWidth = 0.5
             cell.numberMachineLabel.clipsToBounds = true
@@ -314,6 +341,7 @@ class WashINSATableViewController: UITableViewController {
             }
             alarm.backgroundColor = UIColor.red
         }
+        print("ok 3 - set alarm in row actions")
         return [alarm]
     }
     
