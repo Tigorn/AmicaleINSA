@@ -92,6 +92,10 @@ public struct Public {
     static let noGroupINSA = "elseGroupINSA"
     static let titleAlertViewNoGroup = "Hé oui !"
     static let subtitleAlertViewNoGroup = "Il faut choisir un groupe réel pour accéder au planning ;)\n\nVeuillez contacter l'Amicale s'il y a un problème avec les groupes."
+    
+    static let flappyHighScore = "flappyHighScore"
+    static let senderIdScore = "scoringId".md5()
+    static let senderDisplayNameScore = "scoring"
 }
 
 /*
@@ -661,5 +665,15 @@ func _log_Element(_ element: String, shouldLog: Bool) {
     if shouldLog {
         print("- \(element)")
     }
+}
+
+/*
+ Flappy bird utils
+ */
+
+private let catchSentence = ["who can do better?", "I'm sure someone can do better...", "INSA students please come on do something...", "wake up and try again!", "👌👍💪", "👎👎👎👎"]
+
+func getRandomSentenceFlappyBird() -> String {
+    return catchSentence.randomItem()
 }
 

@@ -56,7 +56,7 @@ class FirebaseManager {
     }
     
     func sendMessageFirebase(_ text: String, senderId: String, senderDisplayName: String,
-                              date: Date, isMedia: Bool, imageURL: String) {
+                             date: Date, isMedia: Bool, imageURL: String, sound: Bool) {
         let dateTimestamp = date.timeIntervalSince1970
         if (chatVC.shouldUpdateLastTimestamp(dateTimestamp)){
             chatVC.lastTimestamp = dateTimestamp
@@ -73,7 +73,8 @@ class FirebaseManager {
             "imageURL": imageURL
         ]
         itemRef.setValue(messageItem)
-        
-        JSQSystemSoundPlayer.jsq_playMessageSentSound()
+        if sound {
+            JSQSystemSoundPlayer.jsq_playMessageSentSound()   
+        }
     }    
 }

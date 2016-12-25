@@ -37,6 +37,10 @@
 		92A7013D1C847B4C000E1E8F /* WebPlanningViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92A7013C1C847B4C000E1E8F /* WebPlanningViewController.swift */; };
 		92A7013F1C847EA0000E1E8F /* Device.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92A7013E1C847EA0000E1E8F /* Device.swift */; };
 		92AAF0F51CEA5EB000301CBD /* TODO.txt in Resources */ = {isa = PBXBuildFile; fileRef = 92AAF0F41CEA5EB000301CBD /* TODO.txt */; };
+		92B7676B1E107D9400134EAA /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = 92B767681E107D9400134EAA /* GameScene.sks */; };
+		92B7676C1E107D9400134EAA /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92B767691E107D9400134EAA /* GameScene.swift */; };
+		92B7676D1E107D9400134EAA /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92B7676A1E107D9400134EAA /* GameViewController.swift */; };
+		92B7676F1E107F4700134EAA /* bird.atlas in Resources */ = {isa = PBXBuildFile; fileRef = 92B7676E1E107F4700134EAA /* bird.atlas */; };
 		92BCDC731CEF163900237160 /* LocalINSATableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92BCDC721CEF163900237160 /* LocalINSATableViewController.swift */; };
 		92BCDC751CEF185A00237160 /* LocalINSATableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92BCDC741CEF185A00237160 /* LocalINSATableViewCell.swift */; };
 		92CBC4E61C8642CB0074B9B2 /* Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92CBC4E51C8642CB0074B9B2 /* Extension.swift */; };
@@ -101,6 +105,10 @@
 		92A7013C1C847B4C000E1E8F /* WebPlanningViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebPlanningViewController.swift; sourceTree = "<group>"; };
 		92A7013E1C847EA0000E1E8F /* Device.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Device.swift; sourceTree = "<group>"; };
 		92AAF0F41CEA5EB000301CBD /* TODO.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = TODO.txt; sourceTree = "<group>"; };
+		92B767681E107D9400134EAA /* GameScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = GameScene.sks; sourceTree = "<group>"; };
+		92B767691E107D9400134EAA /* GameScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameScene.swift; sourceTree = "<group>"; };
+		92B7676A1E107D9400134EAA /* GameViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameViewController.swift; sourceTree = "<group>"; };
+		92B7676E1E107F4700134EAA /* bird.atlas */ = {isa = PBXFileReference; lastKnownFileType = folder.skatlas; path = bird.atlas; sourceTree = "<group>"; };
 		92BCDC721CEF163900237160 /* LocalINSATableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocalINSATableViewController.swift; sourceTree = "<group>"; };
 		92BCDC741CEF185A00237160 /* LocalINSATableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocalINSATableViewCell.swift; sourceTree = "<group>"; };
 		92CBC4E51C8642CB0074B9B2 /* Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extension.swift; sourceTree = "<group>"; };
@@ -166,6 +174,7 @@
 			isa = PBXGroup;
 			children = (
 				9206F3B91C838F8B00978CF5 /* AppDelegate.swift */,
+				92B767671E107D7900134EAA /* FlappyBird */,
 				92A701381C847A12000E1E8F /* Bridging Header */,
 				92A7013A1C847A2A000E1E8F /* Chat */,
 				92A701421C848309000E1E8F /* Constants */,
@@ -308,6 +317,17 @@
 				92AAF0F41CEA5EB000301CBD /* TODO.txt */,
 			);
 			name = TODO;
+			sourceTree = "<group>";
+		};
+		92B767671E107D7900134EAA /* FlappyBird */ = {
+			isa = PBXGroup;
+			children = (
+				92B7676E1E107F4700134EAA /* bird.atlas */,
+				92B767681E107D9400134EAA /* GameScene.sks */,
+				92B767691E107D9400134EAA /* GameScene.swift */,
+				92B7676A1E107D9400134EAA /* GameViewController.swift */,
+			);
+			name = FlappyBird;
 			sourceTree = "<group>";
 		};
 		92BCDC711CEF160000237160 /* LocalINSA */ = {
@@ -471,6 +491,8 @@
 				9206F3C71C838F8B00978CF5 /* LaunchScreen.storyboard in Resources */,
 				9233B9271CFF3AB400DFF955 /* GoogleService-Info.plist in Resources */,
 				9206F3C41C838F8B00978CF5 /* Assets.xcassets in Resources */,
+				92B7676B1E107D9400134EAA /* GameScene.sks in Resources */,
+				92B7676F1E107F4700134EAA /* bird.atlas in Resources */,
 				9206F3BF1C838F8B00978CF5 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -662,8 +684,10 @@
 				9206F3ED1C83963D00978CF5 /* MenuController.swift in Sources */,
 				9247CD7B1CB12CFA008F51E2 /* PostWithoutImageTableViewCell.swift in Sources */,
 				929D4C4A1CB2ECB00097CFA6 /* CustomInfiniteIndicator.swift in Sources */,
+				92B7676D1E107D9400134EAA /* GameViewController.swift in Sources */,
 				9206F3C21C838F8B00978CF5 /* AmicaleINSA.xcdatamodeld in Sources */,
 				9265E26B1CA8355B000BE187 /* WashINSATableViewCell.swift in Sources */,
+				92B7676C1E107D9400134EAA /* GameScene.swift in Sources */,
 				9247CD791CB12CE8008F51E2 /* PostWithImageTableViewCell.swift in Sources */,
 				92CBC4E61C8642CB0074B9B2 /* Extension.swift in Sources */,
 				9206F3EF1C8399F600978CF5 /* ChatViewController.swift in Sources */,

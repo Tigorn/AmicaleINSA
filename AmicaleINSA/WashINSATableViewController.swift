@@ -180,9 +180,9 @@ class WashINSATableViewController: UITableViewController {
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1, execute: {
             self.animateRow(atPosition: 1)
         })
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2, execute: {
-            self.animateRow(atPosition: 2)
-        })
+//        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2, execute: {
+//            self.animateRow(atPosition: 2)
+//        })
     }
     
     fileprivate func animateRow(atPosition position: Int) {
@@ -342,6 +342,7 @@ class WashINSATableViewController: UITableViewController {
             alarm.backgroundColor = UIColor.red
         }
         print("ok 3 - set alarm in row actions")
+        animateRows()
         return [alarm]
     }
     

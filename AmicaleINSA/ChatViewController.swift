@@ -34,6 +34,8 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
     
     @IBOutlet weak var menuButton: UIBarButtonItem!
     
+    @IBOutlet weak var titleButton: UIButton!
+    
     var myActivityIndicatorHUD = MBProgressHUD()
     
     var messages = [JSQMessage]()
@@ -128,31 +130,35 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
     }
     
     fileprivate func downloadMasterChatiOSHashUUID() {
-//        let chatMasterRef = FirebaseManager.firebaseManager.createMasterChatRef()
-//        chatMasterRef.child("users").observeSingleEvent(of: .value, with: { (snapshots) in
-//            let users = snapshots.children
-//            for user in users {
-//                guard let usernameMaster = (user as AnyObject).value!["username"] as? String else {return}
-//                guard let idMaster = (user as AnyObject).value!["id"] as? String else {return}
-//                let masterChat = MasterChat(username: usernameMaster, id: idMaster, type: "iOS")
-//                self.listMastersChat.append(masterChat)
+        let chatMasterRef = FirebaseManager.firebaseManager.createMasterChatRef()
+        chatMasterRef.child("users").observeSingleEvent(of: .value, with: { (snapshots) in
+        
+            for user in snapshots.children {
+                let snap = user as! FIRDataSnapshot
+                let dict = snap.value as! [String: Any]
+                guard let usernameMaster = dict["username"] as? String else {return}
+                guard let idMaster = dict["id"] as? String else {return}
+                let masterChat = MasterChat(username: usernameMaster, id: idMaster, type: "iOS")
+                print("Master chat: ", masterChat)
+                self.listMastersChat.append(masterChat)
 //                if !self.isAdminChat && self.isMasterOfChatiOS(masterChat, currentUsername: self.senderDisplayName, currentHashUUID: self.uuidHash) {
 //                    self.isAdminChat = true
 //                    print("I am the Master of the iOS Chat App")
 //                }
-//            }
-//        }) { (error) in
-//            print(error.localizedDescription)
-//        }
+            }
+        }) { (error) in
+            print(error.localizedDescription)
+        }
+        // print("senderIdScore: ", Public.senderIdScore)
     }
     
     func isMasterOfChatiOS(_ masterChat: MasterChat, currentUsername: String, currentHashUUID: String) -> Bool {
-        return masterChat.username == currentUsername && masterChat.id == currentHashUUID
+        return (masterChat.username == currentUsername && masterChat.id == currentHashUUID)
     }
     
     func isAMasterOfChatApp(_ listMasters: [MasterChat], senderIdMessage: String, senderDisplayNameMessage: String) -> Bool {
         for master in listMasters {
-            if master.username == senderDisplayNameMessage && master.id == senderIdMessage {
+            if (master.username == senderDisplayNameMessage && master.id == senderIdMessage) {
                 return true
             }
         }
@@ -201,6 +207,7 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
         self.scrollingDelegate = self
         
         title = "Chat"
+        titleButton.setTitle("Chat", for: .normal)
         setupBubbles()
         
         if shouldDisplayAvatar {
@@ -233,10 +240,29 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
         downloadMasterChatiOSHashUUID()
         
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: self, action: #selector(emojiTitleRightTapped))
+        
+        let tap = UITapGestureRecognizer(target: self, action: #selector(ChatViewController.titleTappedGestureRecognizer))
+        tap.numberOfTapsRequired = 10
+        navigationItem.titleView?.addGestureRecognizer(tap)
+        
     }
     
     
-    func initChat(){}
+    func initChat(){
+        print("iniChat")
+    }
+    
+    func titleTappedGestureRecognizer() {
+        print("button title tapped")
+//        let imageRecognizerVC = self.storyboard?.instantiateViewController(withIdentifier: "imageRecognition") as! MetalImageRecognitionViewController
+//        self.navigationController?.pushViewController(imageRecognizerVC, animated: true)
+        let flappyVC = self.storyboard?.instantiateViewController(withIdentifier: "flappyBird") as!
+        GameViewController
+        flappyVC.senderId = senderId
+        flappyVC.senderDisplayName = senderDisplayName
+        
+        self.navigationController?.pushViewController(flappyVC, animated: true)
+    }
     
     func emojiTitleRightTapped() {
         connectedUsersTmp = connectedUsers
@@ -347,6 +373,7 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
                     emoTitleChat = "👁"
                 }
                 self.title = titleChat
+                self.titleButton.setTitle(titleChat, for: .normal)
                 self.navigationItem.rightBarButtonItem?.title = emoTitleChat
             }
         })
@@ -472,7 +499,7 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
     
     override func didPressSend(_ button: UIButton!, withMessageText text: String!, senderId: String!,
                                      senderDisplayName: String!, date: Date!) {
-        FirebaseManager.firebaseManager.sendMessageFirebase(text, senderId: senderId, senderDisplayName: senderDisplayName, date: date, isMedia: false, imageURL: "")
+        FirebaseManager.firebaseManager.sendMessageFirebase(text, senderId: senderId, senderDisplayName: senderDisplayName, date: date, isMedia: false, imageURL: "", sound: true)
         finishSendingMessage()
         isTyping = false
     }
@@ -830,7 +857,7 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
                 let downloadURL = metadata!.downloadURL
                 let imageURL = downloadURL()!.absoluteString
                 print("imageURL = \(imageURL)")
-                FirebaseManager.firebaseManager.sendMessageFirebase("", senderId: self.senderId, senderDisplayName: self.senderDisplayName, date: Date(), isMedia: true, imageURL: imageURL)
+                FirebaseManager.firebaseManager.sendMessageFirebase("", senderId: self.senderId, senderDisplayName: self.senderDisplayName, date: Date(), isMedia: true, imageURL: imageURL, sound: true)
             }
         }
     }
