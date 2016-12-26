@@ -24,18 +24,18 @@ class WashINSATableViewController: UITableViewController {
     
     var machines = [machine]()
     
-    var machine1 = machine(type: "", available: "", remainingTime: "", avancement: "", startTime: "", endTime: "", numberMachine: "", typeTextile: "")
-    var machine2 = machine(type: "", available: "", remainingTime: "", avancement: "", startTime: "", endTime: "", numberMachine: "", typeTextile: "")
-    var machine3 = machine(type: "", available: "", remainingTime: "", avancement: "", startTime: "", endTime: "", numberMachine: "", typeTextile: "")
-    var machine4 = machine(type: "", available: "", remainingTime: "", avancement: "", startTime: "", endTime: "", numberMachine: "", typeTextile: "")
-    var machine5 = machine(type: "", available: "", remainingTime: "", avancement: "", startTime: "", endTime: "", numberMachine: "", typeTextile: "")
-    var machine6 = machine(type: "", available: "", remainingTime: "", avancement: "", startTime: "", endTime: "", numberMachine: "", typeTextile: "")
-    var machine7 = machine(type: "", available: "", remainingTime: "", avancement: "", startTime: "", endTime: "", numberMachine: "", typeTextile: "")
-    var machine8 = machine(type: "", available: "", remainingTime: "", avancement: "", startTime: "", endTime: "", numberMachine: "", typeTextile: "")
-    var machine9 = machine(type: "", available: "", remainingTime: "", avancement: "", startTime: "", endTime: "", numberMachine: "", typeTextile: "")
-    var machine10 = machine(type: "", available: "", remainingTime: "", avancement: "", startTime: "", endTime: "", numberMachine: "", typeTextile: "")
-    var machine11 = machine(type: "", available: "", remainingTime: "", avancement: "", startTime: "", endTime: "", numberMachine: "", typeTextile: "")
-    var machine12 = machine(type: "", available: "", remainingTime: "", avancement: "", startTime: "", endTime: "", numberMachine: "", typeTextile: "")
+    var machine1 = machine(type: "", available: "", remainingTime: "", avancement: "", startTime: "", endTime: "", numberMachine: "", typeTextile: "", indexPath: nil)
+    var machine2 = machine(type: "", available: "", remainingTime: "", avancement: "", startTime: "", endTime: "", numberMachine: "", typeTextile: "", indexPath: nil)
+    var machine3 = machine(type: "", available: "", remainingTime: "", avancement: "", startTime: "", endTime: "", numberMachine: "", typeTextile: "", indexPath: nil)
+    var machine4 = machine(type: "", available: "", remainingTime: "", avancement: "", startTime: "", endTime: "", numberMachine: "", typeTextile: "", indexPath: nil)
+    var machine5 = machine(type: "", available: "", remainingTime: "", avancement: "", startTime: "", endTime: "", numberMachine: "", typeTextile: "", indexPath: nil)
+    var machine6 = machine(type: "", available: "", remainingTime: "", avancement: "", startTime: "", endTime: "", numberMachine: "", typeTextile: "", indexPath: nil)
+    var machine7 = machine(type: "", available: "", remainingTime: "", avancement: "", startTime: "", endTime: "", numberMachine: "", typeTextile: "", indexPath: nil)
+    var machine8 = machine(type: "", available: "", remainingTime: "", avancement: "", startTime: "", endTime: "", numberMachine: "", typeTextile: "", indexPath: nil)
+    var machine9 = machine(type: "", available: "", remainingTime: "", avancement: "", startTime: "", endTime: "", numberMachine: "", typeTextile: "", indexPath: nil)
+    var machine10 = machine(type: "", available: "", remainingTime: "", avancement: "", startTime: "", endTime: "", numberMachine: "", typeTextile: "", indexPath: nil)
+    var machine11 = machine(type: "", available: "", remainingTime: "", avancement: "", startTime: "", endTime: "", numberMachine: "", typeTextile: "", indexPath: nil)
+    var machine12 = machine(type: "", available: "", remainingTime: "", avancement: "", startTime: "", endTime: "", numberMachine: "", typeTextile: "", indexPath: nil)
     
     
     var timer = Timer()
@@ -50,6 +50,7 @@ class WashINSATableViewController: UITableViewController {
         var endTime = ""
         var numberMachine = ""
         var typeTextile = ""
+        var indexPath: IndexPath?
     }
     
     fileprivate let tableController = UITableViewController()
@@ -175,21 +176,23 @@ class WashINSATableViewController: UITableViewController {
     }
     
     fileprivate func animateRows() {
-        
-        animateRow(atPosition: 0)
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1, execute: {
-            self.animateRow(atPosition: 1)
+            for machine in self.machines {
+                if machine.available.contains("En cours d'utilisation") {
+                    print("debug 1")
+                    guard let indexPath = machine.indexPath else {return}
+                    print("debug 2")
+                    self.animateRow(atIndexPath: indexPath)
+                }
+            }
         })
-//        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2, execute: {
-//            self.animateRow(atPosition: 2)
-//        })
     }
     
-    fileprivate func animateRow(atPosition position: Int) {
-        let indexPath = IndexPath(item: position, section: 0)
+    fileprivate func animateRow(atIndexPath indexPath: IndexPath) {
         let contentView = tableView.cellForRow(at: indexPath)?.contentView
         let original = contentView?.frame
         var bounceOffset = original
+        print("row: \(indexPath.row), section: \(indexPath.section), original: \(original)")
         bounceOffset?.origin.x -= 100
         UIView.animate(withDuration: 0.5, delay: 0, options: .curveEaseOut, animations: {
             contentView?.frame = bounceOffset!
@@ -281,6 +284,7 @@ class WashINSATableViewController: UITableViewController {
                 cell.numberMachineLabel.backgroundColor = UIColor.red
                 cell.startEndTimeLabel.text = ""
             } else if machines[indexInArray].available.contains("En cours d'utilisation") {
+                print("debug 3")
                 let remainingTime = machines[indexInArray].remainingTime
                 cell.availabilityMachineLabel.text = machines[indexInArray].available
                 cell.availableInTimeMachineLabel.text = "Disponible dans \(remainingTime) min"
@@ -294,6 +298,7 @@ class WashINSATableViewController: UITableViewController {
                         cell.numberMachineLabel.backgroundColor = UIColor.yellow
                     }
                 }
+                machines[indexInArray].indexPath = indexPath
             }
             if alreadyNotificationForMachine(indexInArray) {
                 cell.reservedMachineCircularLabel.backgroundColor = UIColor.red
@@ -434,7 +439,7 @@ class WashINSATableViewController: UITableViewController {
             let regex = try NSRegularExpression(pattern: regex, options: [])
             let nsString = text as NSString
             let results = regex.matches(in: text,
-                                                options: [], range: NSMakeRange(0, nsString.length))
+                                        options: [], range: NSMakeRange(0, nsString.length))
             return results.map { nsString.substring(with: $0.range)}
         } catch let error as NSError {
             print("invalid regex: \(error.localizedDescription)")
