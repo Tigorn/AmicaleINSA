@@ -58,10 +58,7 @@ class GameViewController: UIViewController {
     }
     
     override func viewDidDisappear(_ animated: Bool) {
-        let highScore = UserDefaults.standard.integer(forKey: Public.flappyHighScore)
-        UserDefaults.standard.set(0, forKey: Public.flappyHighScore)
-        let text = "\(senderDisplayName) scored \(highScore) at flappycale, \(getRandomSentenceFlappyBird())"
-        FirebaseManager.firebaseManager.sendMessageFirebase(text, senderId: Public.senderIdScore, senderDisplayName: Public.senderDisplayNameScore, date: Date(), isMedia: false, imageURL: "", sound: false)
+        sendMessageHighscoreByScoringBot()
     }
 
     override var supportedInterfaceOrientations : UIInterfaceOrientationMask {
@@ -75,6 +72,19 @@ class GameViewController: UIViewController {
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Release any cached data, images, etc that aren't in use.
+    }
+    
+    private func sendMessageHighscoreByScoringBot() {
+        let highScore = UserDefaults.standard.integer(forKey: Public.flappyHighScore)
+        UserDefaults.standard.set(0, forKey: Public.flappyHighScore)
+        let date = Date()
+        let text = "\(senderDisplayName) scored \(highScore) at flappycale, \(getRandomSentenceFlappyBird())"
+        FirebaseManager.firebaseManager.sendMessageFirebase(text, senderId: Public.senderIdScore, senderDisplayName: Public.senderDisplayNameScore, date: date, isMedia: false, imageURL: "", sound: false)
+        saveHighScore(senderDisplayName: senderDisplayName, senderId: senderId, date: date, score: highScore)
+    }
+    
+    private func saveHighScore(senderDisplayName: String, senderId: String, date: Date, score: Int) {
+        FirebaseManager.firebaseManager.saveHighScore(senderDisplayName: senderDisplayName, senderId: senderId, date: date, score: score)
     }
     
 }

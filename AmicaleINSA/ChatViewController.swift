@@ -421,8 +421,6 @@ class ChatViewController: JSQMessagesViewController, UIActionSheetDelegate, UIIm
                 //self.addMessage(idString, text: textString, senderDisplayName: senderDisplayNameString, date: date, isLoadMoreLoading: isLoadMoreMessages)
             }
             self.messagesHashValue += [hashValue]
-        } else {
-            print("Already present!")
         }
         if isObserveMessages {
             self.finishReceivingMessage()

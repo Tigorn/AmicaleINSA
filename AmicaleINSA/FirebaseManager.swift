@@ -19,7 +19,6 @@ class FirebaseManager {
     var chatVC = ChatViewController.chatViewController
     fileprivate(set) var BASE_REF = FIRDatabase.database().reference()
     
-    // Storage
     let storageRef = FIRStorage.storage().reference(forURL: Secret.FIREBASE_STORAGE_BUCKET)
 
     func createTypingIndicatorRef() -> FIRDatabaseReference {
@@ -46,6 +45,14 @@ class FirebaseManager {
         return BASE_REF.child("washing")
     }
     
+    func createGameRef() -> FIRDatabaseReference {
+        return BASE_REF.child("game")
+    }
+    
+    func createFlappyRef() -> FIRDatabaseReference {
+        return BASE_REF.child("game/flappy")
+    }
+    
     // Storage reference
     func createStorageRef() -> FIRStorageReference {
         return storageRef
@@ -62,7 +69,7 @@ class FirebaseManager {
             chatVC.lastTimestamp = dateTimestamp
         }
         let itemRef = BASE_REF.child("messages").childByAutoId()
-        let messageItem: [String: Any] = [ // 2
+        let messageItem: [String: Any] = [
             "text": text,
             "senderId": senderId,
             "senderDisplayName": senderDisplayName,
@@ -76,5 +83,19 @@ class FirebaseManager {
         if sound {
             JSQSystemSoundPlayer.jsq_playMessageSentSound()   
         }
-    }    
+    }
+    
+    func saveHighScore(senderDisplayName: String, senderId: String, date: Date, score: Int) {
+        let highScoreRef = BASE_REF.child("game/flappy/highscore").childByAutoId()
+        let dateTimestamp = date.timeIntervalSince1970
+        let scoreItem: [String: Any] = [
+            "senderDisplayName": senderDisplayName,
+            "senderId": senderId,
+            "dateTimestamp": dateTimestamp,
+            "timestampServerFirebase": FIRServerValue.timestamp(),
+            "score": score
+        ]
+        highScoreRef.setValue(scoreItem)
+    }
+    
 }
