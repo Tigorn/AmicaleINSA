@@ -341,8 +341,6 @@ class WashINSATableViewController: UITableViewController {
             }
             alarm.backgroundColor = UIColor.red
         }
-        print("ok 3 - set alarm in row actions")
-        animateRows()
         return [alarm]
     }
     
