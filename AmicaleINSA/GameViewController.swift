@@ -38,6 +38,11 @@ class GameViewController: UIViewController {
         super.viewDidLoad()
 
         if let scene = GameScene.unarchiveFromFile("GameScene") as? GameScene {
+            
+            // Configure senderID/senderDisplayName for Firebase Chat
+            scene.senderId = senderId
+            scene.senderDisplayName = senderDisplayName
+            
             // Configure the view.
             let skView = self.view as! SKView
             skView.showsFPS = true

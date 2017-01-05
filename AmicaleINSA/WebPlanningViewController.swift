@@ -290,11 +290,7 @@ class WebPlanningViewController: UIViewController, UIWebViewDelegate, UIScrollVi
         formatter.dateFormat = "h:mm a";
         let currentDate = formatter.date(from: currentHourString)
         let dateToCompare = formatter.date(from: hourStringToCompare)
-        if currentDate!.isGreaterThanDate(dateToCompare!) {
-            return true
-        } else {
-            return false
-        }
+        return currentDate!.isGreaterThanDate(dateToCompare!)
     }
     
     func segueToSettingsIfNeeded(){

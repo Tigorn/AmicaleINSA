@@ -112,6 +112,7 @@
 		92BCDC721CEF163900237160 /* LocalINSATableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocalINSATableViewController.swift; sourceTree = "<group>"; };
 		92BCDC741CEF185A00237160 /* LocalINSATableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocalINSATableViewCell.swift; sourceTree = "<group>"; };
 		92CBC4E51C8642CB0074B9B2 /* Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extension.swift; sourceTree = "<group>"; };
+		92F79AB41E12C069007F9D1C /* AmicaleINSA.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = AmicaleINSA.entitlements; sourceTree = "<group>"; };
 		99BE2483E29CB956425B6E64 /* Pods_AmicaleINSA.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AmicaleINSA.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		AFD6AE2CBD83D64AA3EDF111 /* Pods-AmicaleINSAUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AmicaleINSAUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-AmicaleINSAUITests/Pods-AmicaleINSAUITests.release.xcconfig"; sourceTree = "<group>"; };
 		E55D97296342711E96D8E249 /* Pods_AmicaleINSAUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AmicaleINSAUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -173,6 +174,7 @@
 		9206F3B81C838F8B00978CF5 /* AmicaleINSA */ = {
 			isa = PBXGroup;
 			children = (
+				92F79AB41E12C069007F9D1C /* AmicaleINSA.entitlements */,
 				9206F3B91C838F8B00978CF5 /* AppDelegate.swift */,
 				92B767671E107D7900134EAA /* FlappyBird */,
 				92A701381C847A12000E1E8F /* Bridging Header */,
@@ -444,6 +446,7 @@
 						CreatedOnToolsVersion = 7.2.1;
 						DevelopmentTeam = Q4B996RU7K;
 						LastSwiftMigration = 0820;
+						ProvisioningStyle = Manual;
 						SystemCapabilities = {
 							com.apple.Push = {
 								enabled = 1;
@@ -631,7 +634,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 1;
 			shellPath = /bin/sh;
-			shellScript = "# Replace this path with the path to the key you just downloaded\n#JSON_FILE=~/Source/Amicale/AmicaleINSA_update_firebase2/amicale-5065783525a3.json\n\n# Replace this with the GOOGLE_APP_ID from your GoogleService-Info.plist file\n\nGOOGLE_APP_ID=1:301365828536:ios:ea5751efe39b0652\n\"${PODS_ROOT}\"/FirebaseCrash/upload-sym \"/Users/arthurpapailhau/Source/Amicale/AmicaleINSA_update_firebase2/amicale-5065783525a3.json\"\n\n#defaults write com.google.SymbolUpload version -integer 1   # creates file if it does not exist\n#JSON=$(cat \"${JSON_FILE}\")\n#/usr/bin/plutil -replace \"app_${GOOGLE_APP_ID//:/_}\" -json \"${JSON}\" \"$HOME/Library/Preferences/com.google.SymbolUpload.plist\"\n#\"${PODS_ROOT}\"/FirebaseCrash/upload-sym";
+			shellScript = "# Replace this path with the path to the key you just downloaded\n#JSON_FILE=~/Source/Amicale/AmicaleINSA_update_firebase2/amicale-5065783525a3.json\n\n# Replace this with the GOOGLE_APP_ID from your GoogleService-Info.plist file\n\nGOOGLE_APP_ID=1:301365828536:ios:ea5751efe39b0652\n\"${PODS_ROOT}\"/FirebaseCrash/upload-sym \"/Users/arthurpapailhau/Documents/iOS/AmicaleINSA/amicale-5065783525a3.json\"\n\n#defaults write com.google.SymbolUpload version -integer 1   # creates file if it does not exist\n#JSON=$(cat \"${JSON_FILE}\")\n#/usr/bin/plutil -replace \"app_${GOOGLE_APP_ID//:/_}\" -json \"${JSON}\" \"$HOME/Library/Preferences/com.google.SymbolUpload.plist\"\n#\"${PODS_ROOT}\"/FirebaseCrash/upload-sym";
 		};
 		99E6B214F7946234D2AC47BD /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -845,14 +848,17 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_ENTITLEMENTS = AmicaleINSA/AmicaleINSA.entitlements;
+				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEVELOPMENT_TEAM = Q4B996RU7K;
 				INFOPLIST_FILE = AmicaleINSA/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = Amicale.INSAAmicaleINSA;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "9c18ec4a-5549-4521-a10b-3c238cccfe2b";
+				PROVISIONING_PROFILE_SPECIFIER = "Arthur Papailhau 2017";
 				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -864,14 +870,17 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_ENTITLEMENTS = AmicaleINSA/AmicaleINSA.entitlements;
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				DEVELOPMENT_TEAM = Q4B996RU7K;
 				INFOPLIST_FILE = AmicaleINSA/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = Amicale.INSAAmicaleINSA;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "fcf7f019-011f-43dc-ba27-dcdf383ad725";
+				PROVISIONING_PROFILE_SPECIFIER = "Arthur Papailhau 2017 Prod";
 				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};

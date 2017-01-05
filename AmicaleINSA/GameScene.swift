@@ -28,6 +28,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     let pipeCategory: UInt32 = 1 << 2
     let scoreCategory: UInt32 = 1 << 3
     
+    var senderId = ""
+    var senderDisplayName = ""
+    
     override func didMove(to view: SKView) {
         
         canRestart = false
@@ -249,6 +252,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
                             self.canRestart = true
                             })]), withKey: "flash")
                 highScore = max(highScore, score)
+                FirebaseManager.firebaseManager.saveScore(senderDisplayName: senderDisplayName, senderId: senderId, date: Date(), score: score)
                 UserDefaults.standard.set(highScore, forKey: Public.flappyHighScore)
             }
         }

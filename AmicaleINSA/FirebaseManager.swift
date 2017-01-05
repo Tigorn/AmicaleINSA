@@ -98,4 +98,17 @@ class FirebaseManager {
         highScoreRef.setValue(scoreItem)
     }
     
+    func saveScore(senderDisplayName: String, senderId: String, date: Date, score: Int) {
+        let highScoreRef = BASE_REF.child("game/flappy/scores").childByAutoId()
+        let dateTimestamp = date.timeIntervalSince1970
+        let scoreItem: [String: Any] = [
+            "senderDisplayName": senderDisplayName,
+            "senderId": senderId,
+            "dateTimestamp": dateTimestamp,
+            "timestampServerFirebase": FIRServerValue.timestamp(),
+            "score": score
+        ]
+        highScoreRef.setValue(scoreItem)
+    }
+    
 }

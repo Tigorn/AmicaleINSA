@@ -179,9 +179,7 @@ class WashINSATableViewController: UITableViewController {
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1, execute: {
             for machine in self.machines {
                 if machine.available.contains("En cours d'utilisation") {
-                    print("debug 1")
                     guard let indexPath = machine.indexPath else {return}
-                    print("debug 2")
                     self.animateRow(atIndexPath: indexPath)
                 }
             }
@@ -284,7 +282,6 @@ class WashINSATableViewController: UITableViewController {
                 cell.numberMachineLabel.backgroundColor = UIColor.red
                 cell.startEndTimeLabel.text = ""
             } else if machines[indexInArray].available.contains("En cours d'utilisation") {
-                print("debug 3")
                 let remainingTime = machines[indexInArray].remainingTime
                 cell.availabilityMachineLabel.text = machines[indexInArray].available
                 cell.availableInTimeMachineLabel.text = "Disponible dans \(remainingTime) min"
@@ -378,7 +375,7 @@ class WashINSATableViewController: UITableViewController {
             }
         }
         alert.addButton("Annuler") {
-            print("cancal's button tapped")
+            print("cancel's button tapped")
             self.tableView.reloadRows(at: [indexPath], with: UITableViewRowAnimation.none)
         }
         alert.showInfo("Disponible dans \(remainingTimeString) min", subTitle: "Je veux être alerté")
