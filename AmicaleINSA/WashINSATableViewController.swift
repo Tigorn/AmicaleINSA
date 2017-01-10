@@ -169,7 +169,7 @@ class WashINSATableViewController: UITableViewController {
                 SwiftSpinner.hide()
                 let myActivityIndicatorHUD = MBProgressHUD.showAdded(to: self.navigationController?.view, animated: true)
                 myActivityIndicatorHUD?.mode = MBProgressHUDMode.determinate
-                myActivityIndicatorHUD?.labelText = "Error..."
+                myActivityIndicatorHUD?.labelText = "Oups, on dirait qu'il y a un problème... 🙈"
                 myActivityIndicatorHUD?.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(WashINSATableViewController.tapToCancel)))
             }
         }
